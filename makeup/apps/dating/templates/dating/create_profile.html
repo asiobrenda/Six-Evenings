@@ -1,0 +1,114 @@
+{% extends 'base_dating.html' %}
+    {% load static %}
+
+{% block links %}
+<link href="{% static 'css/profile.css' %}" rel="stylesheet" type="text/css" />
+<!-- font awesome -->
+<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- Flaticon -->
+<link href="{% static 'css/flaticon.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- owl-carousel -->
+<link href="{% static 'css/owl-carousel/owl.carousel.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- General style -->
+<link href="{% static 'css/general.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- main style -->
+
+
+<!-- rtl style -->
+<link href="{% static 'css/rtl.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- Style customizer -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/skins/skin-default.css' %}" data-style="styles" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/style-customizer.css' %}" />
+<link href="{% static 'css/bootstrap.rtl.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- mega menu -->
+<link href="{% static 'css/mega-menu/mega_menu.css' %}" rel="stylesheet" type="text/css" />
+{% endblock links %}
+
+ {% block nav %}
+<ul class="menu-links" style="display: none; max-height: 400px; overflow: auto;">
+    <li class="hoverTrigger"><a href="{% url 'dating:home' %}"> Home<div class="mobileTriggerButton"></div></a> </li>
+ </ul>
+{% endblock nav %}
+
+
+{% block body %}
+
+{% endblock body %}
+
+{% block foot %}
+<div class="form-container">
+    <form id="multi-step-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+         <input type="hidden" name="step" id="step-input" value="{{ step }}">
+        <!-- Step 1: Personal Information -->
+        <div class="form-step" id="step-1">
+            <h3>Step 1: Personal Information</h3>
+            <label for="name">:Name</label>
+            <input type="text" id="name" name="name" required>
+            <label for="contact">:Contact</label>
+            <input type="text" id="contact" name="contact" required>
+            <label for="gender">:Gender</label>
+            <select id="gender" name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <button type="button" class="next-btn" onclick="nextStep(2)">Next</button>
+        </div>
+
+      <!-- Step 2: Appearance -->
+        <div class="form-step" id="step-2" style="display:none;">
+            <h3>Step 2: Appearance</h3>
+            <label for="height">:Height</label>
+            <input type="number" id="height" name="height"  required>
+            <label for="weight">:Weight</label>
+            <input type="number" id="weight" name="weight"  required>
+            <label for="color">:Skin Tone</label>
+            <select id="color" name="color" required>
+                <option value="light">Light</option>
+                <option value="medium">Medium</option>
+                <option value="dark">Dark</option>
+            </select>
+            <button type="button" class="next-btn" onclick="nextStep(3)">Next</button>
+            <button type="button" class="prev-btn" onclick="prevStep(1)">Previous</button>
+        </div>
+
+
+        <!-- Step 3: Description/Bio -->
+        <div class="form-step" id="step-3" style="display:none;">
+            <h3>Step 3: About You</h3>
+            <label for="bio">:about yourself</label>
+            <textarea id="bio" name="bio" rows="10" cols="25" required></textarea>
+            <!-- Image upload -->
+            <label for="imageUpload">:Upload Image</label>
+            <input type="file" id="imageUpload" name="photo" accept="image/*" onchange="previewImage(event)" required>
+
+
+            <!-- Wrap buttons in a container to align them side by side -->
+            <div class="button-container">
+                <button type="submit" class="submit-info">Save profile</button>
+                <button type="button" class="prev-btn" onclick="prevStep(2)">Previous</button>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+{% endblock foot %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'js/profile.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap-select.min.js' %}"></script>
+{% endblock scripts %}

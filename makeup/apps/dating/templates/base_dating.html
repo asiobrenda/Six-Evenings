@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zxx" dir="rtl">
+<head>
+  {% load static %}
+  {% load thumbnail %}
+   {% load tz %}
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+<title>The Make Up</title>
+
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+
+<!-- bootstrap -->
+<link href="{% static 'css/bootstrap.rtl.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- mega menu -->
+<link href="{% static 'css/mega-menu/mega_menu.css' %}" rel="stylesheet" type="text/css" />
+{% block links %}{% endblock links %}
+<!-- font awesome -->
+<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- Flaticon -->
+<link href="{% static 'css/flaticon.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- owl-carousel -->
+<link href="{% static 'css/owl-carousel/owl.carousel.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- General style -->
+<link href="{% static 'css/general.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- main style -->
+<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/contact.css' %}" rel="stylesheet" type="text/css" />
+
+   <link href="{% static 'css/notifications.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- rtl style -->
+<link href="{% static 'css/rtl.css' %}" rel="stylesheet" type="text/css" />
+<!-- Style customizer -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/style-customizer.css' %}" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+
+<!--=================================
+header -->
+<header id="header" class="dark">
+  <div class="topbar">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="topbar-right text-end">
+            {% if user.is_authenticated %}
+            <ul class="list-inline text-uppercase top-menu">
+              <li><a href="{% url 'dating:logout' %}">logout</a></li>
+            </ul>
+            {% else %}
+            <ul class="list-inline text-uppercase top-menu">
+              <li><a href="{% url 'dating:SignUp' %}">register</a></li>
+              <li><a href="{% url 'dating:login' %}">login</a></li>
+            </ul>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--=================================
+ mega menu -->
+
+  <div class="menu">
+    <!-- menu start -->
+    <nav id="menu" class="mega-menu" style="">
+      <!-- menu list items container -->
+      <section class="menu-list-items">
+        <div class="container">
+          <div class="row position-relative">
+            <div class="col-md-12 position-relative">
+              <!-- menu logo -->
+            {% block log %}
+              <ul class="menu-logo">
+<!--
+                   <li> <a href="index-default.html"><img src="#"> logo</a> <div class="menu-mobile-collapse-trigger"><span></span></div></li>
+                -->
+                  <li>
+                  <a href="{% url 'dating:notifications' %}?maintain_count=true">
+                    <i class="fa-solid fa-bell"  style="color: #63E6BE; font-size:20px; padding-top:25px;"></i>
+                     <span id="notification-badge" class="badge badge-danger">{{ notification_count }}</span>
+                  </a>
+                </li>
+
+              </ul>
+
+            {% endblock log %}
+
+
+              <!-- menu links -->
+              {% block nav %}
+              {% if user.is_authenticated %}
+              <ul class="menu-links" style="display: none; max-height: 400px; overflow: auto;">
+                <!-- active class -->
+                  <li class="hoverTrigger"><a href="{% url 'dating:see_live' %}" id="live-now">See Live People<div class="mobileTriggerButton"></div></a>
+                </li>
+                <li class="hoverTrigger"><a href="{% url 'dating:live' %}" id="goLive">Go Live<div class="mobileTriggerButton"></div></a>
+                </li>
+                <li class="hoverTrigger">
+                  <a href="{% url 'dating:create_profile' %}"> Create Profile<div class="mobileTriggerButton"></div></a>
+                </li>
+                <li class="hoverTrigger"><a href="#contact-us">Contact Us <div class="mobileTriggerButton"></div></a>
+                </li>
+                <li class="hoverTrigger"><a href="#about-us">About Us <div class="mobileTriggerButton"></div></a>
+                </li>
+                <li class="active hoverTrigger"><a href="javascript:void(0)">  Home <div class="mobileTriggerButton"></div></a>
+                </li>
+              </ul>
+               {% else %}
+             <ul class="menu-links" style="display: none; max-height: 400px; overflow: auto;">
+               <li class="hoverTrigger"><a href="#contact-us">Contact Us <div class="mobileTriggerButton"></div></a>
+                </li>
+                <li class="hoverTrigger"><a href="#about-us">About Us <div class="mobileTriggerButton"></div></a>
+                </li>
+                <li class="active hoverTrigger"><a href="javascript:void(0)">  Home <div class="mobileTriggerButton"></div></a>
+                </li>
+             </ul>
+             {% endif %}
+              {% endblock nav %}
+            </div>
+          </div>
+  </div>
+      </section>
+    </nav>
+    <!-- menu end -->
+  </div>
+</header>
+
+{% block body %}
+<!--=================================
+ banner -->
+<section class="inner-intro bg bg-fixed bg-overlay-black-30" style="background-image:url(static/image/Blue.jpg); height: 460px;">
+</section>
+
+<!--=================================
+ banner -->
+
+
+<!--=================================
+Step to find your Soul Mate -->
+
+<section class="page-section-ptb text-center">
+  <div class="container" id="about-us" >
+    <div class="row justify-content-center mb-5 sm-mb-3">
+      <div class="col-md-8">
+        <b>
+        <h3 style="font-weight: bold;" class="title divider mb-3"> Meet Your Soul Mate on <span style=" color: green; font-weight: bold;">Six Evenings</span></h3>
+        </b>
+        <p class="lead" style="margin-top:-10px;">Six Evenings is the perfect destination to meet and connect with others who share your interests and are looking for meaningful relationships</p>
+      </div>
+    </div>
+    <div class="row">
+      {% for d in dating %}
+      <div class="col-md-4 sm-mb-3">
+        <div class="timeline-badge mb-2">
+             {% thumbnail d.image "1000x800" crop as tb %}
+            <img class="img-center" src="{{tb.url}}" alt="">
+        </div>
+        <h4 class="title divider-3 mb-3">{{d.text_status}}</h4>
+        <p>{{d.description}}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+    <h3 class="companionship">Join us to find companionship</h3>
+
+ <!-- <div class="line-separator"></div>-->
+     <div id="explanations">
+        <p class="note1">
+            Simply sign up, browse the "See Live People" section, and explore profiles. If someone catches your eye,
+            click "Send Like". Check<br> .your notification bell for approvals or acceptance, and once you're connected,
+            start your journey with the shared phone contact
+        </p>
+        <p class="note2">
+            Click "Go Live", and check your notification bell for people interested in you.
+            Explore their profiles, find your favorite, and <br> !click "Accept".
+            Just like that, you've found yourself a companion
+        </p>
+        <p class="note3">
+            Once you click "Accept", your phone contact is instantly shared with the interested party, allowing them to call or text you outside <br>the site.
+            If you're not interested, simply click "Reject", and the person will be declined.
+        </p>
+    </div>
+
+</section>
+
+
+
+
+<!--=================================
+Counter -->
+<section class="page-section-ptb bg bg-overlay-black-30 text-white bg text-center" style="background: url(static/image/medium.jpg) no-repeat 0 0; background-size: cover;">
+  <div class="container">
+    <div class="row justify-content-center">
+      {% for m in members %}
+      <div class="col-md-3 col-sm-6 text-center">
+        <div class="counter fancy"> <i class="glyph-icon flaticon-people-2"></i> <span class="timer" data-to="{{m.data_to}}" data-speed="{{m.data_speed}}">{{m.data_to}}</span>
+          <label class="form-label">{{m.description}}</label>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<!--=================================
+Post Style -->
+
+{% endblock body %}
+
+
+<footer class="page-section-pt text-white text-center" style="background: url() no-repeat 0 0; background-size: cover;">
+  {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+ {% block foot %}
+    <div class="container" id="contact-us">
+    <h3 class="title divider mb-3">Contact Us</h3>
+     <div class="toast-wrapper">
+        <h5 id="toast">Message sent successfully</h5>
+     </div>
+    <div class="contact-form-container">
+        <form method="POST" action="" id="myform">
+             {% csrf_token %}
+            <div class="form_container">
+                <label for="name">Names</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form_container">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form_container">
+                <label for="message">Messages</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn" onclick="send_message(event)" id="sendmessage">Send Message</button>
+        </form>
+    </div>
+</div>
+
+{% endblock foot %}
+
+  <div class="footer-widget mt-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="social-icons color-hover">
+            <ul>
+              <li class="social-facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
+              <li class="social-twitter"><a href="#"><i class="fa-brands fa-x-twitter"></i></a></li>
+              <li class="social-dribbble"><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+              <li class="social-dribbble"><a href="#"><i class="fa-brands fa-linkedin"></i></a></li>
+            </ul>
+          </div>
+          <p class="text-white">© 2024  - Academy City All Right Reserved </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<!--=================================
+footer -->
+
+<!--=================================
+Color Customizer -->
+<!--
+
+<div id="back-to-top"><a class="top arrow" href="#top"><i class="fa fa-level-up"></i></a></div>
+-->
+
+<!--=================================
+ jquery -->
+
+<!-- jquery  -->
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqpezCVAMRqrF3jzjZB6mQWfuB1sfz-2I&callback=initMap&v=weekly"
+    async
+></script>
+
+<script>
+    const likerUrl = "{% url 'dating:LikerNotifications' %}";
+    const closeLikerNotification = "{% url 'dating:closeLikerNotification' %}";
+    const contactUs = "{% url 'dating:contact_us' %}";
+</script>
+
+
+<script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+<!-- bootstrap -->
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap-select.min.js' %}"></script>
+
+<!-- jquery-select -->
+<script type="text/javascript" src="{% static 'js/jquery-select.js' %}"></script>
+
+<!-- appear -->
+<script type="text/javascript" src="{% static 'js/jquery.appear.js' %}"></script>
+
+<!-- Menu -->
+<script type="text/javascript" src="{% static 'js/mega-menu/mega_menu.js' %}"></script>
+
+<!-- owl-carousel -->
+<script type="text/javascript" src="{% static 'js/owl-carousel/owl.carousel.min.js' %}"></script>
+
+<!-- counter -->
+<script type="text/javascript" src="{% static 'js/counter/jquery.countTo.js' %}"></script>
+
+<!-- style customizer  -->
+<script type="text/javascript" src="{% static 'js/style-customizer.js' %}"></script>
+
+<!-- custom -->
+<script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+
+
+<script type="text/javascript" src="{% static 'js/contact.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'js/liker_notifications.js' %}"></script>
+
+<!-- Bootstrap JS (optional, for dismissible alerts) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="{% static 'js/js.cookie.min.js' %}"></script>
+<script type="text/javascript">
+
+     var csrftoken = Cookies.get('csrftoken');
+            function csrfSafeMethod(method) {
+              // these HTTP methods do not require CSRF protection
+              return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+              }
+            });
+
+  $(document).ready(function () {
+
+
+     {% block domready %}
+     {% endblock %}
+  });
+    </script>
+
+{% block scripts %}
+{% endblock scripts %}
+
+</body>
+</html>

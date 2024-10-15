@@ -1,0 +1,115 @@
+/* General container styling */
+.containerLog {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form styling */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure text color and direction are applied */
+form input[type="text"],
+form input[type="password"],
+form input[type="email"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    color: black !important; /* Ensure text color is black */
+    direction: ltr !important; /* Ensure left-to-right text direction */
+    text-align: left !important; /* Ensure text is aligned to the left */
+}
+
+/* Ensure placeholder text color is different */
+form input::placeholder {
+    color: #aaa; /* Light gray for placeholder text */
+}
+
+/* Styling for the submit button */
+button[type="submit"] {
+    background-color: #FFB300;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: black;
+}
+
+/* Error message styling */
+/* Error message styling */
+.error {
+    color: #d9534f; /* Red color for error messages */
+    background-color: #f8d7da; /* Light red background for better visibility */
+    font-size: 14px; /* Adjust font size if needed */
+    margin-top: 10px; /* Space above the error message */
+    margin-bottom: 10px; /* Space below the error message */
+    padding: 10px; /* Padding around the text */
+    border: 1px solid #d9534f; /* Border to make the error box stand out */
+    border-radius: 4px; /* Rounded corners for the background */
+    display: block; /* Ensure it is block level to appear below the field */
+}
+
+
+
+/* Message section styling */
+.message {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.message h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.message p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.message h3 {
+    font-size: 20px;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+/* Sign-up prompt styling */
+.signup-prompt {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.signup-prompt p {
+    font-size: 14px;
+    color: #666;
+}
+
+.signup-link {
+    color: #FFB300;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup-link:hover {
+    text-decoration: underline;
+}

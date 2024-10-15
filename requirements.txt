@@ -1,0 +1,4 @@
+django==4.2
+psycopg2==2.8.6
+Pillow==8.4
+pandas

@@ -1,0 +1,47 @@
+/* General body styling */
+body {
+    background: linear-gradient(to right, #f8f9fa, #e9ecef); /* Light gradient background */
+    font-family: Arial, sans-serif; /* Font for the page */
+}
+
+/* Container for logout page */
+.logout-page {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 80vh; /* Height of the container */
+}
+
+/* Message section styling */
+.message {
+    text-align: center; /* Center text */
+    background-color: #ffffff; /* Background color for the message box */
+    padding: 20px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    max-width: 400px; /* Maximum width */
+    margin: 0 auto; /* Center the container */
+}
+
+.message h1 {
+    font-size: 24px; /* Font size for the heading */
+    color: #333; /* Color for the heading */
+    margin-bottom: 10px; /* Space below the heading */
+}
+
+.message p {
+    font-size: 16px; /* Font size for the paragraph */
+    color: #666; /* Color for the paragraph */
+    margin-bottom: 20px; /* Space below the paragraph */
+}
+
+.return-link {
+    color: #FFB300; /* Color for the link */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Bold text for emphasis */
+    font-size: 16px; /* Font size for the link */
+}
+
+.return-link:hover {
+    text-decoration: underline; /* Underline on hover */
+}

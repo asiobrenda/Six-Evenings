@@ -1,0 +1,90 @@
+{% extends 'base_dating.html' %}
+    {% load static %}
+
+{% block links %}
+<link href="{% static 'css/login.css' %}" rel="stylesheet" type="text/css" />
+<!-- font awesome -->
+<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- Flaticon -->
+<link href="{% static 'css/flaticon.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- owl-carousel -->
+<link href="{% static 'css/owl-carousel/owl.carousel.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- General style -->
+<link href="{% static 'css/general.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- main style -->
+
+
+<!-- rtl style -->
+<link href="{% static 'css/rtl.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- Style customizer -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/skins/skin-default.css' %}" data-style="styles" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/style-customizer.css' %}" />
+<link href="{% static 'css/bootstrap.rtl.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- mega menu -->
+<link href="{% static 'css/mega-menu/mega_menu.css' %}" rel="stylesheet" type="text/css" />
+{% endblock links %}
+
+ {% block nav %}
+<ul class="menu-links" style="display: none; max-height: 400px; overflow: auto;">
+    <li class="hoverTrigger"><a href="{% url 'dating:home' %}"> Home<div class="mobileTriggerButton"></div></a> </li>
+ </ul>
+{% endblock nav %}
+
+
+{% block body %}
+
+{% endblock body %}
+
+{% block foot %}
+<div class="log">
+    <div class="message">
+        <h1>Welcome</h1>
+        <p>You can log in here</p>
+        <h3>Login</h3>
+    </div>
+    <div class="containerLog">
+        <form method="POST">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+        <div class="error">
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% for field in form %}
+        <p>
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+                <div class="error">
+                    {% for error in field.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </p>
+    {% endfor %}
+    <button type="submit">Login</button>
+</form>
+
+    </div>
+    <div class="signup-prompt">
+        <p>Don't have an account? <a href="{% url 'dating:SignUp' %}" class="signup-link">Sign up here</a></p>
+    </div>
+</div>
+{% endblock foot %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap-select.min.js' %}"></script>
+{% endblock scripts %}

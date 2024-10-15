@@ -1,0 +1,101 @@
+{% extends 'base_dating.html' %}
+    {% load static %}
+
+{% block links %}
+<!-- font awesome -->
+<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css" />
+
+<link href="{% static 'css/live.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- owl-carousel -->
+<link href="{% static 'css/owl-carousel/owl.carousel.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- General style -->
+<link href="{% static 'css/general.css' %}" rel="stylesheet" type="text/css" />
+
+
+
+<!-- rtl style -->
+<link href="{% static 'css/rtl.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- Style customizer -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/style-customizer.css' %}" />
+<link href="{% static 'css/bootstrap.rtl.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet" type="text/css" />
+<!--<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />-->
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<!-- mega menu -->
+<link href="{% static 'css/mega-menu/mega_menu.css' %}" rel="stylesheet" type="text/css" />
+{% endblock links %}
+
+
+ {% block nav %}
+ <ul class="menu-links" style="display: none; max-height: 400px; overflow: auto;">
+     <li class="hoverTrigger"><a href="#"><div class="mobileTriggerButton"></div></a>
+        </li>
+        <li class="hoverTrigger"><a href="#" id="stopLiveButton" onclick="handleUserLeaveLive()">Stop Live <div class="mobileTriggerButton"></div></a>
+         </li>
+
+        <li class="hoverTrigger"><a href="{% url 'dating:home' %}">  Home <div class="mobileTriggerButton"></div></a>
+        </li>
+ </ul>
+
+
+{% endblock nav %}
+
+
+{% block body %}
+ <p class="status"></p>
+<!-- Notification Popup (Toast Style) -->
+<div id="liveNotification">
+  You are live now
+</div>
+
+<!-- Modal Structure -->
+<div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000;">
+    <span style="position: absolute; top: 20px; right: 20px; color: #fff; font-size: 35px; cursor: pointer;" onclick="closeModal()">&times;</span>
+    <img id="modalImage" style="max-width: 40%; max-height: 50%; border-radius: 10px;">
+</div>
+
+<div id="noLongerLiveNotification" style="display: none; position: fixed; top: 50px; left: 700px; background-color: #f44336; color: white; padding: 15px; border-radius: 5px; z-index: 1000;">
+    You are no longer live!
+</div>
+
+
+{% endblock body %}
+
+{% block foot %}
+<div id="map"></div>
+{% endblock foot %}
+
+
+{% block scripts %}
+<script src="https://maps.googleapis.com/maps/api/js?address=8HRV+8P8&key=AIzaSyCqpezCVAMRqrF3jzjZB6mQWfuB1sfz-2I&callback=initMap" async defer></script>
+
+<!--<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqpezCVAMRqrF3jzjZB6mQWfuB1sfz-2I&libraries=marker&callback=initMap"
+    defer
+></script>-->
+<!--<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>-->
+<script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap-select.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/liveweb1.js' %}"></script>
+<script type="text/javascript">
+     window.userData = {
+            id: "{{ user_id }}",
+            image: "{{ profile.image.url|escapejs }}",
+            name: "{{ profile.name|escapejs }}",
+            gender: "{{ profile.gender|escapejs }}",
+            bio: "{{ profile.bio|escapejs }}",
+            height: "{{ profile.height|escapejs }}",
+            weight: "{{ profile.weight|escapejs }}",
+            is_live: {{ current_user_live|yesno:"true,false" }},
+        };
+
+        window.currentUserId = "{{ current_user_id }}";
+        window.liveUsersData = {{ live_users_data|safe }};
+</script>
+<!--<script type="text/javascript" src="{% static 'js/live1.js' %}"></script>-->
+{% endblock scripts %}

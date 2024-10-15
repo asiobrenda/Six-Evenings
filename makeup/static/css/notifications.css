@@ -1,0 +1,309 @@
+.badge{
+    padding: 3px 5px 2px;
+    position: absolute;
+    top: 36px;
+    right: -13px;
+    display: inline-block;
+    min-width: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    line-height: 1;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
+}
+.badge-danger {
+    background-color: #db5565;
+    border-radius: 50%;
+}
+
+.notifications-container {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    padding: 10px;
+    height: 80vh;
+}
+
+.notifications-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.notification-item {
+    display: flex;
+    flex-direction: column; /* Stacked vertically */
+    padding: 5px 5px; /* Reduced top padding to move separator up */
+    border-bottom: 1px solid #ccc; /* Separator line at the bottom */
+    margin-top: 10px; /* Maintain space above each notification */
+    margin-bottom: 0; /* Space below the notification item (set to 0) */
+    position: relative; /* Relative positioning for children */
+    align-items: flex-start; /* Align items to the start */
+}
+
+
+.notification-contents{
+   margin-right: 30px;
+   margin-top:2px;
+}
+
+.notification-message {
+    font-size: 14px;
+    margin-right: 400px;
+    display:flex;
+
+}
+
+.notification-messages{
+     font-size: 14px;
+    margin-right: 320px;
+    display:flex;
+
+}
+
+.notification-messages h6{
+     position: absolute;
+    text-transform: lowercase;
+    top: 10;
+    white-space: nowrap; /* Prevent text from wrapping to the next line */
+    margin: 0;
+}
+
+.notification-message h6{
+    position: absolute;
+    text-transform: lowercase;
+    top: 10;
+    white-space: nowrap; /* Prevent text from wrapping to the next line */
+    margin: 0;
+}
+
+.notification-time {
+    align-self: flex-end; /* Aligns time to the right */
+    font-size: 12px;
+    color: #888;
+}
+
+.notification-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px; /* Adds space between text links */
+    margin-left: auto; /* Aligns actions to the right */
+    font-size: 12px;
+    margin-bottom: 0; /* Set to 0 instead of negative */
+}
+
+
+/* Text styling for interactive words */
+.notification-actions .action-link {
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: #00aaff;
+}
+
+.notification-actions .reject {
+    color: #ff4d4d; /* Red for reject */
+}
+
+.notification-actions .accept {
+    color: #4caf50; /* Green for accept */
+}
+
+.notification-actions .view-profile {
+    color: #00aaff; /* Blue for view profile */
+}
+
+
+/* Colors for text links */
+.view-profile {
+    color: #2196F3; /* Dark Yellow */
+}
+
+.accept {
+    color: #4CAF50; /* Teal */
+}
+
+.reject {
+    color: #F44336; /* Coral Red */
+}
+
+
+.notification-time {
+    float: right;
+    font-size: 12px;
+    color: #777;
+}
+
+.close-notification {
+    position: absolute;
+    left: 0;
+    top: 10;
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.close-notifications {
+    position: absolute;
+    left: -40px;
+    top: 5;
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+
+
+.notification-separator {
+    border: 1px solid #ccc; /* Thinner horizontal line, less faint */
+    opacity: 0.7; /* Slight transparency for a softer appearance */
+    position:fixed;
+}
+
+
+/* Modal styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed positioning */
+    z-index: 999; /* Ensure it is above other content */
+    left: 0;
+    top: 100px; /* Cover the whole viewport */
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Prevent scrollbars on the modal */
+    background-color: rgba(0,0,0,0.4); /* Semi-transparent background */
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* Center modal content */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 25%; /* Adjust as necessary */
+    max-height: 80%; /* Limit height to avoid overflow */
+    overflow-y: auto; /* Allow scrolling within modal content */
+    position: relative; /* Positioning for close button */
+}
+
+/* Close button */
+.close {
+    color: #f00;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Prevent body from scrolling and shifting */
+body.modal-open {
+    overflow: hidden; /* Prevent body scrolling */
+}
+
+/* Optional: prevent shifts caused by scrollbars */
+html {
+    overflow-y: scroll; /* Always show a vertical scrollbar */
+}
+
+
+/* Profile styling */
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; /* Center text for a clean, mobile-friendly look */
+}
+
+.profile img {
+    border-radius: 50%; /* Circle profile image */
+    object-fit: cover; /* Ensures the image fits properly within the circle */
+    margin-bottom: 15px;
+}
+
+.profile p {
+    margin: 8px 0; /* Space between paragraphs */
+    font-size: 16px; /* Default font size */
+    color: #333; /* Slightly softer black for readability */
+}
+
+.profile strong {
+    font-weight: bold;
+    color: #000; /* Bold and dark for labels */
+}
+
+/* Adjust text size and layout for smaller screens */
+@media (max-width: 600px) {
+    .profile p {
+        font-size: 14px;
+    }
+
+    .modal-content {
+        padding: 15px;
+        width: 95%;
+    }
+}
+
+
+/* Accepted button styling */
+.accept.accepted {
+    color: #4CAF50;
+    cursor: not-allowed;
+}
+
+/* Toast styling */
+.toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #4caf50;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 17px;
+}
+
+.toast.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+@-webkit-keyframes fadeInOut {
+    from {top: -50px; opacity: 0;}
+    to {top: 30px; opacity: 1;}
+}
+
+@keyframes fadeInOut {
+    from {top: -50px; opacity: 0;}
+    to {top: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeOut {
+    from {top: 30px; opacity: 1;}
+    to {top: -50px; opacity: 0;}
+}
+
+@keyframes fadeOut {
+    from {top: 30px; opacity: 1;}
+    to {top: -50px; opacity: 0;}
+}
+
+
