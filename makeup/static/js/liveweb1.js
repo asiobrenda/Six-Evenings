@@ -303,7 +303,6 @@ function likeUser(hasProfile, likerId, likedUserId) {
 
         // Send the like event through WebSocket
         socket.send(JSON.stringify(likeData));
-        alert("You have liked this user!");
     } else {
         alert("You need to create a profile before liking a user.");
         window.location.href = '/CreateProfile';
@@ -321,7 +320,6 @@ socket.onmessage = function(event) {
 
     // Display the notification message
     if (data.notification !== undefined) {
-        alert(data.notification);
     }
 };
 
