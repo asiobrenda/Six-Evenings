@@ -1,16 +1,12 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import login
 from .forms import SignUpCreationForm
-from .models import Dating, OnlineMembers, Profile, Contact
+from .models import Dating, OnlineMembers, Contact
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from .models import Profile, LiveUser,LikeNotification
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.db.models import Q
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
 
 
 def home(request):
@@ -57,13 +53,22 @@ def create_profile(request):
 @login_required
 def go_live(request):
     user = request.user
+
+    # Attempt to get the user's profile
     try:
         profile = user.profile
     except Profile.DoesNotExist:
         messages.warning(request, "You need to create a profile before going live.")
         return redirect('dating:create_profile')
 
-    LiveUser.objects.update_or_create(user=user, defaults={'is_live': True})
+    # Create or update the LiveUser instance for the current user
+    live_user, created = LiveUser.objects.update_or_create(
+        user=user,
+        defaults={
+            'is_live': True,
+            'profile': profile  # Ensure profile is associated
+        }
+    )
 
     context = {
         'profile': profile,
@@ -71,75 +76,49 @@ def go_live(request):
         'user_id': user.id,
         'live_users_data': []  # No other live users needed for this context
     }
-    return render(request, 'dating/live.html', context)
+
+    return render(request, 'dating/go_live.html', context)
 
 
 @login_required
 def see_live(request):
+    # Check if the current user is live; if yes, set to False
     live_user, created = LiveUser.objects.get_or_create(user=request.user)
+
     if live_user.is_live:
         live_user.is_live = False
         live_user.save()
-
-    live_users = LiveUser.objects.filter(is_live=True).exclude(user=request.user).filter(profile__isnull=False)
-
+    # Fetch all live users except the current user
+    live_users = LiveUser.objects.filter(is_live=True).exclude(user=request.user)
 
 
     live_users_data = []
+
     for live in live_users:
-        profile = live.user.profile
-        live_users_data.append({
-            'name': profile.name,
-            'gender': profile.gender,
-            'bio': profile.bio,
-            'height': profile.height,
-            'weight': profile.weight,
-            'lat': profile.latitude,  # Assuming latitude is stored
-            'lng': profile.longitude,  # Assuming longitude is stored
-        })
+        profile = live.profile  # Directly access the profile associated with LiveUser
+        if profile:  # Ensure profile exists
+            live_users_data.append({
+                'id': profile.id,
+                'name': getattr(profile, 'name', 'Unknown'),
+                'gender': profile.gender,
+                'bio': profile.bio,
+                'height': profile.height,
+                'weight': profile.weight,
+                'latitude': live.latitude,
+                'longitude': live.longitude,
+                'image': getattr(profile.image, 'url', '')
+
+            })
 
     context = {
         'live_users_data': live_users_data,
-        'current_user_live': False,
+        'current_user_live': live_user.is_live,
         'current_user_id': request.user.id,
+        'profile': request.user.profile  # Pass the user's profile for the current user
     }
 
-    print(context['current_user_id'])
     return render(request, 'dating/live.html', context)
 
-# @login_required
-# def see_live(request):
-#     live_user, created = LiveUser.objects.get_or_create(user=request.user)
-#     if live_user.is_live:
-#         live_user.is_live = False
-#         live_user.save()
-#
-#     # Include current user for testing in development mode
-#     if settings.DEBUG:
-#         live_users = LiveUser.objects.filter(is_live=True).filter(profile__isnull=False)
-#     else:
-#         live_users = LiveUser.objects.filter(is_live=True).exclude(user=request.user).filter(profile__isnull=False)
-#
-#     live_users_data = []
-#     for live in live_users:
-#         profile = live.user.profile
-#         live_users_data.append({
-#             'name': profile.name,
-#             'gender': profile.gender,
-#             'bio': profile.bio,
-#             'height': profile.height,
-#             'weight': profile.weight,
-#             'lat': profile.latitude,
-#             'lng': profile.longitude,
-#         })
-#
-#     context = {
-#         'live_users_data': live_users_data,
-#         'current_user_live': live_user.is_live,
-#         'current_user_id': request.user.id,
-#     }
-#
-#     return render(request, 'dating/live.html', context)
 
 def notifications(request):
     if request.user.is_authenticated:
@@ -158,10 +137,6 @@ def notifications(request):
         # Count only pending notifications (don't mark them as read yet)
         notification_count = LikeNotification.objects.filter(liked_user=request.user, status='pending').count()
 
-        print('Notification Details:')
-        print(f'Liked Users: {liked_users}')
-        print(f'Pending Notifications Count: {notification_count}')
-
         context = {
             'liked_users': liked_users,
             'liker_notifications': liker_notifications,
@@ -171,7 +146,7 @@ def notifications(request):
         return render(request, 'dating/notifications.html', context)
 
     else:
-        return redirect('login')
+        return redirect('dating:login')
 
 
 def get_profile(request, profile_id):
@@ -186,17 +161,21 @@ def accept(request, accept_id):
         liker_id = request.POST.get('liker_id')
 
         # Get the LikeNotification object
-        like_notification = get_object_or_404(LikeNotification, liker_id=liker_id)
+        like_notification = LikeNotification.objects.filter(
+            liker_id=liker_id,
+            liked_user=request.user,
+            status='pending'
+        ).first()  # Use first() to avoid MultipleObjectsReturned
 
-        # Get the liker user from the LikeNotification
-        liker = like_notification.liker
+        if like_notification:
+            # Update the status to accepted
+            like_notification.status = 'accepted'
+            like_notification.message = f'{request.user.username} accepted your like!'
+            like_notification.save()
 
-        # Update the status to accepted
-        like_notification.status = 'accepted'
-        like_notification.message = f'{request.user.username} accepted your like!'
-        like_notification.save()
+            return JsonResponse({'status': 'success', 'message': 'Like accepted and notification updated.', 'name': like_notification.liker.username})
 
-        return JsonResponse({'status': 'success', 'message': 'Like accepted and notification updated.','name': liker.username})
+        return JsonResponse({'status': 'error', 'message': 'No pending like notification found.'})
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
 
@@ -205,21 +184,26 @@ def reject(request, reject_id):
     if request.method == 'POST':
         liker_id = request.POST.get('liker_id')
 
-
         # Get the LikeNotification object
-        like_notification = get_object_or_404(LikeNotification, liker_id=liker_id)
+        like_notification = LikeNotification.objects.filter(
+            liker_id=liker_id,
+            liked_user=request.user,
+            status='pending'
+        ).first()  # Use first() to avoid MultipleObjectsReturned
 
-        # Get the liker user from the LikeNotification
-        liker = like_notification.liker
+        if like_notification:
+            # Update the status to rejected
+            like_notification.status = 'rejected'
+            like_notification.message = f'{request.user.username} rejected your like.'
+            like_notification.closed_by_liked_user = False
+            like_notification.save()
 
-        # Update the status to rejected
-        like_notification.status = 'rejected'
-        like_notification.message = f'{request.user.username} rejected your like!'
-        like_notification.save()
+            return JsonResponse({'status': 'success', 'message': 'Like rejected and notification updated.', 'name': like_notification.liker.username})
 
-        return JsonResponse({'status': 'success', 'message': 'Like rejected and user hidden.', 'name': liker.username})
+        return JsonResponse({'status': 'error', 'message': 'No pending like notification found.'})
 
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
+
 
 
 def undo_reject(request, undo_id):
@@ -275,13 +259,6 @@ def closeLikeNotification(request):
         notification_id = request.POST.get('notification_id')
         status = request.POST.get('status')
         user_type = request.POST.get('user_type')  # Check if it's the liked user or liker
-
-        print('--'*50)
-        print('brenda')
-        print(notification_id)
-        print('status: ', status)
-        print('user_type: ', user_type)
-
         try:
             notification = LikeNotification.objects.get(id=notification_id)
 
@@ -307,13 +284,6 @@ def closeLikerNotification(request):
         notification_id = request.POST.get('notification_id')
         status = request.POST.get('status')
         user_type = request.POST.get('user_type')  # Check if it's the liked user or liker
-
-        print('--'*50)
-        print('asio')
-        print(notification_id)
-        print('status: ', status)
-        print('user_type: ', user_type)
-
         try:
             notification = LikeNotification.objects.get(id=notification_id)
 
@@ -340,3 +310,63 @@ def contact_us(request):
         return JsonResponse({'status': 'success', 'message': 'Message received'})
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request'})
+
+
+def stopLive(request):
+    if request.method == 'POST':
+        is_live = request.POST.get('is_live')
+        user_id = request.POST.get('user_id')
+        # Convert the string 'false'/'true' to a boolean
+        if is_live == 'false':
+            is_live = False
+        elif is_live == 'true':
+            is_live = True
+
+        live_user = LiveUser.objects.get(user_id=user_id)  # Assuming 'LiveUser' has 'user_id'
+        live_user.is_live = is_live
+        live_user.save()
+
+    return JsonResponse({'status': 'success', 'message': 'Live status updated'})
+
+@login_required
+def update_location(request):
+    if request.method == 'POST':
+        try:
+            # Get the latitude and longitude from the request
+            latitude = float(request.POST.get('latitude'))
+            longitude = float(request.POST.get('longitude'))
+
+            # Get the live user associated with the logged-in user
+            live_user = LiveUser.objects.get(user=request.user)
+
+            # Update the user's latitude and longitude
+            live_user.latitude = latitude
+            live_user.longitude = longitude
+            live_user.save()
+
+            return JsonResponse({'status': 'success', 'message': 'Location updated successfully.'})
+
+        except LiveUser.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Live user profile not found.'}, status=404)
+
+        except ValueError:
+            return JsonResponse({'status': 'error', 'message': 'Invalid latitude or longitude.'}, status=400)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
+
+
+@login_required
+def liker_has_profile(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('userId')
+        if not user_id:
+            return JsonResponse({'error': 'User ID not provided'}, status=400)
+
+        try:
+            # Check if a LiveUser exists for the given user_id
+            has_profile = LiveUser.objects.filter(user__id=user_id, profile__isnull=False).exists()
+            return JsonResponse({'hasProfile': has_profile})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)

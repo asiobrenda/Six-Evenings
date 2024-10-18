@@ -1,8 +1,10 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
-from .models import LikeNotification, SignUpUser
+from .models import LikeNotification, SignUpUser, LiveUser, Profile
+from django.core.exceptions import ObjectDoesNotExist
 import logging
+
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +23,6 @@ class LikeConsumer(AsyncWebsocketConsumer):
         try:
             data = json.loads(text_data)
             action = data.get('type')
-            print('action', action)
 
             if action == 'like':
                 liker_id = data['likerId']
@@ -43,14 +44,32 @@ class LikeConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def save_like_notification(self, liker_id, liked_user_id):
         try:
+            # Step 1: Fetch the profile of the liked user
+            liked_user_profile = Profile.objects.get(id=liked_user_id)
+            liked_user = liked_user_profile.user  # Get the user associated with the profile
+
+            # Step 2: Check if the user is live
+            liked_user_live = LiveUser.objects.filter(user=liked_user, is_live=True).first()
+
+            if liked_user_live is None:
+                return  # Exit if the user is not live
+
+            # Step 3: Fetch the liker user
             liker_user = SignUpUser.objects.get(id=liker_id)
+
+            # Step 4: Create the like notification
             LikeNotification.objects.create(
                 liker=liker_user,
-                liked_user_id=liked_user_id,
+                liked_user=liked_user,  # Use the user associated with the profile
                 message=f"{liker_user.username} liked you!"
             )
+        except Profile.DoesNotExist:
+            logger.error(f"Profile with ID {liked_user_id} does not exist.")
         except SignUpUser.DoesNotExist:
             logger.error(f"Liker with ID {liker_id} does not exist.")
+        except Exception as e:
+            logger.error(f"Error saving like notification: {str(e)}")
+
 
     @sync_to_async
     def get_pending_notifications_count(self, liked_user_id):

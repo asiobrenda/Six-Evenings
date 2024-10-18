@@ -34,8 +34,6 @@
  <ul class="menu-links" style="display: none; max-height: 400px; overflow: auto;">
      <li class="hoverTrigger"><a href="#"><div class="mobileTriggerButton"></div></a>
         </li>
-        <li class="hoverTrigger"><a href="#" id="stopLiveButton" onclick="handleUserLeaveLive()">Stop Live <div class="mobileTriggerButton"></div></a>
-         </li>
 
         <li class="hoverTrigger"><a href="{% url 'dating:home' %}">  Home <div class="mobileTriggerButton"></div></a>
         </li>
@@ -58,8 +56,8 @@
     <img id="modalImage" style="max-width: 40%; max-height: 50%; border-radius: 10px;">
 </div>
 
-<div id="noLongerLiveNotification" style="display: none; position: fixed; top: 50px; left: 700px; background-color: #f44336; color: white; padding: 15px; border-radius: 5px; z-index: 1000;">
-    You are no longer live!
+<div id="notificationMessage" style="display:none; position: fixed; top: 60px; left: 700px; z-index: 1000; border-radius:5px;">
+    <div id="message"></div>
 </div>
 
 
@@ -78,24 +76,72 @@
     defer
 ></script>-->
 <!--<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>-->
+
+
 <script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/bootstrap-select.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/liveweb1.js' %}"></script>
 <script type="text/javascript">
-     window.userData = {
-            id: "{{ user_id }}",
-            image: "{{ profile.image.url|escapejs }}",
-            name: "{{ profile.name|escapejs }}",
-            gender: "{{ profile.gender|escapejs }}",
-            bio: "{{ profile.bio|escapejs }}",
-            height: "{{ profile.height|escapejs }}",
-            weight: "{{ profile.weight|escapejs }}",
-            is_live: {{ current_user_live|yesno:"true,false" }},
-        };
+    // Assuming 'profile' is available in the context and contains the current user's profile
+    window.userData = {
+        id: "{{ current_user_id }}",
+        image: "{{ profile.image.url|escapejs }}", // Ensure you escape the URL
+        name: "{{ profile.name|escapejs }}",
+        gender: "{{ profile.gender|escapejs }}",
+        bio: "{{ profile.bio|escapejs }}",
+        height: "{{ profile.height|escapejs }}",
+        weight: "{{ profile.weight|escapejs }}",
+        is_live: {{ current_user_live|yesno:"true,false" }},
+    };
 
-        window.currentUserId = "{{ current_user_id }}";
-        window.liveUsersData = {{ live_users_data|safe }};
+    // Create a liveUsersData array to hold all the live users
+    window.liveUsersData = [
+        {% for user in live_users_data %}
+        {
+            id: {{ user.id }},
+            name: "{{ user.name|escapejs }}",
+            gender: "{{ user.gender|escapejs }}",
+            bio: "{{ user.bio|escapejs }}",
+            height: {{ user.height }},
+            weight: {{ user.weight }},
+            latitude: {{ user.latitude }},
+            longitude: {{ user.longitude }},
+            image_url: "{{ user.image|escapejs }}",
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
 </script>
+
+
+<script>
+    const likerHasProfile = "{% url 'dating:likerHasProfile' %}";
+</script>
+<script type="text/javascript" src="{% static 'js/js.cookie.min.js' %}"></script>
+<script type="text/javascript">
+
+     var csrftoken = Cookies.get('csrftoken');
+            function csrfSafeMethod(method) {
+              // these HTTP methods do not require CSRF protection
+              return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+              }
+            });
+
+  $(document).ready(function () {
+
+
+     {% block domready %}
+     {% endblock %}
+  });
+    </script>
+
+
 <!--<script type="text/javascript" src="{% static 'js/live1.js' %}"></script>-->
 {% endblock scripts %}

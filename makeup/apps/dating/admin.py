@@ -28,7 +28,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(LiveUser)
 class LiveUserAdmin(admin.ModelAdmin):
-    list_display = ['user', 'profile', 'is_live']
+    list_display = ['user', 'profile', 'is_live', 'latitude', 'longitude']
 
 
 @admin.register(LikeNotification)

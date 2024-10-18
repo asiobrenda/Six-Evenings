@@ -133,7 +133,6 @@ socket.onmessage = function(event) {
                 const currentCount = parseInt(badge.textContent) || 0;
                 const newCount = Math.max(0, currentCount - 1);  // Ensure the count doesn't go below 0
                 updateNotificationBadge(newCount);
-                console.log("Updated liker notification count:", newCount);
             }
         }
     });
@@ -193,7 +192,7 @@ socket.onmessage = function(event) {
                     rejectButton.setAttribute('data-action', 'rejected'); // Update the action attribute
                     rejectButton.disabled = true; // Disable the reject button
                 }
-            }, 2000); // Adjust the delay as necessary
+            }, 2500); // Adjust the delay as necessary
 
             // Add event listener to handle undo action
             rejectButton.addEventListener('click', function(event) {
@@ -227,7 +226,6 @@ socket.onmessage = function(event) {
 
 
 function undoReject(likerId, undoUrl, rejectButton) {
-    console.log("Undo reject triggered for likerId:", likerId); // Log to track if this is called multiple times
 
     $.post(undoUrl, { liker_id: likerId }, function(data) {
         if (data.status === 'success') {
@@ -278,10 +276,6 @@ notificationList.addEventListener('click', function(event) {
 
             // If the status is "accepted" or "rejected", proceed with closing
             if (notificationStatus === 'accepted' || notificationStatus === 'rejected') {
-                console.log('Attempting to close notification:', notificationId); // Log the ID
-
-                // Mark the notification as closed in the backend (optional)
-                // You can add an AJAX call here to update the status in the backend
 
                 // Remove the notification from the UI
                 closeNotification(notificationId, 'liked_user', notificationItem);

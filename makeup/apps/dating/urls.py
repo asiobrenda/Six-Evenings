@@ -1,5 +1,4 @@
 from django.urls import path
-from .import views
 from django.contrib.auth.views import (LoginView, LogoutView)
 from .import views
 
@@ -22,5 +21,7 @@ urlpatterns = [
     path('closeLikeNotification/',  views.closeLikeNotification, name='closeLikeNotification'),
     path('closeLikerNotification/',  views.closeLikerNotification, name='closeLikerNotification'),
     path('Contact-Us/',  views.contact_us, name='contact_us'),
-
+    path('stopLive/',  views.stopLive, name='stopLive'),
+    path('updateLocation/',  views.update_location, name='updateLocation'),
+    path('likerHasProfile/',  views.liker_has_profile, name='likerHasProfile'),
 ]

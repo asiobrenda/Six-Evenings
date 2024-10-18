@@ -42,3 +42,11 @@
 
 }
 
+#notificationMessage {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 15px;
+    border-radius: 2px;
+}
+
+

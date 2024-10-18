@@ -75,6 +75,8 @@ class LiveUser(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, null=True, blank=True)  # Reference to Profile
     is_live = models.BooleanField(default=False)  # Indicates if user is live
+    latitude = models.FloatField(null=True, blank=True)  # Store latitude
+    longitude = models.FloatField(null=True, blank=True)  # Store longitude
 
     def __str__(self):
         return f"{self.user.username} (Live: {self.is_live})"
