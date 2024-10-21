@@ -178,7 +178,7 @@ function checkUserProfile(likerId, likedUserId, likedUserName) {
                 // Update UI immediately
                 updateLikeUI(`You liked ${likedUserName}`);
             } else {
-                alert("You need to create a profile before liking a user.");
+               alert(`You need to create a profile before liking ${likedUserName}.`);
                 window.location.href = '/CreateProfile';
             }
         }

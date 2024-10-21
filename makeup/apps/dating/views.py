@@ -7,6 +7,7 @@ from .models import Profile, LiveUser,LikeNotification
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def home(request):
@@ -42,12 +43,27 @@ def create_profile(request):
         contact = request.POST.get('contact')
 
         # Create the profile and associate it with the logged-in user
-        Profile.objects.create(user=request.user, name=name, gender=gender, height=height, weight=weight, color=color,
-                               bio=bio, image=image, contact=contact)
+        profile = Profile.objects.create(
+            user=request.user,
+            name=name,
+            gender=gender,
+            height=height,
+            weight=weight,
+            color=color,
+            bio=bio,
+            image=image,
+            contact=contact
+        )
 
-        return redirect('dating:home')
+        # Update the LiveUser instance to link to the new profile
+        live_user, created = LiveUser.objects.get_or_create(user=request.user)
+        live_user.profile = profile  # Set the profile
+        live_user.save()  # Save the changes to LiveUser
+
+        return redirect('dating:home')  # Redirect after profile creation
 
     return render(request, 'dating/create_profile.html')
+
 
 
 @login_required
@@ -80,6 +96,7 @@ def go_live(request):
     return render(request, 'dating/go_live.html', context)
 
 
+
 @login_required
 def see_live(request):
     # Check if the current user is live; if yes, set to False
@@ -88,9 +105,9 @@ def see_live(request):
     if live_user.is_live:
         live_user.is_live = False
         live_user.save()
+
     # Fetch all live users except the current user
     live_users = LiveUser.objects.filter(is_live=True).exclude(user=request.user)
-
 
     live_users_data = []
 
@@ -107,14 +124,20 @@ def see_live(request):
                 'latitude': live.latitude,
                 'longitude': live.longitude,
                 'image': getattr(profile.image, 'url', '')
-
             })
+
+    try:
+        # Try to access the current user's profile
+        profile = request.user.profile
+    except ObjectDoesNotExist:
+        profile = None  # Set profile to None if it doesn't exist
+        # Optionally, redirect the user to the profile creation page or display a message
 
     context = {
         'live_users_data': live_users_data,
         'current_user_live': live_user.is_live,
         'current_user_id': request.user.id,
-        'profile': request.user.profile  # Pass the user's profile for the current user
+        'profile': profile  # Pass the user's profile if it exists, or None
     }
 
     return render(request, 'dating/live.html', context)
