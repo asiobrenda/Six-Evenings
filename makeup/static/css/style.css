@@ -219,7 +219,7 @@ ul.page-breadcrumb li a{color: #ffffff; font-size: 14px; text-transform: capital
 /*---------------------------------------------------------------------
   Footer
 ---------------------------------------------------------------------*/
-.footer{background:url(../images/pattern/pattern2.jpg) no-repeat 0 0; color:#c5c5c5;}
+.footer{background:url() no-repeat 0 0; color:#c5c5c5;}
 .footer .title{position: relative; color:#fff; margin-bottom:40px;}
 .footer-address li {line-height:28px; padding:0; margin-top:0; margin-bottom:10px; display:block;}
 .footer-address li i{float: left; color:#ffbc05; padding-right: 20px; font-size: 16px; line-height: 30px; width: 30px; }
