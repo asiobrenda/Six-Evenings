@@ -6,12 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    # Check for the DJANGO_SETTINGS_MODULE environment variable
-    if 'HEROKU' in os.environ:
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'makeup.settings.prod')
-    else:
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'makeup.settings.base')  # or whichever local settings you use
-
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'makeup.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
