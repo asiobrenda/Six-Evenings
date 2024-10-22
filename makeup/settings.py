@@ -156,14 +156,11 @@ AUTH_USER_MODEL = 'dating.SignUpUser'
 LOGIN_REDIRECT_URL = '/'
 
 
-# Set up Redis connection
-REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')  # Fallback to localhost if not set
-
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [(REDIS_URL, 0)],
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [("127.0.0.1", 6379)],  # Redis runs on localhost and the default port 6379
         },
     },
 }
