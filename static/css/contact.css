@@ -1,0 +1,140 @@
+.contact-form-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 8px;
+    background-color: #fff; /* White background */
+    box-shadow: none; /* Remove box shadow */
+}
+
+.contact-form-container h2 {
+    color: #000; /* Black for the heading */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form_container {
+    margin-bottom: 15px;
+}
+
+.form_container label {
+    display: block;
+    color: #666; /* Light gray for labels to make them faint */
+    margin-bottom: 5px;
+    font-weight: normal; /* Normal weight for less prominence */
+    font-size: 16px; /* Increased font size for labels */
+}
+
+.form_container input, .form_container textarea {
+    width: 100%;
+    padding: 12px; /* Increased padding */
+    border: 1px solid #ddd; /* Light grey border */
+    border-radius: 4px;
+    background-color: #fff; /* White input background */
+    color: #000; /* Black text */
+    font-size: 16px;
+    text-align: left; /* Align text to the left */
+    box-sizing: border-box; /* Ensure padding is included in width */
+    outline: none; /* Remove default focus outline */
+    line-height: 1.5; /* Adjust line height for better text positioning */
+    vertical-align: middle; /* Ensure text alignment is consistent */
+}
+
+.form_container input::placeholder, .form_container textarea::placeholder {
+    color: #aaa; /* Light grey for placeholder text */
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="message"],
+form textarea {a
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    color: black !important; /* Ensure text color is black */
+    direction: ltr !important; /* Ensure left-to-right text direction */
+    text-align: left !important; /* Ensure text is aligned to the left */
+}
+
+.form_container input:focus, .form_container textarea:focus {
+    border-color: #aaa; /* Slightly darker grey on focus */
+    outline: none; /* Remove focus outline */
+}
+
+.submit-btn {
+    background-color: #FFB300; /* Black button */
+    color: #fff; /* White text */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+.submit-btn:hover {
+    background-color: black; /* Darker black on hover */
+}
+
+.toast-wrapper {
+    height: 5px; /* Adjust the height based on your toast height */
+    margin-bottom:20px;
+}
+
+#toast{
+      color: green;
+       padding: 5px 8px;
+      display:none;
+}
+
+
+.line-separator {
+    width: 80px; /* Shorter line, adjust width as needed */
+    height: 3px; /* Height of the separator line */
+    background-color: green; /* Color of the line */
+    margin-right: 900px;
+    margin-top: 20px;
+}
+
+.companionship {
+        text-align: center;
+        padding-top: 50px;
+        text-transform: lowercase; /* Ensures all text is lowercase */.
+        font-size:10px;
+        font-weight:600;
+    }
+
+    .companionship:first-letter {
+        text-transform: capitalize; /* Capitalizes the first letter */
+    }
+
+
+
+#explanations  {
+   margin-left: 500px;
+   margin-top:20px;
+}
+
+#explanation p{
+        margin: 0;
+        padding: 0;
+
+}
+
+.note1{
+  margin-left:-450px;
+}
+
+.note2{
+  margin-left:-500px;
+}
+
+.note3{
+  margin-left:-430px;
+}

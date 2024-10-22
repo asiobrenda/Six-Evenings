@@ -1,0 +1,96 @@
+.form-container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 65vh; /* Height of the container */
+}
+
+.form-step {
+    display: none;
+}
+
+.form-step h2 {
+    margin-bottom: 20px;
+}
+
+.form-step label {
+    display: block;
+    margin-bottom: 5px;
+     color: #666;
+}
+
+.form-step input, .form-step select, .form-step textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+ .prev-btn, .next-btn {
+    padding: 10px 20px;
+    background-color: #FFB300;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.prev-btn:hover, .next-btn:hover{
+    background-color: #FFB300;
+}
+
+.submit-info{
+   padding: 10px 20px;
+     background-color: #FFB300;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.submit-info:hover {
+    background-color:  #FFB300;
+}
+
+/* Ensure buttons are side by side */
+.button-container {
+    display: flex;
+    justify-content: flex-start; /* Align buttons to the left */
+    gap: 5px; /* Optional: Add space between buttons */
+    margin-right: 30px;
+}
+
+
+#height, #weight {
+    background-color: #fff; /* Set the background color to white */
+    color: #000; /* Set the text color to black */
+}
+
+/* Override autofill for these specific fields */
+#height:-webkit-autofill, #weight:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+    -webkit-text-fill-color: #000;
+}
+
+.toast-wrapper {
+    height: 5px; /* Adjust the height based on your toast height */
+}
+
+#toast{
+      margin-left: 1000px;
+      color: purple;
+      padding: 10px 15px;
+      display: none;
+}
+
+
+

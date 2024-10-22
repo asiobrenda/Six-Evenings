@@ -1,0 +1,124 @@
+body {
+    background: linear-gradient(to right, #f8f9fa, #e9ecef); /* Light gradient background */
+}
+
+/* General container styling */
+.containerLog {
+    width: 100%;
+    max-width: 500px; /* Adjust the maximum width as needed */
+    margin: 0 auto; /* Center the container */
+    padding: 20px;
+    background-color: #f9f9f9; /* Background color for the form */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+}
+
+/* Form styling */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Styling for form labels
+form label {
+    font-size: 10px; *//* Increase font size *//**//**//**//*
+    margin-bottom: 5px; *//**//**//**//* Space below the label *//**//**//**//*
+    font-weight: bold; *//**//**//**//* Make the text bold *//**//**//**//*
+}*/
+
+/* Styling for form fields */
+form input[type="text"],
+form input[type="password"],
+form input[type="email"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px; /* Space between fields */
+    border: 1px solid #ccc; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 16px;
+    color: black; /* Ensure text color is black */
+    direction: ltr; /* Ensure left-to-right text direction */
+    text-align: left; /* Ensure text is aligned to the left */
+}
+
+/* Ensure placeholder text color is different */
+form input::placeholder {
+    color: #aaa; /* Light gray for placeholder text */
+}
+
+/* Styling for the submit button */
+button[type="submit"] {
+    background-color: #FFB300; /* Button background color */
+    color: white; /* Button text color */
+    border: none;
+    padding: 10px 20px; /* Padding inside the button */
+    font-size: 16px;
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+}
+
+.error {
+    color: #d9534f; /* Red color for error messages */
+    background-color: #f8d7da; /* Light red background for better visibility */
+    font-size: 14px; /* Adjust font size if needed */
+    margin-top: 10px; /* Space above the error message */
+    margin-bottom: 10px; /* Space below the error message */
+    padding: 10px; /* Padding around the text */
+    border: 1px solid #d9534f; /* Border to make the error box stand out */
+    border-radius: 4px; /* Rounded corners for the background */
+    display: block; /* Ensure it is block level to appear below the field */
+}
+
+
+/* Button hover effect */
+button[type="submit"]:hover {
+    background-color: black; /* Darker background color on hover */
+}
+
+/* Message section styling */
+.message {
+    text-align: center; /* Center text */
+    margin-bottom: 20px; /* Space below the message section */
+}
+
+.message h1 {
+    font-size: 24px; /* Font size for main heading */
+    color: #333; /* Color for the heading */
+    margin-bottom: 10px; /* Space below the main heading */
+}
+
+.message p {
+    font-size: 16px; /* Font size for paragraph */
+    color: #666; /* Color for the paragraph */
+    margin-bottom: 20px; /* Space below the paragraph */
+}
+
+.message h3 {
+    font-size: 20px; /* Font size for subheading */
+    color: #444; /* Color for the subheading */
+    margin-bottom: 20px; /* Space below the subheading */
+}
+
+/* Sign-up prompt styling */
+.signup-prompt {
+    text-align: center; /* Center text */
+    margin-top: 20px; /* Space above the sign-up prompt */
+}
+
+.signup-prompt p {
+    font-size: 14px; /* Font size for the prompt */
+    color: #666; /* Color for the prompt */
+}
+
+.signup-link {
+    color: #FFB300; /* Color for the sign-up link */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Bold text for emphasis */
+}
+
+.signup-link:hover {
+    text-decoration: underline; /* Underline on hover */
+}
