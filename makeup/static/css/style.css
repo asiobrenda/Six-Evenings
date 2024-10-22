@@ -56,7 +56,7 @@ Design and Developed by: potenzaglobalsolutions.com
 .loading-effect img {width: 300px;}
 
 .mfp-image-holder .mfp-close, .mfp-iframe-holder .mfp-close{display:none;}
-.mfp-zoom-out-cur, .mfp-zoom-out-cur .mfp-image-holder .mfp-close{cursor: url(../images/close.png) 25 25, pointer;}
+.mfp-zoom-out-cur, .mfp-zoom-out-cur .mfp-image-holder .mfp-close{cursor: url() 25 25, pointer;}
 
 /*---------------------------------------------------------------------
   Header
