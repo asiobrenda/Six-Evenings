@@ -3,9 +3,10 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 MAK_DIR = os.path.dirname(BASE_DIR)
+
 # Common settings
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your_default_secret_key')
-DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'  # This is fine for local development
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -77,12 +78,5 @@ MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-
-
-
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
-
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 STATIC_ROOT = os.path.join(MAK_DIR, "static")
-
