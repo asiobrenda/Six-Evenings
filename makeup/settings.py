@@ -101,7 +101,7 @@ ASGI_APPLICATION = 'makeup.asgi.application'
 # Database configuration
 if ENVIRONMENT == 'production':
     DATABASES = {
-        'default': dj_database_url.config(default=os.environ['DATABASE_URL'])
+        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
     }
 else:
     DATABASES = {
