@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +24,9 @@ MAK_DIR = os.path.dirname(BASE_DIR)
 SECRET_KEY = 'django-insecure-#j9(egru5$5=vd=b2e+uf1j0sct$8me10^eoa4=ltjtq8fa)!h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True')=='True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '']
 
 
 # Application definition
@@ -85,17 +86,23 @@ ASGI_APPLICATION = 'makeup.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+if not DEBUG:
+    DATABASES ={
+     'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'makeup',
-        'USER': 'makeup',
-        'PASSWORD': 'sql1pass',
-        'HOST': 'localhost',
-        'PORT': 5432
     }
-}
+
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'makeup',
+            'USER': 'makeup',
+            'PASSWORD': 'sql1pass',
+            'HOST': 'localhost',
+            'PORT': 5432
+        }
+    }
 
 
 # Password validation
