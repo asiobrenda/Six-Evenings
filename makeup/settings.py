@@ -11,9 +11,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
-import dj_database_url
-from channels.layers import get_channel_layer
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,20 +22,10 @@ MAK_DIR = os.path.dirname(BASE_DIR)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-#j9(egru5$5=vd=b2e+uf1j0sct$8me10^eoa4=ltjtq8fa)!h'
 
-# Determine if the environment is development or production
-ENVIRONMENT = os.getenv('DJANGO_ENV', 'development')
-
-# Security: DEBUG should be False in production
-DEBUG = ENVIRONMENT == 'development'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-# Allowed hosts should be set appropriately
-if ENVIRONMENT == 'development':
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-else:
-    ALLOWED_HOSTS = ['six-evenings-68c25a4e3c5d.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -98,24 +85,16 @@ ASGI_APPLICATION = 'makeup.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# Database configuration
-if ENVIRONMENT == 'production':
-    DATABASES = {
-        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'makeup',
+        'USER': 'makeup',
+        'PASSWORD': 'sql1pass',
+        'HOST': 'localhost',
+        'PORT': 5432
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'makeup',
-            'USER': 'makeup',
-            'PASSWORD': 'sql1pass',
-            'HOST': 'localhost',
-            'PORT': 5432
-        }
-    }
-
-
+}
 
 
 # Password validation
@@ -175,13 +154,11 @@ AUTH_USER_MODEL = 'dating.SignUpUser'
 LOGIN_REDIRECT_URL = '/'
 
 
-# Channel layers configuration for Redis
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            # Use environment variable for Redis in production
-            "hosts": [(os.environ.get('REDIS_HOST', '127.0.0.1'), int(os.environ.get('REDIS_PORT', 6379)))],
+            "hosts": [("127.0.0.1", 6379)],  # Redis runs on localhost and the default port 6379
         },
     },
 }
