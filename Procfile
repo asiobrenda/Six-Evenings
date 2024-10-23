@@ -1,1 +1,1 @@
-web: gunicorn six-evenings.wsgi --log-file -
+web: gunicorn makeup.wsgi --log-file -
