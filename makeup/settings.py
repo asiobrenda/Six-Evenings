@@ -25,9 +25,9 @@ MAK_DIR = os.path.dirname(BASE_DIR)
 SECRET_KEY = 'django-insecure-#j9(egru5$5=vd=b2e+uf1j0sct$8me10^eoa4=ltjtq8fa)!h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['six-evenings-68c25a4e3c5d.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
