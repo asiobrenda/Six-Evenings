@@ -1,1 +1,1 @@
-web: gunicorn makeup.wsgi --log-file -
+web: daphne -u /tmp/daphne.sock makeup.asgi:application
