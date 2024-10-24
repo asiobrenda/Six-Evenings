@@ -8,7 +8,17 @@ var userMarker; // Variable to hold the user's marker
 var userMarkerCreated = false; // Flag to check if user marker is already created
 var locationUpdateInterval; // To hold the interval ID for updating location
 
-var socket = new WebSocket('ws://' + window.location.host + '/ws/live/');
+// Check if the current environment is production
+var isProduction = window.location.hostname === "www.sixeveings.com";
+
+// Set the WebSocket URL based on the environment
+var socketUrl = isProduction ?
+    'wss://www.sixeveings.com/ws/live/' :
+    'ws://' + window.location.host + '/ws/live/';
+
+// Create the WebSocket connection
+var socket = new WebSocket(socketUrl);
+
 
 // Default location coordinates (for fallback)
 const defaultLat = 0.3476; // Latitude for Kampala
