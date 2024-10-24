@@ -1,5 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
-   const socket = new WebSocket('wss://' + window.location.host + '/ws/live/');
+
+   // Check if the current environment is production
+    var isProduction = window.location.hostname === "www.sixevenings.com";
+
+    // Set the WebSocket URL based on the environment
+    var socketUrl = isProduction ?
+        'wss://www.sixevenings.com/ws/live/' :
+        'ws://' + window.location.host + '/ws/live/';
+
+    // Create the WebSocket connection
+    var socket = new WebSocket(socketUrl);
+
 
 // Check WebSocket connection
 socket.onopen = function() {
