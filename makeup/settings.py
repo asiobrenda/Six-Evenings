@@ -94,6 +94,10 @@ if not DEBUG:
      'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
 
     }
+    CSRF_COOKIE_SECURE = True  # Ensure CSRF cookie is secure
+    SESSION_COOKIE_SECURE = True  # Ensure session cookie is secure
+    CSRF_TRUSTED_ORIGINS = ['https://www.sixeveings.com']  # Allow this domain for CSRF
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'www.sixevenings.com', 'sixevenings.com']
 
 else:
     DATABASES = {
@@ -106,6 +110,8 @@ else:
             'PORT': 5432
         }
     }
+    CSRF_COOKIE_SECURE = False  # CSRF cookie can be sent over HTTP
+    SESSION_COOKIE_SECURE = False
 
 
 # Password validation
