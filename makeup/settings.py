@@ -29,6 +29,27 @@ SECRET_KEY = 'django-insecure-#j9(egru5$5=vd=b2e+uf1j0sct$8me10^eoa4=ltjtq8fa)!h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True')=='True'
 
+# Use secure cookies when not in DEBUG mode
+if not DEBUG:
+    CSRF_COOKIE_SECURE = True  # Ensure CSRF cookies are only sent over HTTPS
+    SESSION_COOKIE_SECURE = True  # Ensure session cookies are only sent over HTTPS
+    CSRF_TRUSTED_ORIGINS = [
+        'https://www.sixevenings.com',
+        'https://sixevenings.com'
+    ]  # Include both versions if you use both
+
+    # Use a secure proxy header if you are behind a proxy/load balancer
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    # Enforce HTTPS in production
+    SECURE_SSL_REDIRECT = True
+
+    # Additional security headers
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+
+# Allowed hosts - ensure your domain is included
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'www.sixevenings.com', 'sixevenings.com']
 
 
@@ -94,10 +115,6 @@ if not DEBUG:
      'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
 
     }
-    CSRF_COOKIE_SECURE = True  # Ensure CSRF cookie is secure
-    SESSION_COOKIE_SECURE = True  # Ensure session cookie is secure
-    CSRF_TRUSTED_ORIGINS = ['https://www.sixeveings.com']  # Allow this domain for CSRF
-    ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'www.sixevenings.com', 'sixevenings.com']
 
 else:
     DATABASES = {
@@ -110,8 +127,6 @@ else:
             'PORT': 5432
         }
     }
-    CSRF_COOKIE_SECURE = False  # CSRF cookie can be sent over HTTP
-    SESSION_COOKIE_SECURE = False
 
 
 # Password validation
