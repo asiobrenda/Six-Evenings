@@ -7,13 +7,16 @@ var isGeolocationAvailable = false; // Flag for geolocation availability
 
 
 // Check if the current environment is production
-var isProduction = window.location.hostname === "www.sixeveings.com";
+var isProduction = window.location.hostname === "www.sixevenings.com";
 
 // Set the WebSocket URL based on the environment
 var socketUrl = isProduction ?
-    'wss://www.sixeveings.com/ws/live/' :
+    'wss://www.sixevenings.com/ws/live/' :
     'ws://' + window.location.host + '/ws/live/';
+
+// Create the WebSocket connection
 var socket = new WebSocket(socketUrl);
+
 
 
 // Default location coordinates (for fallback)
