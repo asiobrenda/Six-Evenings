@@ -3,12 +3,11 @@ from django.contrib.auth import login
 from .forms import SignUpCreationForm
 from .models import Dating, OnlineMembers, Contact
 from django.contrib.auth.decorators import login_required
-from .models import Profile, LiveUser,LikeNotification
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
-
+from .models import Profile, LiveUser,LikeNotification
 
 def home(request):
     dating = Dating.objects.all()

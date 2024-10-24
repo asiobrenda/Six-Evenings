@@ -1,8 +1,7 @@
 from. forms import SignUpCreationForm
 from django.contrib.auth.admin import UserAdmin
-from.models import SignUpUser, Dating, OnlineMembers, Profile, LiveUser, LikeNotification, Contact
 from django.contrib import admin
-
+from.models import SignUpUser, Dating, OnlineMembers, Profile, LiveUser, LikeNotification, Contact
 
 class SignUpUserAdmin(UserAdmin):
     add_form = SignUpCreationForm

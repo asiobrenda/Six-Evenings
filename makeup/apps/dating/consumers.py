@@ -2,7 +2,6 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 from .models import LikeNotification, SignUpUser, LiveUser, Profile
-from django.core.exceptions import ObjectDoesNotExist
 import logging
 
 
