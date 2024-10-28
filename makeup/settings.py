@@ -163,22 +163,24 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
-
-
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "makeup/static"), ]
+# Specify directory for static files in development
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "makeup/static")]
 
 # Define STATIC_ROOT and MEDIA_ROOT based on environment
 if not DEBUG:  # Production environment
-    STATIC_ROOT = '/var/www/static'
+    STATIC_ROOT = '/var/www/static'  # Ensure this path is correctly set up or use Render default path if needed
     MEDIA_ROOT = '/var/www/media'
 else:  # Development environment
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+# Storage for static files in production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
 
 
 # Default primary key field type
