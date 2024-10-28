@@ -170,13 +170,13 @@ MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "makeup/static"), ]
 
+# Define STATIC_ROOT and MEDIA_ROOT based on environment
 if not DEBUG:  # Production environment
+    STATIC_ROOT = '/var/www/static'
     MEDIA_ROOT = '/var/www/media'
 else:  # Development environment
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
-
-STATIC_ROOT = os.path.join(MAK_DIR, "static")
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
