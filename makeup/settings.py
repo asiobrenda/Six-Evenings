@@ -169,15 +169,21 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
+# Define STATIC_ROOT and MEDIA_ROOT based on environment
 if not DEBUG:  # Production environment
     BASE_STORAGE_PATH = '/opt/render/project/src/storage'
-    STATICFILES_DIRS = [os.path.join(BASE_STORAGE_PATH, "static")]
+    STATIC_ROOT = os.path.join(BASE_STORAGE_PATH, "static")
+    MEDIA_ROOT = os.path.join(BASE_STORAGE_PATH, "media")
 else:  # Development environment
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, "makeup/static")]
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-# Define STATIC_ROOT and MEDIA_ROOT based on environment
-STATIC_ROOT = os.path.join(BASE_STORAGE_PATH if not DEBUG else BASE_DIR, "static")
-MEDIA_ROOT = os.path.join(BASE_STORAGE_PATH if not DEBUG else BASE_DIR, "media")
+# Specify directory for static files in development
+if DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, "makeup/static")]  # Ensure this path exists
+else:
+    STATICFILES_DIRS = []  #
+
 
 # Storage for static files in production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
