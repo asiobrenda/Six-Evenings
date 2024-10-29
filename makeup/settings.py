@@ -179,11 +179,14 @@ else:  # Development environment
 
 # Specify directory for static files in development
 if not DEBUG:
-    static_dir= [os.path.join(BASE_DIR, "static")]  # Ensure this path exists
-    STATICFILES_DIRS = [static_dir]
+    static_dir = os.path.join(BASE_DIR, "static")
+    STATICFILES_DIRS = [static_dir]  # Correctly set as a list
+
+    # Log the static directory
+    logger.info(f"Static directory being checked: {static_dir}")
 
     # Check if the directory exists
-    if os.path.exists(static_dir):
+    if os.path.exists(static_dir):  # This checks if static_dir is a string
         logger.info(f"STATICFILES_DIRS path exists: {static_dir}")
     else:
         logger.warning(f"STATICFILES_DIRS path does NOT exist: {static_dir}")
