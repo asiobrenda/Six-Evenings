@@ -172,8 +172,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "makeup/static")]
 
 # Define STATIC_ROOT and MEDIA_ROOT based on environment
 if not DEBUG:  # Production environment
-    STATIC_ROOT = os.path.join(BASE_DIR, "static")  # Render's writable path
-    MEDIA_ROOT = os.path.join(BASE_DIR, "media")    # Render's writable path
+    BASE_STORAGE_PATH = '/opt/render/project/src/storage'
+    STATIC_ROOT = os.path.join(BASE_STORAGE_PATH, "static")
+    MEDIA_ROOT = os.path.join(BASE_STORAGE_PATH, "media")
 else:  # Development environment
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
