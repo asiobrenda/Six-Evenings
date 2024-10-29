@@ -179,10 +179,10 @@ else:  # Development environment
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Specify directory for static files in development
-if DEBUG:
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, "makeup/static")]  # Ensure this path exists
+if not DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # Ensure this path exists
 else:
-    STATICFILES_DIRS = []  #
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, "makeup/static")]
 
 
 # Storage for static files in production
