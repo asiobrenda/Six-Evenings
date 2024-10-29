@@ -168,7 +168,10 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 # Specify directory for static files in development
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "makeup/static")]
+if not DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+else:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, "makeup/static")]
 
 # Define STATIC_ROOT and MEDIA_ROOT based on environment
 if not DEBUG:  # Production environment
