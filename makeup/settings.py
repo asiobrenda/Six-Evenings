@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 import dj_database_url
-
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,20 +35,18 @@ DEBUG = os.environ.get('DEBUG', 'True')=='True'
 
 # Use secure cookies when not in DEBUG mode
 if not DEBUG:
-    CSRF_COOKIE_SECURE = True  # Ensure CSRF cookies are only sent over HTTPS
-    SESSION_COOKIE_SECURE = True  # Ensure session cookies are only sent over HTTPS
+    # Security settings for production
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
     CSRF_TRUSTED_ORIGINS = [
         'https://www.sixevenings.com',
-        'https://sixevenings.com'
-    ]  # Include both versions if you use both
-
-    # Use a secure proxy header if you are behind a proxy/load balancer
+        'https://sixevenings.com',
+    ]
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-    # Enforce HTTPS in production
     SECURE_SSL_REDIRECT = True
-
-    # Additional security headers
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
@@ -171,16 +171,22 @@ MEDIA_URL = '/media/'
 
 # Define STATIC_ROOT and MEDIA_ROOT based on environment
 if not DEBUG:  # Production environment
-    BASE_STORAGE_PATH = '/opt/render/project/src/storage'
-    STATIC_ROOT = os.path.join(BASE_STORAGE_PATH, "static")
-    MEDIA_ROOT = os.path.join(BASE_STORAGE_PATH, "media")
+    STATIC_ROOT = os.path.join('/opt/render/project/src/storage', "static")
+    MEDIA_ROOT = os.path.join('/opt/render/project/src/storage', "media")
 else:  # Development environment
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Specify directory for static files in development
 if not DEBUG:
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # Ensure this path exists
+    static_dir= [os.path.join(BASE_DIR, "static")]  # Ensure this path exists
+    STATICFILES_DIRS = [static_dir]
+
+    # Check if the directory exists
+    if os.path.exists(static_dir):
+        logger.info(f"STATICFILES_DIRS path exists: {static_dir}")
+    else:
+        logger.warning(f"STATICFILES_DIRS path does NOT exist: {static_dir}")
 else:
     STATICFILES_DIRS = [os.path.join(BASE_DIR, "makeup/static")]
 
