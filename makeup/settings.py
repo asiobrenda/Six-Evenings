@@ -172,11 +172,12 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "makeup/static")]
 
 # Define STATIC_ROOT and MEDIA_ROOT based on environment
 if not DEBUG:  # Production environment
-    STATIC_ROOT = '/var/www/static'  # Ensure this path is correctly set up or use Render default path if needed
-    MEDIA_ROOT = '/var/www/media'
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")  # Render's writable path
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")    # Render's writable path
 else:  # Development environment
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 
 # Storage for static files in production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
