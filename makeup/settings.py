@@ -26,6 +26,8 @@ MAK_DIR = os.path.dirname(BASE_DIR)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-#j9(egru5$5=vd=b2e+uf1j0sct$8me10^eoa4=ltjtq8fa)!h'
 
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True')=='True'
 
@@ -167,21 +169,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
-# Specify directory for static files in development
-if not DEBUG:
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-else:
+if not DEBUG:  # Production environment
+    BASE_STORAGE_PATH = '/opt/render/project/src/storage'
+    STATICFILES_DIRS = [os.path.join(BASE_STORAGE_PATH, "static")]
+else:  # Development environment
     STATICFILES_DIRS = [os.path.join(BASE_DIR, "makeup/static")]
 
 # Define STATIC_ROOT and MEDIA_ROOT based on environment
-if not DEBUG:  # Production environment
-    BASE_STORAGE_PATH = '/opt/render/project/src/storage'
-    STATIC_ROOT = os.path.join(BASE_STORAGE_PATH, "static")
-    MEDIA_ROOT = os.path.join(BASE_STORAGE_PATH, "media")
-else:  # Development environment
-    STATIC_ROOT = os.path.join(BASE_DIR, "static")
-    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
+STATIC_ROOT = os.path.join(BASE_STORAGE_PATH if not DEBUG else BASE_DIR, "static")
+MEDIA_ROOT = os.path.join(BASE_STORAGE_PATH if not DEBUG else BASE_DIR, "media")
 
 # Storage for static files in production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
