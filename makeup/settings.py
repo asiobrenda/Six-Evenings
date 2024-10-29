@@ -170,8 +170,8 @@ MEDIA_URL = '/media/'
 # Define STATIC_ROOT and MEDIA_ROOT based on environment
 if not DEBUG:  # Production environment
     BASE_STORAGE_PATH = '/opt/render/project/src/storage'
-    STATIC_ROOT = os.path.join('/opt/render/project/src/storage', "static")
-    MEDIA_ROOT = os.path.join('/opt/render/project/src/storage', "media")
+    STATIC_ROOT = os.path.join(BASE_STORAGE_PATH, "static")
+    MEDIA_ROOT = os.path.join(BASE_STORAGE_PATH, "media")
 else:  # Development environment
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
