@@ -12,9 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 import dj_database_url
-import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -171,6 +169,7 @@ MEDIA_URL = '/media/'
 
 # Define STATIC_ROOT and MEDIA_ROOT based on environment
 if not DEBUG:  # Production environment
+    BASE_STORAGE_PATH = '/opt/render/project/src/storage'
     STATIC_ROOT = os.path.join('/opt/render/project/src/storage', "static")
     MEDIA_ROOT = os.path.join('/opt/render/project/src/storage', "media")
 else:  # Development environment
@@ -179,17 +178,7 @@ else:  # Development environment
 
 # Specify directory for static files in development
 if not DEBUG:
-    static_dir = os.path.join(BASE_DIR, "static")
-    STATICFILES_DIRS = [static_dir]  # Correctly set as a list
-
-    # Log the static directory
-    logger.info(f"Static directory being checked: {static_dir}")
-
-    # Check if the directory exists
-    if os.path.exists(static_dir):  # This checks if static_dir is a string
-        logger.info(f"STATICFILES_DIRS path exists: {static_dir}")
-    else:
-        logger.warning(f"STATICFILES_DIRS path does NOT exist: {static_dir}")
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # Ensure this path exists
 else:
     STATICFILES_DIRS = [os.path.join(BASE_DIR, "makeup/static")]
 
