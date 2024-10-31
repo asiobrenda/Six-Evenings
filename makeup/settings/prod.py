@@ -1,5 +1,12 @@
 from .base import *
 
+import environ
+
+# Initialize environment variables
+env = environ.Env()
+environ.Env.read_env()  # This will read from your .env file
+
+
 DEBUG = os.environ.get('DEBUG')
 
 
@@ -34,12 +41,17 @@ DATABASES ={
 
     }
 
-BASE_STORAGE_PATH = '/opt/render/project/src/storage'
 
- # Production environment
+if os.getenv("RENDER") == "true":  # Only present on Render
+    BASE_STORAGE_PATH = env("RENDER_STORAGE_PATH", default="/opt/render/project/src/storage")
+else:
+    # Fallback to local storage path for testing
+    BASE_STORAGE_PATH = env("LOCAL_RENDER_STORAGE_PATH", default="/home/asio/projects1/MakeUp/media_storage")
+
 STATIC_ROOT = os.path.join(BASE_STORAGE_PATH, "static")
 MEDIA_ROOT = os.path.join(BASE_STORAGE_PATH, "media")
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
 # Include directories for static files in production
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
