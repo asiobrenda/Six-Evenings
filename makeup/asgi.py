@@ -5,7 +5,7 @@ import django
 
 # Setup Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'makeup.settings.prod')
-#django.setup()  # Call setup before importing routing or models
+django.setup()  # Call setup before importing routing or models
 
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
