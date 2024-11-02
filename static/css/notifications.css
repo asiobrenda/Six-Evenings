@@ -2,7 +2,7 @@
     padding: 3px 5px 2px;
     position: absolute;
     top: 36px;
-    right: -13px;
+    right: 18px;
     display: inline-block;
     min-width: 10px;
     font-size: 12px;
@@ -24,6 +24,8 @@
     margin: auto;
     padding: 10px;
     height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .notifications-list {
@@ -44,7 +46,7 @@
 
 
 .notification-contents{
-   margin-right: 30px;
+   margin-right: 10px;
    margin-top:2px;
 }
 
@@ -65,7 +67,7 @@
 .notification-messages h6{
      position: absolute;
     text-transform: lowercase;
-    top: 10;
+    top: 8;
     white-space: nowrap; /* Prevent text from wrapping to the next line */
     margin: 0;
 }
@@ -148,7 +150,7 @@
 
 .close-notifications {
     position: absolute;
-    left: -40px;
+    left: -15px;
     top: 5;
     background: none;
     border: none;
@@ -306,4 +308,91 @@ html {
     to {top: -50px; opacity: 0;}
 }
 
+/* Responsive layout adjustments */
+@media (max-width: 600px) {
+    .notification-content {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start; /* Align items to the left */
+    }
 
+    .notification-message {
+        margin: 0;
+        padding-top: 10px; /* Space between message and other content */
+        position: relative; /* Changed to relative for better control */
+        width: 100%; /* Ensure it uses full width */
+        display: flex; /* Use flexbox for layout */
+        justify-content: space-between; /* Space between items */
+        align-items: center; /* Center align items vertically */
+    }
+
+    .notification-message h6 {
+        margin: 0; /* Remove margin */
+        white-space: nowrap; /* Prevent text wrapping */
+        overflow: hidden; /* Hide overflow to prevent layout issues */
+        text-overflow: ellipsis; /* Show ellipsis for overflowed text */
+        flex-grow: 1; /* Allow h6 to grow and take available space */
+        margin-right:180px;
+        margin-top:15px;
+    }
+
+    .notification-left {
+        flex-direction: column; /* Stack timestamp and actions vertically */
+        align-items: flex-start; /* Align to the left */
+        gap: 5px; /* Reduce gap for smaller screens */
+    }
+
+    .notification-actions {
+        flex-direction: row; /* Keep actions in a row */
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    /* Remove any unwanted lines */
+    .notification-item {
+        border: none; /* Ensure no borders */
+        padding: 0; /* Remove any extra padding that may affect layout */
+        margin-top: 10px; /* Space above each notification item */
+        margin-right: 20px;
+    }
+
+.notification-separator {
+    border-top: 0.4px solid #ccc; /* Thin line */
+    width: 100%; /* Full width */
+    opacity: 0.7; /* Slight transparency */
+    margin: 10px 0; /* Space above and below */
+    /* Remove position: fixed; */
+}
+
+
+
+}
+
+@media (max-width: 600px) {
+    .notification-contents {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start; /* Align items to the left */
+        margin-right:-10px;
+    }
+
+    .notification-messages h6 {
+        font-size: 15px; /* Larger font size on mobile for better readability */
+        margin-right: -140px;
+    }
+
+    .notification-time {
+        font-size: 14px; /* Slightly larger timestamp for mobile */
+    }
+
+    .close-notifications{
+       margin-left:20px;
+    }
+
+    .notification-divider {
+        display: block; /* Ensure it's displayed */
+        width: 100%; /* Full width */
+        height: 1px; /* Set height */
+        background: #ccc; /* Set color */
+        margin: 10px 0; /* Spacing */
+         opacity: 0.9;
+    }
+}

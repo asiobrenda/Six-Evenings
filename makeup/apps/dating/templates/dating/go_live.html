@@ -32,13 +32,11 @@
 
  {% block nav %}
  <ul class="menu-links" style="display: none; max-height: 400px; overflow: auto;">
-     <li class="hoverTrigger"><a href="#"><div class="mobileTriggerButton"></div></a>
-        </li>
-        <li class="hoverTrigger"><a href="#" id="stopLiveButton" onclick="handleUserLeaveLive()">Stop Live <div class="mobileTriggerButton"></div></a>
-         </li>
 
-        <li class="hoverTrigger"><a href="{% url 'dating:home' %}">  Home <div class="mobileTriggerButton"></div></a>
-        </li>
+        <li class="hoverTrigger"><a href="#" id="stopLiveButton" onclick="handleUserLeaveLive()">Stop Live</a>
+         </li>
+    <li class="hoverTrigger"><a href="{% url 'dating:home' %}"> Home</a> </li>
+
  </ul>
 
 
@@ -66,9 +64,10 @@
 {% endblock body %}
 
 {% block foot %}
-<div id="map"></div>
+<div class="map-container">
+    <div id="map"></div>
+</div>
 {% endblock foot %}
-
 
 {% block scripts %}
 <script src="https://maps.googleapis.com/maps/api/js?address=8HRV+8P8&key=AIzaSyCqpezCVAMRqrF3jzjZB6mQWfuB1sfz-2I&callback=initMap" async defer></script>

@@ -6,91 +6,134 @@
     border-radius: 10px;
     background-color: #f9f9f9;
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 65vh; /* Height of the container */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: flex-start; /* Align items at the top */
+    align-items: stretch; /* Stretch items to fill width */
+    min-height: 65vh; /* Allow height to adjust based on content */
 }
+
 
 .form-step {
-    display: none;
+    display: none; /* Hide all steps initially */
 }
 
-.form-step h2 {
-    margin-bottom: 20px;
+.form-step h3 {
+    margin-bottom: 20px; /* Space below the heading */
 }
 
 .form-step label {
     display: block;
     margin-bottom: 5px;
-     color: #666;
+    color: #666;
 }
 
-.form-step input, .form-step select, .form-step textarea {
-    width: 100%;
+.form-step input,
+.form-step select,
+.form-step textarea {
+    width: 100%; /* Full width for inputs */
     padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Space below inputs */
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
- .prev-btn, .next-btn {
-    padding: 10px 20px;
-    background-color: #FFB300;
+.form-step textarea {
+    max-width: 100%; /* Ensure textarea doesn't exceed container */
+    min-height: 150px; /* Increase minimum height for textarea */
+}
+
+.prev-btn,
+.next-btn,
+.submit-info {
+    padding: 10px 15px;
+    background-color: #FFB300; /* Button background color */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-right: 10px;
+    transition: background-color 0.3s; /* Smooth transition */
+    margin-top: 20px; /* Adjust margin as needed */
 }
 
-.prev-btn:hover, .next-btn:hover{
-    background-color: #FFB300;
-}
-
-.submit-info{
-   padding: 10px 20px;
-     background-color: #FFB300;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 10px;
-}
-
+.prev-btn:hover,
+.next-btn:hover,
 .submit-info:hover {
-    background-color:  #FFB300;
+    background-color: #FFA000; /* Darker shade on hover */
 }
 
-/* Ensure buttons are side by side */
-.button-container {
-    display: flex;
-    justify-content: flex-start; /* Align buttons to the left */
-    gap: 5px; /* Optional: Add space between buttons */
-    margin-right: 30px;
-}
-
-
-#height, #weight {
+/* Specific fields styles */
+#height,
+#weight {
     background-color: #fff; /* Set the background color to white */
     color: #000; /* Set the text color to black */
 }
 
 /* Override autofill for these specific fields */
-#height:-webkit-autofill, #weight:-webkit-autofill {
+#height:-webkit-autofill,
+#weight:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px #fff inset;
     -webkit-text-fill-color: #000;
 }
 
 .toast-wrapper {
-    height: 5px; /* Adjust the height based on your toast height */
+    height: auto; /* Adjust to content height */
+    margin: 10px 0; /* Margin for toast notification */
 }
 
-#toast{
-      margin-left: 1000px;
-      color: purple;
-      padding: 10px 15px;
-      display: none;
+#toast {
+    color: purple;
+    padding: 10px 15px;
+    display: none; /* Initially hidden */
+    position: fixed; /* Fixed position for notifications */
+    left: 50%;
+    transform: translateX(-50%); /* Center the toast horizontally */
 }
 
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .form-container {
+        max-width: 90%; /* Full width on smaller screens */
+        padding: 15px; /* Reduced padding */
+    }
+}
+
+@media (max-width: 480px) {
+    .form-step h3 {
+        font-size: 1.5rem; /* Smaller heading size */
+    }
+
+    .form-step input,
+    .form-step select,
+    .form-step textarea {
+        font-size: 14px; /* Smaller text size for inputs */
+    }
+
+    /* Adjust button widths on mobile */
+    .prev-btn,
+    .next-btn {
+        width: auto; /* Allow buttons to be their content width */
+        margin-right: 0; /* Remove margin on small screens */
 
 
+   /* Button Container Styles */
+.button-container {
+    display: flex;
+    justify-content: flex-start; /* Align buttons to the left */
+    gap: 10px; /* Space between buttons */
+    padding-top: 10px; /* Space above buttons */
+    flex-direction: row; /* Ensure buttons are in a row */
+}
+
+    .submit-info {
+        width: auto; /* Adjust submit button width to content */
+        margin-right:50px;
+         width: auto;
+    }
+}
+
+/* Adjust button widths on mobile */
+@media (max-width: 480px) {
+    .submit-info {
+        width: auto; /* Adjust submit button width to content */
+    }
+}

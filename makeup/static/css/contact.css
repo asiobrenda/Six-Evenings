@@ -3,12 +3,12 @@
     max-width: 600px;
     margin: 0 auto;
     border-radius: 8px;
-    background-color: #fff; /* White background */
-    box-shadow: none; /* Remove box shadow */
+    background-color: #fff;
+    box-shadow: none;
 }
 
 .contact-form-container h2 {
-    color: #000; /* Black for the heading */
+    color: #000;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -19,122 +19,131 @@
 
 .form_container label {
     display: block;
-    color: #666; /* Light gray for labels to make them faint */
+    color: #666;
     margin-bottom: 5px;
-    font-weight: normal; /* Normal weight for less prominence */
-    font-size: 16px; /* Increased font size for labels */
-}
-
-.form_container input, .form_container textarea {
-    width: 100%;
-    padding: 12px; /* Increased padding */
-    border: 1px solid #ddd; /* Light grey border */
-    border-radius: 4px;
-    background-color: #fff; /* White input background */
-    color: #000; /* Black text */
+    font-weight: normal;
     font-size: 16px;
-    text-align: left; /* Align text to the left */
-    box-sizing: border-box; /* Ensure padding is included in width */
-    outline: none; /* Remove default focus outline */
-    line-height: 1.5; /* Adjust line height for better text positioning */
-    vertical-align: middle; /* Ensure text alignment is consistent */
 }
 
-.form_container input::placeholder, .form_container textarea::placeholder {
-    color: #aaa; /* Light grey for placeholder text */
+.form_container input,
+.form_container textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #000;
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.form_container input::placeholder,
+.form_container textarea::placeholder {
+    color: #aaa;
 }
 
 form input[type="text"],
 form input[type="email"],
 form input[type="message"],
-form textarea {a
+form textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
-    color: black !important; /* Ensure text color is black */
-    direction: ltr !important; /* Ensure left-to-right text direction */
-    text-align: left !important; /* Ensure text is aligned to the left */
+    color: black !important;
+    text-align: left !important;
 }
 
-.form_container input:focus, .form_container textarea:focus {
-    border-color: #aaa; /* Slightly darker grey on focus */
-    outline: none; /* Remove focus outline */
+.form_container input:focus,
+.form_container textarea:focus {
+    border-color: #aaa;
+    outline: none;
 }
 
 .submit-btn {
-    background-color: #FFB300; /* Black button */
-    color: #fff; /* White text */
+    background-color: #FFB300;
+    color: #fff;
     border: none;
     padding: 10px 20px;
-    border-radius: 4px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 18px;
     transition: background-color 0.3s ease;
     display: block;
     margin: 0 auto;
-    border-radius: 10px;
 }
 
 .submit-btn:hover {
-    background-color: black; /* Darker black on hover */
+    background-color: black;
 }
 
 .toast-wrapper {
-    height: 5px; /* Adjust the height based on your toast height */
-    margin-bottom:20px;
+    height: 5px;
+    margin-bottom: 20px;
 }
 
-#toast{
-      color: green;
-       padding: 5px 8px;
-      display:none;
+#toast {
+    color: green;
+    padding: 5px 8px;
+    display: none;
 }
-
 
 .line-separator {
-    width: 80px; /* Shorter line, adjust width as needed */
-    height: 3px; /* Height of the separator line */
-    background-color: green; /* Color of the line */
-    margin-right: 900px;
-    margin-top: 20px;
+    width: 80px;
+    height: 3px;
+    background-color: green;
+    margin: 20px auto; /* Center horizontally */
 }
 
 .companionship {
-        text-align: center;
-        padding-top: 50px;
-        text-transform: lowercase; /* Ensures all text is lowercase */.
-        font-size:10px;
-        font-weight:600;
+    text-align: center;
+    padding-top: 70px;
+    text-transform: lowercase;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.companionship:first-letter {
+    text-transform: capitalize;
+}
+
+#explanations {
+    display: flex;
+    flex-direction: column; /* Stack the paragraphs vertically */
+    align-items: center; /* Center items horizontally */
+    margin: 20px auto;
+}
+
+.note1,
+.note2,
+.note3 {
+    margin: 10px 0;
+    width: 55%; /* Set a specific width for consistency */
+    text-align: left; /* Align text to the left */
+    padding-left: 10px; /* Add padding for better readability */
+    box-sizing: border-box; /* Include padding in width */
+    font-size:15px;
+}
+
+@media (max-width: 768px) {
+    .topbar {
+        display: flex !important; /* Or block */
     }
-
-    .companionship:first-letter {
-        text-transform: capitalize; /* Capitalizes the first letter */
-    }
-
-
-
-#explanations  {
-   margin-left: 500px;
-   margin-top:20px;
 }
 
-#explanation p{
-        margin: 0;
-        padding: 0;
 
+/* Hide register and login links on larger screens */
+.mobile-only {
+  display: none;
 }
 
-.note1{
-  margin-left:-450px;
+/* Show register and login links only on mobile */
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block;
+  }
 }
 
-.note2{
-  margin-left:-500px;
-}
-
-.note3{
-  margin-left:-430px;
-}
