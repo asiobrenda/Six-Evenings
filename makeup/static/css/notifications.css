@@ -69,6 +69,7 @@
     align-self: flex-end; /* Aligns time to the right */
     font-size: 12px;
     color: #888;
+    margin-right:5px;
 }
 
 .notification-actions {
@@ -127,11 +128,20 @@
 
 .close-notifications {
     position: absolute;
-    left: 2px;
+    left: -2px;
     top: 5;
     background: none;
     border: none;
     color: red;
     cursor: pointer;
     font-size: 25px;
+}
+
+.notification-messages h6{
+    text-transform: lowercase;
+    top: 10px;
+    white-space: nowrap; /* Prevent text from wrapping to the next line */
+    left:40px;
+    position:absolute;
+
 }
