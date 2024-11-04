@@ -44,7 +44,7 @@
                 <a class="action-link view-profile" href="#" data-user-id="{{ user.liker.profile.id }}" getProfileUrl="{% url 'dating:get_profile' user.liker.profile.id %}">View Profile</a>
             </div>
         </li>
-     <div class="notification-separator"></div>
+     <hr class="notification-separator">
     {% empty %}
         <li>No notifications</li>
     {% endfor %}
@@ -78,7 +78,6 @@
         </div>
     </div>
 </li>
- <hr class="notification-divider">
     {% empty %}
     <p>No updates on your likes.</p>
     {% endfor %}

@@ -10,10 +10,10 @@ environ.Env.read_env()  # This will read from your .env file
 DEBUG = os.environ.get('DEBUG')
 
 
- # Security settings for production
 
 
- # Security settings for production
+
+ #Security settings for production
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [

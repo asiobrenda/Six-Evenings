@@ -73,7 +73,7 @@ function getInfoWindowContent(user, formattedAddress) {
         <p class="info-window-text">Weight: ${user.weight || 'N/A'} kg</p>
          <button class="w3-btn w3-white w3-border w3-border-red w3-round-large"
                  id="likeButton"
-                onclick="likeUser(${window.userData.id}, ${user.id}, '${user.name}')">
+                onclick="likeUser(${window.userData.id}, ${user.id}, '${user.name}'); changeButtonStyle();">
             Send a Like
         </button>
       </div>
@@ -212,7 +212,7 @@ function updateLikeUI(message) {
     // Hide it after 3 seconds
     setTimeout(function() {
         notificationDiv.style.display = 'none';
-    }, 2500);
+    }, 2800);
 }
 
 // Handle incoming WebSocket messages
@@ -241,6 +241,15 @@ function updateNotificationBadge(count) {
     } else {
         badge.style.display = 'none';
     }
+}
+
+function changeButtonStyle() {
+    const button = document.getElementById('likeButton');
+    button.style.setProperty('background-color', '#00aaff', 'important'); // Set to your chosen blue color
+    button.style.setProperty('color', 'white', 'important'); // Set text color to white
+    button.style.setProperty('font-weight', 'bold', 'important'); // Make the text bold
+    button.style.setProperty('border-color', 'darkblue', 'important'); // Change border color if desired
+    button.innerText = 'Like Sent'; // Change button text
 }
 
 

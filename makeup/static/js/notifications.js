@@ -246,6 +246,12 @@ function undoReject(likerId, undoUrl, rejectButton) {
             rejectButton.setAttribute('data-action', 'reject'); // Update the action attribute
             rejectButton.disabled = false; // Enable the reject button
 
+             // Update the status of the notification item
+            const notificationItem = rejectButton.closest('.notification-item');
+            if (notificationItem) {
+                notificationItem.dataset.status = 'pending'; // Update to a status that matches your logic
+            }
+
             // Show the accept button again
             var acceptButton = rejectButton.closest('.notification-actions').querySelector('.accept');
             if (acceptButton) {

@@ -232,17 +232,26 @@ def undo_reject(request, undo_id):
     if request.method == 'POST':
         liker_id = request.POST.get('liker_id')
 
-        # Get the LikeNotification object
-        like_notification = get_object_or_404(LikeNotification, liker_id=liker_id)
+        # Get the LikeNotification object specific to the user and status
+        like_notification = LikeNotification.objects.filter(
+            liker_id=liker_id,
+            liked_user=request.user,
+            status='rejected'  # Assuming we want to undo a rejection
+        ).first()  # Use first() to avoid MultipleObjectsReturned
 
-        # Reset the status back to pending or its previous state
-        like_notification.status = 'pending'
-        like_notification.message = f' User {liker_id} liked you'
-        like_notification.save()
+        if like_notification:
+            # Reset the status back to pending or its previous state
+            like_notification.status = 'pending'
+            like_notification.message = f'User {liker_id} liked you'
+            like_notification.closed_by_liked_user = False  # If you want to keep track
+            like_notification.save()
 
-        return JsonResponse({'status': 'success', 'message': 'Rejection undone. Notification restored.'})
+            return JsonResponse({'status': 'success', 'message': 'Rejection undone. Notification restored.'})
 
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+        return JsonResponse({'status': 'error', 'message': 'No rejected like notification found.'})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
+
 
 
 def LikerNotifications(request):

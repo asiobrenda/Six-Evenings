@@ -83,3 +83,10 @@
         padding: 10px; /* Adjust padding */
     }
 }
+
+
+.clicked {
+    background-color: red;
+    color: white;
+    border-color: darkred;
+}
