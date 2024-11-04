@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentCount = newTotalCount; // Update current count
                 $('#notification-badge').text(currentCount); // Update badge text
             }
-        }).fail(function() {
+        }).fail(function() {close
             console.error("Failed to fetch notification count");
         });
     }

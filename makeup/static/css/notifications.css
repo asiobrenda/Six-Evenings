@@ -26,6 +26,7 @@
     height: 65vh;
     overflow-y: auto;
     overflow-x: hidden;
+    position:relative;
 }
 
 .notifications-list {
@@ -44,40 +45,24 @@
     align-items: flex-start; /* Align items to the start */
 }
 
-
-.notification-contents{
-   margin-right: 10px;
-   margin-top:2px;
-}
-
-.notification-message {
-    font-size: 14px;
-    margin-right: 400px;
-    display:flex;
-
-}
-
-.notification-messages{
-     font-size: 14px;
-    margin-right: 320px;
-    display:flex;
-
-}
-
-.notification-messages h6{
-     position: absolute;
+.notification-item h6{
     text-transform: lowercase;
-    top: 8;
+    top: 10px;
     white-space: nowrap; /* Prevent text from wrapping to the next line */
-    margin: 0;
+    left:40px;
+    position:absolute;
+
 }
 
-.notification-message h6{
+.close-notification {
     position: absolute;
-    text-transform: lowercase;
-    top: 10;
-    white-space: nowrap; /* Prevent text from wrapping to the next line */
-    margin: 0;
+    left: 2px;
+    top: 2;
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-size: 25px;
 }
 
 .notification-time {
@@ -89,7 +74,7 @@
 .notification-actions {
     display: flex;
     justify-content: flex-start;
-    gap: 15px; /* Adds space between text links */
+    gap: 8px; /* Adds space between text links */
     margin-left: auto; /* Aligns actions to the right */
     font-size: 12px;
     margin-bottom: 0; /* Set to 0 instead of negative */
@@ -102,7 +87,6 @@
     cursor: pointer;
     font-weight: bold;
     color: #00aaff;
-    margin-right:8px;
 }
 
 .notification-actions .reject {
@@ -132,268 +116,8 @@
     color: #F44336; /* Coral Red */
 }
 
-
-.notification-time {
-    float: right;
-    font-size: 12px;
-    color: #777;
-}
-
-.close-notification {
-    position: absolute;
-    left: 0;
-    top: 10;
-    background: none;
-    border: none;
-    color: red;
-    cursor: pointer;
-    font-size: 18px;
-}
-
-.close-notifications {
-    position: absolute;
-    left: -15px;
-    top: 5;
-    background: none;
-    border: none;
-    color: red;
-    cursor: pointer;
-    font-size: 25px;
-}
-
-
-
 .notification-separator {
     border: 1px solid #ccc; /* Thinner horizontal line, less faint */
     opacity: 0.7; /* Slight transparency for a softer appearance */
     position:fixed;
-}
-
-
-/* Modal styling */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Fixed positioning */
-    z-index: 999; /* Ensure it is above other content */
-    left: 0;
-    top: 100px; /* Cover the whole viewport */
-    width: 100%;
-    height: 100%;
-    overflow: hidden; /* Prevent scrollbars on the modal */
-    background-color: rgba(0,0,0,0.4); /* Semi-transparent background */
-}
-
-/* Modal content */
-.modal-content {
-    background-color: #fefefe;
-    margin: 5% auto; /* Center modal content */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 25%; /* Adjust as necessary */
-    max-height: 80%; /* Limit height to avoid overflow */
-    overflow-y: auto; /* Allow scrolling within modal content */
-    position: relative; /* Positioning for close button */
-}
-
-/* Close button */
-.close {
-    color: #f00;
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 30px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-/* Prevent body from scrolling and shifting */
-body.modal-open {
-    overflow: hidden; /* Prevent body scrolling */
-}
-
-/* Optional: prevent shifts caused by scrollbars */
-html {
-    overflow-y: scroll; /* Always show a vertical scrollbar */
-}
-
-
-/* Profile styling */
-.profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center; /* Center text for a clean, mobile-friendly look */
-}
-
-.profile img {
-    border-radius: 50%; /* Circle profile image */
-    object-fit: cover; /* Ensures the image fits properly within the circle */
-    margin-bottom: 15px;
-}
-
-.profile p {
-    margin: 8px 0; /* Space between paragraphs */
-    font-size: 16px; /* Default font size */
-    color: #333; /* Slightly softer black for readability */
-}
-
-.profile strong {
-    font-weight: bold;
-    color: #000; /* Bold and dark for labels */
-}
-
-
-
-/* Adjust text size and layout for smaller screens */
-@media (max-width: 600px) {
-    .profile p {
-        font-size: 14px;
-    }
-
-    .modal-content {
-        padding: 15px;
-        width: 95%;
-    }
-}
-
-
-/* Accepted button styling */
-.accept.accepted {
-    color: #4CAF50;
-    cursor: not-allowed;
-}
-
-/* Toast styling */
-.toast {
-    visibility: hidden;
-    min-width: 250px;
-    background-color: #4caf50;
-    color: #fff;
-    text-align: center;
-    border-radius: 5px;
-    padding: 16px;
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 17px;
-}
-
-.toast.show {
-    visibility: visible;
-    opacity: 1;
-}
-
-@-webkit-keyframes fadeInOut {
-    from {top: -50px; opacity: 0;}
-    to {top: 30px; opacity: 1;}
-}
-
-@keyframes fadeInOut {
-    from {top: -50px; opacity: 0;}
-    to {top: 30px; opacity: 1;}
-}
-
-@-webkit-keyframes fadeOut {
-    from {top: 30px; opacity: 1;}
-    to {top: -50px; opacity: 0;}
-}
-
-@keyframes fadeOut {
-    from {top: 30px; opacity: 1;}
-    to {top: -50px; opacity: 0;}
-}
-
-/* Responsive layout adjustments for the ul of the liked */
-@media (max-width: 600px) {
-    .notification-content {
-        display: flex;
-        flex-direction: column; /* Stack elements vertically */
-        width: 100%;
-    }
-
-    .notification-message {
-        margin: 0;
-        padding-top: 5px; /* Space between message and other content */
-        width: 100%; /* Ensure it uses full width */
-        display: flex; /* Use flexbox for layout */
-          min-width: 300px;
-          position:absolute;
-    }
-
-    .notification-message h6 {
-        white-space: nowrap; /* Prevent text wrapping */
-        overflow: hidden; /* Hide overflow to prevent layout issues */
-        text-overflow: ellipsis; /* Show ellipsis for overflowed text */
-        flex-grow: 1; /* Allow h6 to take available space */
-         margin-right:210px;
-    }
-
-    .close-notification {
-        background: none; /* Remove background for better visibility */
-        border: none; /* Remove border for a cleaner look */
-        color: red; /* Close button color */
-        cursor: pointer; /* Indicate clickable */
-        font-size: 25px; /* Adjust close button size */
-        margin-left: 10px;
-    }
-
-    .notification-time {
-        margin-left: auto; /* Align time to the right */
-        font-size: 12px; /* Smaller font for time */
-        color: #888; /* Gray color for time */
-    }
-}
-
-
-
-
-/*media query for the ul container of the liker*/
-@media (max-width: 1000px) {
-    .notification-contents {
-        flex-direction: column; /* Stack items vertically */
-        align-items: flex-start; /* Align items to the left */
-        margin-right:-8px;
-    }
-
-    .notification-messages h6 {
-        font-size: 15px; /* Larger font size on mobile for better readability */
-        margin-right: -140px;
-    }
-
-    .notification-time {
-        font-size: 14px; /* Slightly larger timestamp for mobile */
-        margin-right:10px;
-    }
-
-    .close-notifications{
-       margin-left:15px;
-       margin-top:-5px;
-    }
-
-
-}
-
-/*media query for the ul container of both  the liked and liker*/
-@media (max-width: 600px) {
-    .notifications-container {
-        width: 100%;
-        padding: 5px;
-        position:relative;
-    }
-    .notification-item {
-        flex-direction: column; /* Stack items vertically */
-        padding: 5px;
-    }
-    .notification-message, .notification-time, .notification-actions {
-        font-size: 12px;
-    }
 }

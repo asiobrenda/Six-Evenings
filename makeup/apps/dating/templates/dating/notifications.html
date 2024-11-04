@@ -23,32 +23,31 @@
 <ul class="notifications-list">
     {% for user in liked_users %}
         <li class="notification-item" data-notification-id="{{ user.id }}" data-status="{{ user.status }}">
-            <button class="close-notification" id="closeBtn">x</button>
+                <h6>{{ user.liker.username }} liked you</h6>
+                <button class="close-notification" id="closeBtn">x</button>
             <div class="notification-content">
-                <div class="notification-message">
-                    <h6>{{ user.liker.username }} liked you</h6>
-                </div>
                 <div class="notification-time">
                     <p>{{ user.timestamp|localtime }}</p>
                 </div>
-            </div>
-           <div class="notification-actions">
-                {% if user.status == 'accepted' %}
-                    <span class="action-link accept">Accepted</span>
-                {% elif user.status == 'rejected' %}
-                    <span class="action-link reject">Rejected</span>
-                {% else %}
-                    <a class="action-link reject" data-liker-id="{{ user.liker.id }}" rejectUrl="{% url 'dating:reject' user.liker.id %}">Reject</a>
-                    <a class="action-link accept" href="#" data-liker-id="{{ user.liker.id }}" acceptUrl="{% url 'dating:accept' user.liker.id %}">Accept</a>
-                {% endif %}
-                <a class="action-link view-profile" href="#" data-user-id="{{ user.liker.profile.id }}" getProfileUrl="{% url 'dating:get_profile' user.liker.profile.id %}">View Profile</a>
+                <div class="notification-actions">
+                    {% if user.status == 'accepted' %}
+                        <span class="action-link accept">Accepted</span>
+                    {% elif user.status == 'rejected' %}
+                        <span class="action-link reject">Rejected</span>
+                    {% else %}
+                        <a class="action-link reject" data-liker-id="{{ user.liker.id }}" rejectUrl="{% url 'dating:reject' user.liker.id %}">Reject</a>
+                        <a class="action-link accept" href="#" data-liker-id="{{ user.liker.id }}" acceptUrl="{% url 'dating:accept' user.liker.id %}">Accept</a>
+                    {% endif %}
+                    <a class="action-link view-profile" href="#" data-user-id="{{ user.liker.profile.id }}" getProfileUrl="{% url 'dating:get_profile' user.liker.profile.id %}">View Profile</a>
+                </div>
             </div>
         </li>
-     <hr class="notification-separator">
+        <hr class="notification-separator">
     {% empty %}
         <li>No notifications</li>
     {% endfor %}
 </ul>
+
 
 
 <ul class="notifications-list">
