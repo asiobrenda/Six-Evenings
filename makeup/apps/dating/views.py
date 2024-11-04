@@ -142,6 +142,7 @@ def see_live(request):
     return render(request, 'dating/live.html', context)
 
 
+from django.utils import timezone
 def notifications(request):
     if request.user.is_authenticated:
         # Fetch notifications where the user was liked but exclude those closed by the liked user
@@ -150,14 +151,30 @@ def notifications(request):
             closed_by_liked_user=False  # Exclude notifications closed by the liked user
         ).select_related('liker')
 
+        # Format timestamps for liked_users
+        for user in liked_users:
+            user.formatted_timestamp = user.timestamp.strftime("%b %d, %Y, %I:%M %p").replace('.M', 'm').lower()
+
+        # Capitalize the month manually
+        for user in liked_users:
+            user.formatted_timestamp = user.formatted_timestamp.capitalize()
+
         # Fetch notifications where the user is the liker, excluding pending and closed ones
         liker_notifications = LikeNotification.objects.filter(
-            liker=request.user).exclude( status='pending').exclude(
+            liker=request.user
+        ).exclude(status='pending').exclude(
             closed_by_liker=True  # Exclude notifications closed by the liker
         ).select_related('liked_user')
 
+        # Format timestamps for liker_notifications
+        for notification in liker_notifications:
+            notification.formatted_timestamp = notification.timestamp.strftime("%b %d, %Y, %I:%M %p").replace('.M', 'm').lower()
+            notification.formatted_timestamp = notification.formatted_timestamp.capitalize()
+
         # Count only pending notifications (don't mark them as read yet)
-        notification_count = LikeNotification.objects.filter(liked_user=request.user, status='pending').count()
+        notification_count = LikeNotification.objects.filter(
+            liked_user=request.user, status='pending'
+        ).count()
 
         context = {
             'liked_users': liked_users,
@@ -166,9 +183,9 @@ def notifications(request):
         }
 
         return render(request, 'dating/notifications.html', context)
-
     else:
         return redirect('dating:login')
+
 
 
 def get_profile(request, profile_id):

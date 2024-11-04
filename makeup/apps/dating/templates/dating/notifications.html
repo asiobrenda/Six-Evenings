@@ -2,6 +2,8 @@
 {% load static %}
 {% load tz %}
 
+
+
 {% block links %}
 <link href="{% static 'css/notifications.css' %}" rel="stylesheet" type="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -27,7 +29,7 @@
                 <button class="close-notification" id="closeBtn">x</button>
             <div class="notification-content">
                 <div class="notification-time">
-                    <p>{{ user.timestamp|localtime }}</p>
+               <p>{{ user.formatted_timestamp }}</p>
                 </div>
                 <div class="notification-actions">
                     {% if user.status == 'accepted' %}
@@ -62,7 +64,7 @@
         </div>
 
         <div class="notification-time">
-            <p>{{ notification.timestamp|localtime }}</p>
+            <p>{{ notification.formatted_timestamp }}</p>
             <p style="color:black">
                 {% if notification.status == "accepted" %}
                     {% if notification.liked_user.profile and notification.liked_user.profile.contact %}
