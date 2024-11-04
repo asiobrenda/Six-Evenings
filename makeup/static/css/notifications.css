@@ -121,3 +121,17 @@
     opacity: 0.7; /* Slight transparency for a softer appearance */
     position:fixed;
 }
+
+
+/*CSS FOR THE LIKER NOTIFICATIONS PAGE*/
+
+.close-notifications {
+    position: absolute;
+    left: 2px;
+    top: 5;
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-size: 25px;
+}
