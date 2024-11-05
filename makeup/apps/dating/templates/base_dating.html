@@ -99,6 +99,7 @@ header -->
                 <li class="hoverTrigger"><a href="{% url 'dating:see_live' %}" id="live-now">See Live People</a></li>
                 <li class="hoverTrigger"><a href="{% url 'dating:live' %}" id="goLive">Go Live</a></li>
                 <li class="hoverTrigger"><a href="{% url 'dating:create_profile' %}">Create Profile</a></li>
+                {% else %}
               <li class="hoverTrigger"><a href="#contact-us">Contact Us</a></li>
               <li class="hoverTrigger"><a href="#about-us">About Us</a></li>
               <li class="hoverTrigger"><a href="{% url 'dating:home' %}">Home</a></li>
@@ -118,9 +119,8 @@ header -->
 {% block body %}
 <!--=================================
  banner -->
-<section class="inner-intro bg bg-fixed bg-overlay-black-30" style="background-image: url(static/image/blue2.jpeg); height: 600px; background-size: cover; background-position: center; background-repeat: no-repeat; margin: 0; padding: 0;">
+<section class="inner-intro bg bg-fixed bg-overlay-black-30" style="background-image:url(static/image/Blue.jpg); height: 460px;">
 </section>
-
 
 <!--=================================
  banner -->
