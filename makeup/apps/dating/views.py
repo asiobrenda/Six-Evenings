@@ -74,7 +74,7 @@ def go_live(request):
     try:
         profile = user.profile
     except Profile.DoesNotExist:
-        messages.warning(request, "You need to create a profile before going live.")
+        messages.warning(request, "Create a profile before going live")
         return redirect('dating:create_profile')
 
     # Create or update the LiveUser instance for the current user

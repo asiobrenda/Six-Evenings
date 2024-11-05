@@ -6,6 +6,7 @@ class SignUpCreationForm(UserCreationForm):
     class Meta:
         model = SignUpUser
         fields = ('username', 'email', 'password1', 'password2')
+        label_suffix = ''
 
     def save(self, commit=True):
         user = super().save(commit=False)

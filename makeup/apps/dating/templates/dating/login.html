@@ -1,5 +1,6 @@
 {% extends 'base_dating.html' %}
     {% load static %}
+{% load custom_filters %}
 
 {% block links %}
 <link href="{% static 'css/login.css' %}" rel="stylesheet" type="text/css" />
@@ -42,6 +43,7 @@
 
 {% endblock body %}
 
+
 {% block foot %}
 <div class="log">
     <div class="message">
@@ -51,36 +53,36 @@
     </div>
     <div class="containerLog">
         <form method="POST">
-        {% csrf_token %}
-        {% if form.non_field_errors %}
-        <div class="error">
-            {% for error in form.non_field_errors %}
-                <p>{{ error }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
-    {% for field in form %}
-        <p>
-            {{ field.label_tag }}
-            {{ field }}
-            {% if field.errors %}
+            {% csrf_token %}
+            {% if form.non_field_errors %}
                 <div class="error">
-                    {% for error in field.errors %}
+                    {% for error in form.non_field_errors %}
                         <p>{{ error }}</p>
                     {% endfor %}
                 </div>
             {% endif %}
-        </p>
-    {% endfor %}
-    <button type="submit">Login</button>
-</form>
-
+            {% for field in form %}
+                <p>
+                    <label for="{{ field.id_for_label }}">{{ field.label|remove_colon }}</label>  <!-- Remove colon from label -->
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error">
+                            {% for error in field.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </p>
+            {% endfor %}
+            <button type="submit">Login</button>
+        </form>
     </div>
     <div class="signup-prompt">
         <p>Don't have an account? <a href="{% url 'dating:SignUp' %}" class="signup-link">Sign up here</a></p>
     </div>
 </div>
 {% endblock foot %}
+
 
 
 {% block scripts %}
