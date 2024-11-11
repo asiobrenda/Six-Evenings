@@ -68,9 +68,9 @@ function getInfoWindowContent(user, formattedAddress) {
         <p class="info-window-text"><strong>${user.gender.toLowerCase() === 'female' ? 'Female' : 'Male'}</strong></p>
         <p class="info-window-text">Address: ${formattedAddress || 'N/A'}</p>
         <p class="info-window-text">Name: ${user.name || 'N/A'}</p>
+        <p class="info-window-text">Age: ${user.age || 'N/A'} years</p>
+        <p class="info-window-text">Skin Tone: ${user.color || 'N/A'}</p>
         <p class="info-window-text">Bio: ${user.bio || 'N/A'}</p>
-        <p class="info-window-text">Height: ${user.height || 'N/A'} cm</p>
-        <p class="info-window-text">Weight: ${user.weight || 'N/A'} kg</p>
          <button class="w3-btn w3-white w3-border w3-border-red w3-round-large"
                  id="likeButton"
                 onclick="likeUser(${window.userData.id}, ${user.id}, '${user.name}'); changeButtonStyle();">

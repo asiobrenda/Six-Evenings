@@ -87,10 +87,10 @@
         id: "{{ current_user_id }}",
         image: "{{ profile.image.url|escapejs }}", // Ensure you escape the URL
         name: "{{ profile.name|escapejs }}",
+        age: "{{ profile.age|escapejs }}",
         gender: "{{ profile.gender|escapejs }}",
+        color: "{{ profile.color|escapejs }}",
         bio: "{{ profile.bio|escapejs }}",
-        height: "{{ profile.height|escapejs }}",
-        weight: "{{ profile.weight|escapejs }}",
         is_live: {{ current_user_live|yesno:"true,false" }},
     };
 
@@ -102,8 +102,8 @@
             name: "{{ user.name|escapejs }}",
             gender: "{{ user.gender|escapejs }}",
             bio: "{{ user.bio|escapejs }}",
-            height: {{ user.height }},
-            weight: {{ user.weight }},
+            age: "{{ user.age|escapejs }}",
+            color: "{{ user.color|escapejs }}",
             latitude: {{ user.latitude }},
             longitude: {{ user.longitude }},
             image_url: "{{ user.image|escapejs }}",

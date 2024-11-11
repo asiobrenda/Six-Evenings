@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Profile, LiveUser,LikeNotification
 from django.utils import timezone
+from datetime import datetime
 
 def home(request):
     dating = Dating.objects.all()
@@ -32,37 +33,81 @@ def sign_up(request):
 
 @login_required
 def create_profile(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        gender = request.POST.get('gender')
-        height = request.POST.get('height')
-        weight = request.POST.get('weight')
-        color = request.POST.get('color')
-        bio = request.POST.get('bio')
-        image = request.FILES.get('photo')
-        contact = request.POST.get('contact')
+    # Check if the user already has a profile
+    try:
+        profile = Profile.objects.get(user=request.user)
+        # If the profile exists, update it
+        if request.method == 'POST':
+            # Get data from the form
+            name = request.POST.get('name')
+            gender = request.POST.get('gender')
+            dob = request.POST.get('dob')
+            color = request.POST.get('color')
+            bio = request.POST.get('bio')
+            image = request.FILES.get('photo')
+            contact = request.POST.get('contact')
+            consent = request.POST.get('consent') == 'on'
 
-        # Create the profile and associate it with the logged-in user
-        profile = Profile.objects.create(
-            user=request.user,
-            name=name,
-            gender=gender,
-            height=height,
-            weight=weight,
-            color=color,
-            bio=bio,
-            image=image,
-            contact=contact
-        )
+            # Convert the dob string to a DateField format
+            from datetime import datetime
+            dob = datetime.strptime(dob, '%Y-%m-%d').date()
 
-        # Update the LiveUser instance to link to the new profile
-        live_user, created = LiveUser.objects.get_or_create(user=request.user)
-        live_user.profile = profile  # Set the profile
-        live_user.save()  # Save the changes to LiveUser
+            # Update the existing profile
+            profile.name = name
+            profile.gender = gender
+            profile.dob = dob
+            profile.color = color
+            profile.bio = bio
+            profile.image = image
+            profile.contact = contact
+            profile.consent = consent
+            profile.save()
 
-        return redirect('dating:home')  # Redirect after profile creation
+            # Update the LiveUser instance to link to the updated profile
+            live_user, created = LiveUser.objects.get_or_create(user=request.user)
+            live_user.profile = profile  # Set the profile
+            live_user.save()  # Save the changes to LiveUser
+
+            return redirect('dating:home')  # Redirect after profile update
+
+    except Profile.DoesNotExist:
+        # If the user doesn't have a profile, create a new one
+        if request.method == 'POST':
+            name = request.POST.get('name')
+            gender = request.POST.get('gender')
+            dob = request.POST.get('dob')
+            color = request.POST.get('color')
+            bio = request.POST.get('bio')
+            image = request.FILES.get('photo')
+            contact = request.POST.get('contact')
+            consent = request.POST.get('consent') == 'on'
+
+            # Convert the dob string to a DateField format
+            from datetime import datetime
+            dob = datetime.strptime(dob, '%Y-%m-%d').date()
+
+            # Create a new profile
+            profile = Profile.objects.create(
+                user=request.user,
+                name=name,
+                gender=gender,
+                dob=dob,
+                color=color,
+                bio=bio,
+                image=image,
+                contact=contact,
+                consent=consent,
+            )
+
+            # Update the LiveUser instance to link to the new profile
+            live_user, created = LiveUser.objects.get_or_create(user=request.user)
+            live_user.profile = profile  # Set the profile
+            live_user.save()  # Save the changes to LiveUser
+
+            return redirect('dating:home')  # Redirect after profile creation
 
     return render(request, 'dating/create_profile.html')
+
 
 
 
@@ -96,7 +141,6 @@ def go_live(request):
     return render(request, 'dating/go_live.html', context)
 
 
-
 @login_required
 def see_live(request):
     # Check if the current user is live; if yes, set to False
@@ -111,19 +155,30 @@ def see_live(request):
 
     live_users_data = []
 
+    # Calculate age from dob
+    def calculate_age(dob):
+        today = datetime.today().date()
+        age = today.year - dob.year
+        if today.month < dob.month or (today.month == dob.month and today.day < dob.day):
+            age -= 1
+        return age
+
     for live in live_users:
         profile = live.profile  # Directly access the profile associated with LiveUser
         if profile:  # Ensure profile exists
+            # Calculate the age from the date of birth
+            age = calculate_age(profile.dob)
+
             live_users_data.append({
                 'id': profile.id,
                 'name': getattr(profile, 'name', 'Unknown'),
                 'gender': profile.gender,
                 'bio': profile.bio,
-                'height': profile.height,
-                'weight': profile.weight,
+                'color': profile.color,
                 'latitude': live.latitude,
                 'longitude': live.longitude,
-                'image': getattr(profile.image, 'url', '')
+                'image': getattr(profile.image, 'url', ''),
+                'age': age  # Add age to the data dictionary
             })
 
     try:
@@ -141,7 +196,6 @@ def see_live(request):
     }
 
     return render(request, 'dating/live.html', context)
-
 
 from django.utils import timezone
 def notifications(request):

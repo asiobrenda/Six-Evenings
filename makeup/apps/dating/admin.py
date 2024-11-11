@@ -23,7 +23,7 @@ class DatingAdmin(admin.ModelAdmin):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['user', 'name', 'gender', 'height', 'weight', 'color', 'bio', 'image', 'contact']
+    list_display = ['user', 'name', 'gender', 'dob',  'color', 'bio', 'image', 'contact', 'consent']
 
 @admin.register(LiveUser)
 class LiveUserAdmin(admin.ModelAdmin):

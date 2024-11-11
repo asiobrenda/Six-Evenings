@@ -51,38 +51,42 @@
 </ul>
 
 
-
 <ul class="notifications-list">
     <!-- Notifications for the liker -->
     {% for notification in liker_notifications %}
-  <li class="notification-item" data-notification-id="{{ notification.id }}" data-status="{{ notification.status }}">
-    <button class="close-notifications" id="liker-notifications-{{ notification.id }}">x</button>
+    <li class="notification-item" data-notification-id="{{ notification.id }}" data-status="{{ notification.status }}">
+        <button class="close-notifications" id="liker-notifications-{{ notification.id }}">x</button>
 
-    <div class="notification-contents">
-        <div class="notification-messages">
-            <h6>{{ notification.liked_user.username }} declined</h6>
-        </div>
-
-        <div class="notification-time">
-            <p>{{ notification.formatted_timestamp }}</p>
-            <p style="color:black">
+        <div class="notification-contents">
+            <div class="notification-messages">
                 {% if notification.status == "accepted" %}
-                    {% if notification.liked_user.profile and notification.liked_user.profile.contact %}
-                        Contact: {{ notification.liked_user.profile.contact }}
+                    <h6>{{ notification.liked_user.username }} accepted your like</h6>
+                {% else %}
+                    <h6>{{ notification.liked_user.username }} declined your like</h6>
+                {% endif %}
+            </div>
+
+            <div class="notification-time">
+                <p>{{ notification.formatted_timestamp }}</p>
+                <p style="color:black">
+                    {% if notification.status == "accepted" %}
+                        {% if notification.liked_user.profile and notification.liked_user.profile.contact %}
+                            Contact: {{ notification.liked_user.profile.contact }}
+                        {% else %}
+                            Contact: Not available
+                        {% endif %}
                     {% else %}
                         Contact: Not available
                     {% endif %}
-                {% else %}
-                    Contact: Not available
-                {% endif %}
-            </p>
+                </p>
+            </div>
         </div>
-    </div>
-</li>
+    </li>
     {% empty %}
     <p>No updates on your likes.</p>
     {% endfor %}
 </ul>
+
 
 
 </div>

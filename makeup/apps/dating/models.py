@@ -45,7 +45,6 @@ class Profile(models.Model):
         verbose_name_plural = ('Profile')
         ordering = ['-name']
 
-
     GENDER_CHOICES = [
         ('male', 'Male'),
         ('female', 'Female'),
@@ -57,19 +56,27 @@ class Profile(models.Model):
         ('medium', 'Medium'),
         ('dark', 'Dark'),
     ]
+
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100, blank=True, null=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True, null=True)
-    height = models.PositiveIntegerField(blank=True, null=True)
-    weight = models.PositiveIntegerField(blank=True, null=True)
+    dob = models.DateField(blank=True, null=True)  # Added date of birth field
     color = models.CharField(max_length=10, choices=SKIN_TONE_CHOICES, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='profile_images', blank=True)
     contact = models.CharField(max_length=20, blank=True, null=True)
+    consent = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name if self.name else "Unnamed Profile"
 
+    def calculate_age(self):
+        from datetime import date
+        today = date.today()
+        age = today.year - self.dob.year
+        if today.month < self.dob.month or (today.month == self.dob.month and today.day < self.dob.day):
+            age -= 1
+        return age
 
 class LiveUser(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

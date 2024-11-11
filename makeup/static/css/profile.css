@@ -1,3 +1,4 @@
+/* General styles for the form */
 .form-container {
     max-width: 500px;
     margin: auto;
@@ -12,9 +13,10 @@
     min-height: 65vh; /* Allow height to adjust based on content */
 }
 
-
 .form-step {
     display: none; /* Hide all steps initially */
+    overflow-x: hidden;
+    position: relative;
 }
 
 .form-step h3 {
@@ -35,14 +37,13 @@
     margin-bottom: 20px; /* Space below inputs */
     border: 1px solid #ccc;
     border-radius: 5px;
-     direction: ltr;
-      text-align: left;
+    direction: ltr;
+    text-align: left;
 }
 
 .form-step textarea {
     max-width: 100%; /* Ensure textarea doesn't exceed container */
     min-height: 150px; /* Increase minimum height for textarea */
-
 }
 
 .prev-btn,
@@ -56,7 +57,6 @@
     cursor: pointer;
     transition: background-color 0.3s; /* Smooth transition */
     margin-top: 20px; /* Adjust margin as needed */
-
 }
 
 .prev-btn:hover,
@@ -65,47 +65,35 @@
     background-color: #FFA000; /* Darker shade on hover */
 }
 
-/* Specific fields styles */
-#height,
-#weight {
-    background-color: #fff; /* Set the background color to white */
-    color: #000; /* Set the text color to black */
+.consent-container {
+    display: flex;
+    align-items: center; /* Vertically center items */
+    gap: 10px; /* Space between the checkbox and the text */
+    margin-top: 20px;
 }
 
-/* Override autofill for these specific fields */
-#height:-webkit-autofill,
-#weight:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
-    -webkit-text-fill-color: #000;
-    color: #000; /* Ensure text color is set */
-    background-color: #fff; /* Set background color */
-    border: 1px solid #ccc; /* Ensure border is set */
+.consent-container p {
+    margin: 0; /* Remove default margins */
+    color: #666;
+    text-transform: lowercase;
+    margin-top: -20px;
+    padding-right:50px;
 }
 
 
-.toast-wrapper {
-    height: auto; /* Adjust to content height */
-    margin: 10px 0; /* Margin for toast notification */
+.consent-container  input{
+    margin-right: 160px;
+    position:absolute;
 }
 
-#toast {
-    color: purple;
-    padding: 10px 15px;
-    display: none; /* Initially hidden */
-    position: fixed; /* Fixed position for notifications */
-    left: 50%;
-    transform: translateX(-50%); /* Center the toast horizontally */
-}
 
-/* Media queries for responsiveness */
+/* Media query for mobile and smaller screens */
 @media (max-width: 768px) {
     .form-container {
         max-width: 90%; /* Full width on smaller screens */
         padding: 15px; /* Reduced padding */
     }
-}
 
-@media (max-width: 480px) {
     .form-step h3 {
         font-size: 1.5rem; /* Smaller heading size */
     }
@@ -114,37 +102,58 @@
     .form-step select,
     .form-step textarea {
         font-size: 14px; /* Smaller text size for inputs */
-         direction: ltr;
-
-      text-align: left;
     }
 
-    /* Adjust button widths on mobile */
+    /* Button Container Styles */
+    .button-container {
+        display: flex;
+        justify-content: flex-start; /* Align buttons to the left */
+        gap: 10px; /* Space between buttons */
+        padding-top: 10px; /* Space above buttons */
+        flex-direction: row; /* Ensure buttons are in a row */
+    }
+
     .prev-btn,
-    .next-btn {
-        width: auto; /* Allow buttons to be their content width */
-        margin-right: 0; /* Remove margin on small screens */
-
-
-   /* Button Container Styles */
-.button-container {
-    display: flex;
-    justify-content: flex-start; /* Align buttons to the left */
-    gap: 10px; /* Space between buttons */
-    padding-top: 10px; /* Space above buttons */
-    flex-direction: row; /* Ensure buttons are in a row */
-}
-
+    .next-btn,
     .submit-info {
-        width: auto; /* Adjust submit button width to content */
-        margin-right:50px;
-         width: auto;
+        width: auto; /* Adjust button width to content */
     }
 }
 
-/* Adjust button widths on mobile */
 @media (max-width: 480px) {
+    .form-step h3 {
+        font-size: 1.2rem; /* Smaller heading size for very small screens */
+    }
+
+    .form-step input,
+    .form-step select,
+    .form-step textarea {
+        font-size: 12px; /* Further reduce text size */
+    }
+
     .submit-info {
         width: auto; /* Adjust submit button width to content */
     }
+
+.consent-container {
+    display: flex;
+    align-items: center; /* Vertically center items */
+    gap: 10px; /* Space between the checkbox and the text */
+    margin-top: 20px;
+}
+
+.consent-container p {
+    margin: 0; /* Remove default margins */
+    color: #666;
+    text-transform: lowercase;
+    padding-left:30px;
+}
+
+
+.consent-container  input{
+    margin-right: 160px;
+    position:absolute;
+}
+
+
 }
