@@ -65,6 +65,7 @@
     background-color: #FFA000; /* Darker shade on hover */
 }
 
+/* Adjusted styles for the consent container */
 .consent-container {
     display: flex;
     align-items: center; /* Vertically center items */
@@ -72,18 +73,19 @@
     margin-top: 20px;
 }
 
+/* Styles for the consent text */
 .consent-container p {
     margin: 0; /* Remove default margins */
     color: #666;
     text-transform: lowercase;
-    margin-top: -20px;
-    padding-right:50px;
+    margin-left: -220px; /* Adjust the padding for text positioning */
 }
 
-
-.consent-container  input{
-    margin-right: 160px;
-    position:absolute;
+/* Adjust the checkbox style */
+.consent-container input {
+    margin: 0; /* Remove margins to avoid unwanted spacing */
+    position: static; /* Remove absolute positioning */
+     margin-left: -180px;
 }
 
 
@@ -135,6 +137,7 @@
         width: auto; /* Adjust submit button width to content */
     }
 
+/* Adjusted styles for the consent container */
 .consent-container {
     display: flex;
     align-items: center; /* Vertically center items */
@@ -142,17 +145,20 @@
     margin-top: 20px;
 }
 
+/* Styles for the consent text */
 .consent-container p {
     margin: 0; /* Remove default margins */
     color: #666;
     text-transform: lowercase;
-    padding-left:30px;
+    margin-left: -70px; /* Adjust the padding for text positioning */
 }
 
-
-.consent-container  input{
-    margin-right: 160px;
-    position:absolute;
+/* Adjust the checkbox style */
+.consent-container input {
+    margin: 0; /* Remove margins to avoid unwanted spacing */
+    position: static; /* Remove absolute positioning */
+    margin-left: -70px;
+    margin-top:-20px;
 }
 
 
