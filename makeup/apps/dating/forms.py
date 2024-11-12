@@ -16,7 +16,7 @@ class SignUpCreationForm(UserCreationForm):
         super(SignUpCreationForm, self).__init__(*args, **kwargs)
         # Add a placeholder for the username field with an example
         self.fields['username'].widget.attrs.update({
-            'placeholder': 'e.g., user123, john_doe, jane.doe23'
+            'placeholder': 'e.g., user123, john_doe'
         })
 
     def save(self, commit=True):
