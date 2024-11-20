@@ -10,6 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import Profile, LiveUser,LikeNotification
 from django.utils import timezone
 from datetime import datetime
+import random
 
 def home(request):
     dating = Dating.objects.all()
@@ -140,6 +141,11 @@ def go_live(request):
 
     return render(request, 'dating/go_live.html', context)
 
+# Function to generate a slight random offset for each user without coordinates
+def apply_offset(lat, lng, offset=0.0001):
+    lat_offset = random.uniform(-offset, offset)  # Random offset for latitude
+    lng_offset = random.uniform(-offset, offset)  # Random offset for longitude
+    return lat + lat_offset, lng + lng_offset
 
 @login_required
 def see_live(request):
@@ -167,6 +173,7 @@ def see_live(request):
             age -= 1
         return age
 
+    # Process each live user
     for live in live_users:
         profile = live.profile  # Directly access the profile associated with LiveUser
         if profile:  # Ensure profile exists
@@ -174,8 +181,12 @@ def see_live(request):
             age = calculate_age(profile.dob)
 
             # Check if latitude and longitude are available
-            latitude = live.latitude if live.latitude is not None else DEFAULT_LAT
-            longitude = live.longitude if live.longitude is not None else DEFAULT_LNG
+            if live.latitude is not None and live.longitude is not None:
+                latitude = live.latitude
+                longitude = live.longitude
+            else:
+                # If coordinates are missing, apply an offset to the default coordinates
+                latitude, longitude = apply_offset(DEFAULT_LAT, DEFAULT_LNG)
 
             # Append user data to live_users_data
             live_users_data.append({
@@ -184,19 +195,20 @@ def see_live(request):
                 'gender': profile.gender,
                 'bio': profile.bio,
                 'color': profile.color,
-                'latitude': latitude,  # Use default if missing
-                'longitude': longitude,  # Use default if missing
+                'latitude': latitude,  # Use default with offset if missing
+                'longitude': longitude,  # Use default with offset if missing
                 'image': getattr(profile.image, 'url', ''),
                 'age': age  # Add age to the data dictionary
             })
 
+    # Try to access the current user's profile
     try:
-        # Try to access the current user's profile
         profile = request.user.profile
     except ObjectDoesNotExist:
         profile = None  # Set profile to None if it doesn't exist
         # Optionally, redirect the user to the profile creation page or display a message
 
+    # Pass the necessary data to the context
     context = {
         'live_users_data': live_users_data,
         'current_user_live': live_user.is_live,
@@ -204,8 +216,8 @@ def see_live(request):
         'profile': profile  # Pass the user's profile if it exists, or None
     }
 
+    # Render the live users on the template
     return render(request, 'dating/live.html', context)
-
 
 from django.utils import timezone
 def notifications(request):
