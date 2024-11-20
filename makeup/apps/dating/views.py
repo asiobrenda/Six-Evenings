@@ -142,10 +142,11 @@ def go_live(request):
     return render(request, 'dating/go_live.html', context)
 
 # Function to generate a slight random offset for each user without coordinates
-def apply_offset(lat, lng, offset=0.0001):
-    lat_offset = random.uniform(-offset, offset)  # Random offset for latitude
-    lng_offset = random.uniform(-offset, offset)  # Random offset for longitude
-    return lat + lat_offset, lng + lng_offset
+def apply_offset(lat, lng):
+    offset_lat = lat + random.uniform(0.0001, 0.001)  # Latitude offset
+    offset_lng = lng + random.uniform(0.0001, 0.002)  # Longitude offset (larger to spread them further)
+    return offset_lat, offset_lng
+
 
 @login_required
 def see_live(request):
