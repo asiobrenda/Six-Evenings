@@ -155,6 +155,10 @@ def see_live(request):
 
     live_users_data = []
 
+    # Define default coordinates (center of the city, for example)
+    DEFAULT_LAT = 0.3349217  # Replace with a suitable default latitude
+    DEFAULT_LNG = 32.6033867  # Replace with a suitable default longitude
+
     # Calculate age from dob
     def calculate_age(dob):
         today = datetime.today().date()
@@ -169,14 +173,19 @@ def see_live(request):
             # Calculate the age from the date of birth
             age = calculate_age(profile.dob)
 
+            # Check if latitude and longitude are available
+            latitude = live.latitude if live.latitude is not None else DEFAULT_LAT
+            longitude = live.longitude if live.longitude is not None else DEFAULT_LNG
+
+            # Append user data to live_users_data
             live_users_data.append({
                 'id': profile.id,
                 'name': getattr(profile, 'name', 'Unknown'),
                 'gender': profile.gender,
                 'bio': profile.bio,
                 'color': profile.color,
-                'latitude': live.latitude,
-                'longitude': live.longitude,
+                'latitude': latitude,  # Use default if missing
+                'longitude': longitude,  # Use default if missing
                 'image': getattr(profile.image, 'url', ''),
                 'age': age  # Add age to the data dictionary
             })
@@ -196,6 +205,7 @@ def see_live(request):
     }
 
     return render(request, 'dating/live.html', context)
+
 
 from django.utils import timezone
 def notifications(request):
