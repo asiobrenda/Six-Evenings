@@ -1,6 +1,3 @@
-from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from .models import SignUpUser
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
@@ -9,7 +6,7 @@ from .models import SignUpUser
 class SignUpCreationForm(UserCreationForm):
     class Meta:
         model = SignUpUser
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('username', 'password1', 'password2')
         label_suffix = ''
 
     def __init__(self, *args, **kwargs):
