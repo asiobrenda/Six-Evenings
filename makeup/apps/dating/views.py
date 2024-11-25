@@ -11,6 +11,8 @@ from .models import Profile, LiveUser,LikeNotification
 from django.utils import timezone
 from datetime import datetime
 import random
+from django.core.exceptions import ValidationError
+import re
 
 def home(request):
     dating = Dating.objects.all()
@@ -32,8 +34,16 @@ def sign_up(request):
     return render(request, 'dating/sign_up.html', {'form': form})
 
 
+
 @login_required
 def create_profile(request):
+    # Function to validate the contact number (for WhatsApp)
+    def validate_contact(contact):
+        # Regex pattern for validating phone numbers without spaces
+        pattern = r"^\+(\d{1,4})(\d{6,14})$"  # No spaces allowed
+        if not re.match(pattern, contact):
+            raise ValidationError("Invalid phone number format. Please use the format: +<country_code><number> (e.g., +256712345678).")
+
     # Check if the user already has a profile
     try:
         profile = Profile.objects.get(user=request.user)
@@ -49,8 +59,10 @@ def create_profile(request):
             contact = request.POST.get('contact')
             consent = request.POST.get('consent') == 'on'
 
+            # Validate the contact number format
+            validate_contact(contact)
+
             # Convert the dob string to a DateField format
-            from datetime import datetime
             dob = datetime.strptime(dob, '%Y-%m-%d').date()
 
             # Update the existing profile
@@ -83,8 +95,10 @@ def create_profile(request):
             contact = request.POST.get('contact')
             consent = request.POST.get('consent') == 'on'
 
+            # Validate the contact number format
+            validate_contact(contact)
+
             # Convert the dob string to a DateField format
-            from datetime import datetime
             dob = datetime.strptime(dob, '%Y-%m-%d').date()
 
             # Create a new profile
@@ -108,8 +122,6 @@ def create_profile(request):
             return redirect('dating:home')  # Redirect after profile creation
 
     return render(request, 'dating/create_profile.html')
-
-
 
 
 @login_required

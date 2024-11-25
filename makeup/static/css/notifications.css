@@ -54,6 +54,11 @@
 
 }
 
+.notification-item h6::first-letter {
+    text-transform: uppercase; /* Make the first letter uppercase */
+}
+
+
 .close-notification {
     position: absolute;
     left: 2px;
@@ -248,7 +253,11 @@
     text-transform: lowercase;
     top: 10px;
     white-space: nowrap; /* Prevent text from wrapping to the next line */
-    left:40px;
+    left:28px;
     position:absolute;
 
+}
+
+.notification-messages h6::first-letter {
+    text-transform: uppercase; /* Make the first letter uppercase */
 }

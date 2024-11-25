@@ -6,8 +6,19 @@ document.addEventListener('DOMContentLoaded', function () {
     window.nextStep = function(step) {
         const dobInput = document.getElementById('dob').value;
         const consentChecked = document.getElementById('consent').checked;
+        const contactInput = document.getElementById('contact').value;
+        const contactPattern = /^\+\d{10,15}$/;  // Regex pattern for validating phone number
 
-        // If the current step is Step 2 (where DOB is entered)
+        // If the current step is Step 1 (where Contact info is entered)
+        if (step === 2) {
+            // Validate Contact field
+            if (!contactPattern.test(contactInput)) {
+                alert("Please enter a valid phone number (e.g., +256 712 345 678). Spaces are not allowed");
+                return;  // Stop proceeding to the next step
+            }
+        }
+
+        // If the current step is Step 2 (where DOB and consent are entered)
         if (step === 3) {  // Moving to Step 3
             // Get the date of birth entered by the user
             if (!dobInput) {

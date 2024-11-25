@@ -10,9 +10,9 @@
 {% endblock links %}
 
 {% block nav %}
-<ul class="menu-links" style="display: none; max-height: 400px; overflow: auto;">
-    <li class="hoverTrigger"><a href="{% url 'dating:home' %}"> Home</a> </li>
- </ul>
+<!--<ul class="menu-links" style="display: none; max-height: 400px; overflow: auto;">-->
+<!--    <li class="hoverTrigger"><a href="{% url 'dating:home' %}"> Home</a> </li>-->
+<!-- </ul>-->
 {% endblock nav %}
 
 {% block body %}
@@ -69,19 +69,23 @@
             <div class="notification-time">
                 <p>{{ notification.formatted_timestamp }}</p>
               <p style="color:black">
-                {% if notification.status == "accepted" %}
-                    {% if notification.liked_user.profile and notification.liked_user.profile.contact %}
-                        <a href="https://wa.me/{{ notification.liked_user.profile.contact }}" target="_blank" style="text-decoration: none; color: inherit;">
-                           {{ notification.liked_user.profile.contact }} : <i class="fab fa-whatsapp" style="color: green; font-size: 20px;"></i>
-
+                    {% if notification.status == "accepted" %}
+                        {% if notification.liked_user.profile and notification.liked_user.profile.contact %}
+                        <a href="https://wa.me/{{ notification.liked_user.profile.contact }}"
+                           target="_blank"
+                           style="text-decoration: none; color: inherit;">
+                           {{ notification.liked_user.profile.contact|slice:"1:" }}+
+                           <i class="fab fa-whatsapp" style="color: green; font-size: 20px;"></i>
                         </a>
+
+
+                        {% else %}
+                            Contact: Not available
+                        {% endif %}
                     {% else %}
                         Contact: Not available
                     {% endif %}
-                {% else %}
-                    Contact: Not available
-                {% endif %}
-            </p>
+                </p>
 
             </div>
         </div>

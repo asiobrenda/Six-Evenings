@@ -59,7 +59,7 @@ header -->
           <div class="topbar-right text-end">
             {% if user.is_authenticated %}
             <ul class="list-inline text-uppercase top-menu">
-              <li><a href="{% url 'dating:logout' %}">logout</a></li>
+              <li><a href="{% url 'dating:home' %}">Home</a></li>
             </ul>
             {% else %}
             <ul class="list-inline text-uppercase top-menu">
@@ -101,11 +101,10 @@ header -->
                 <li class="hoverTrigger"><a href="{% url 'dating:create_profile' %}">Create Profile</a></li>
                 <li class="hoverTrigger"><a href="#contact-us">Contact Us</a></li>
                 <li class="hoverTrigger"><a href="#about-us">About Us</a></li>
-                <li class="hoverTrigger"><a href="{% url 'dating:home' %}">Home</a></li>
+                <li><a href="{% url 'dating:logout' %}">logout</a></li>
                 {% else %}
               <li class="hoverTrigger"><a href="#contact-us">Contact Us</a></li>
               <li class="hoverTrigger"><a href="#about-us">About Us</a></li>
-              <li class="hoverTrigger"><a href="{% url 'dating:home' %}">Home</a></li>
                {% endif %}
             </ul>
             {% endblock nav %}

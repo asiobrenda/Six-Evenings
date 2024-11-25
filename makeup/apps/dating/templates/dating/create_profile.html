@@ -32,9 +32,9 @@
 {% endblock links %}
 
  {% block nav %}
-<ul class="menu-links" style="display: none; max-height: 400px; overflow: auto;">
-    <li class="hoverTrigger"><a href="{% url 'dating:home' %}"> Home</a> </li>
- </ul>
+<!--<ul class="menu-links" style="display: none; max-height: 400px; overflow: auto;">-->
+<!--    <li class="hoverTrigger"><a href="{% url 'dating:home' %}"> Home</a> </li>-->
+<!-- </ul>-->
 {% endblock nav %}
 
 
@@ -53,7 +53,9 @@
             <label for="name">Name</label>
             <input type="text" id="name" name="name" required>
             <label for="contact">Contact</label>
-            <input type="text" id="contact" name="contact" required>
+             <input type="text" id="contact" name="contact" required
+               placeholder="+256 712 345 678"
+               pattern="^\+\d{10,15}$">
             <label for="gender">Gender</label>
             <select id="gender" name="gender" required>
                 <option value="male">Male</option>
