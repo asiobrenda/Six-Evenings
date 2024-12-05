@@ -23,7 +23,6 @@
     max-width: 600px;
     margin: auto;
     padding: 10px;
-    height: 65vh;
     overflow-y: auto;
     overflow-x: hidden;
     position:relative;
@@ -53,11 +52,6 @@
     position:absolute;
 
 }
-
-.notification-item h6::first-letter {
-    text-transform: uppercase; /* Make the first letter uppercase */
-}
-
 
 .close-notification {
     position: absolute;
@@ -253,11 +247,7 @@
     text-transform: lowercase;
     top: 10px;
     white-space: nowrap; /* Prevent text from wrapping to the next line */
-    left:28px;
+    left:40px;
     position:absolute;
 
-}
-
-.notification-messages h6::first-letter {
-    text-transform: uppercase; /* Make the first letter uppercase */
 }

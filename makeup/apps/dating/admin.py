@@ -6,7 +6,7 @@ from.models import SignUpUser, Dating, OnlineMembers, Profile, LiveUser, LikeNot
 class SignUpUserAdmin(UserAdmin):
     add_form = SignUpCreationForm
     model = SignUpUser
-    list_display = ['username', 'email']
+    list_display = ['username']
 
 
 admin.site.register(SignUpUser, SignUpUserAdmin)

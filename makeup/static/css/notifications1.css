@@ -1,0 +1,664 @@
+.badge{
+    padding: 3px 5px 2px;
+    position: absolute;
+    top: 36px;
+    right: 18px;
+    display: inline-block;
+    min-width: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    line-height: 1;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
+}
+.badge-danger {
+    background-color: #db5565;
+    border-radius: 50%;
+}
+
+.notifications-container {
+    width: 100%;
+    max-width: 620px;
+    margin: auto;
+    height: 65vh;
+    padding: 10px;
+    max-height: none;  /* Remove height restriction */
+    overflow-y: auto;
+    overflow-x: hidden;
+    position:relative;
+}
+
+
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    margin-top:15px;
+}
+
+
+.notification-item img{
+    margin-right: 200px;
+     position:absolute;
+}
+
+
+.notification-avatar{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;  /* Positive margin to avoid shifting */
+    z-index: 10;  /* Ensure visibility */
+     border-radius: 50%;
+}
+
+
+
+.notification-header {
+    display: flex;  /* Align avatar and text horizontally */
+    align-items: center;  /* Vertically center elements */
+}
+
+
+.notification-content h6 {
+    margin: 0;
+    margin-left: -30px;
+    font-size: 16px;
+    color: black;
+    margin-top: -8px;
+}
+
+.notification-text {
+    text-transform: none;  /* Ensure no global capitalization is applied */
+}
+
+.username {
+    text-transform: capitalize;  /* Capitalize only the first letter of the username */
+}
+
+
+.notification-content{
+    margin-top:20px;
+    position:relative;
+}
+
+
+/* In your base template's global CSS */
+p.notification-time {
+    display: inline-block;
+    margin:0;
+    font-size: 13.8px;
+    color: #666666;
+    margin-right: 280px;
+    margin-top:9px;
+}
+
+.notification-actions {
+    display: flex;
+    gap: 10px;  /* Space between buttons */
+    margin-top: 22px;
+    margin-right: 320px;
+    margin-left: auto;
+}
+
+.notification-actions .action-link {
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.accept { color: #4CAF50; }  /* Green */
+.reject { color: #F44336; }   /* Red */
+.view-profile { color: #2196F3; }  /* Blue */
+
+.close-notification {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    border: none;
+    cursor: pointer;
+    background-color: #f0f0f0;       /* Light grey background */
+    color: #333;                     /* Dark grey text */
+    border: 1px solid #ccc;          /* Subtle border */
+    border-radius: 4px;              /* Slightly rounded corners */
+    padding: 8px 5px;               /* Adjust padding for a square look */
+    font-size: 16px;                 /* Adjust font size */
+    cursor: pointer;                 /* Pointer cursor on hover */
+    display: inline-block;           /* Prevent stretching */
+    text-align: center;              /* Center the 'x' */
+    width: 22px;                     /* Fixed width */
+    height: 22px;                    /* Fixed height for square */
+    line-height: 2px;               /* Vertically center the 'x' */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Optional shadow */
+}
+
+
+
+/* Notification Container */
+/* Button container styling */
+.action-link {
+    width: 25px;
+    height: 25px;
+    border: none;
+    color: white;  /* Icon color */
+    background-color: #444;  /* Default background color */
+    border-radius: 50%;  /* Circular shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;  /* Icon size */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: relative;  /* For tooltip positioning */
+    transition: opacity 0.3s ease;
+
+}
+
+
+
+/* Tooltip text */
+/* Tooltip text positioned below */
+.action-link::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 130%;  /* Position below the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(50, 50, 50, 0.9);
+    color: #fff;
+    padding: 5px 7px;
+    border-radius: 5px;
+    white-space: nowrap;
+    font-size: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Tooltip arrow positioned below */
+.action-link::after {
+    content: '';
+    position: absolute;
+    top: 115%;  /* Just below the button */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: rgba(50, 50, 50, 0.9) transparent transparent transparent;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+/* Show tooltip on hover */
+.action-link:hover::before,
+.action-link:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Icon hover effect */
+.action-link:hover {
+    background-color: #007bff;  /* Change background on hover */
+}
+
+/* View Profile (Blue) */
+.view-profile {
+    background-color: #007bff;  /* Primary Blue */
+}
+
+.view-profile:hover {
+    background-color: #0056b3;  /* Darker Blue */
+}
+
+/* Accept Button (Green) */
+.accept {
+    background-color: #28a745;  /* Primary Green */
+}
+
+.accept:hover {
+    background-color: #218838;  /* Darker Green */
+}
+
+/* Reject Button (Red) */
+.reject {
+    background-color: #dc3545;  /* Primary Red */
+}
+
+.reject:hover {
+    background-color: #c82333;  /* Darker Red */
+}
+
+/* Tap feedback for mobile */
+.action-link:active {
+    transform: scale(0.95);  /* Slight shrink effect */
+}
+
+
+
+/* Modal background */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;  /* Prevent scroll on modal */
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Modal content box */
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;  /* Centered vertically and horizontally */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;  /* Adjust width as needed */
+    max-width: 500px;  /* Max width for larger screens */
+    border-radius: 8px;  /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+/* Close button (X) */
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+/* Profile styling */
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; /* Center text for a clean, mobile-friendly look */
+}
+
+.profile img {
+    border-radius: 50%; /* Circle profile image */
+    object-fit: cover; /* Ensures the image fits properly within the circle */
+    margin-bottom: 15px;
+}
+
+.profile p {
+    margin: 8px 0; /* Space between paragraphs */
+    font-size: 16px; /* Default font size */
+    color: #333; /* Slightly softer black for readability */
+}
+
+.profile strong {
+    font-weight: bold;
+    color: #000; /* Bold and dark for labels */
+}
+
+
+.notification-separator {
+    border: 1px solid #ccc; /* Thinner horizontal line, less faint */
+    opacity: 0.7; /* Slight transparency for a softer appearance */
+    position:fixed;
+}
+
+/* This class will make the checkmark bold */
+.bold {
+    font-weight: bold;
+}
+
+/* Style for bold checkmark icon */
+.bold-checkmark {
+    font-weight: bold;
+}
+
+.hidden-button {
+    visibility: hidden;  /* Keep space but hide button */
+    opacity: 0;          /* Invisible */
+    pointer-events: none; /* Disable interactions */
+    display:none;
+}
+
+
+.reject {
+    visibility: visible;  /* Default state, reject is hidden */
+}
+
+
+.reject, .accept {
+    flex-shrink: 0; /* Prevent buttons from shrinking */
+}
+
+
+
+.notification-actions .action-link {
+    flex-shrink: 0;  /* Prevents shrinking of other elements */
+}
+
+
+/* Basic toast styles */
+.toast {
+    visibility: hidden;
+    min-width: 200px;
+    background-color: rgba(0, 0, 0, 0.8); /* Default background */
+    color: #fff;
+    text-align: center;
+    padding: 16px;
+    position: fixed;
+    top: 30px;  /* Position at the top */
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 8px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+
+
+/* Show toast with transition */
+.toast.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Green background for success toast */
+.toast-success {
+    background-color: #28a745;  /* Green background */
+}
+
+
+/* Existing styles remain unchanged */
+
+/* Add responsive styles */
+@media (max-width: 768px) {
+    .notifications-container {
+         width: 100%;
+        max-width: 620px;
+        margin: auto;
+        height: 65vh;
+        padding: 10px;
+        max-height: none;  /* Remove height restriction */
+        overflow-y: auto;
+        overflow-x: hidden;
+        position:relative;
+    }
+
+    .notification-item {
+        padding: 8px;
+        margin-top: 10px;
+    }
+
+    .notification-header {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: flex-start;
+    }
+
+    .notification-item img{
+    margin-right: 140px;
+}
+
+
+.notification-avatar{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;  /* Positive margin to avoid shifting */
+    z-index: 10;  /* Ensure visibility */
+     border-radius: 50%;
+}
+
+    .notification-content{
+    margin-top:10px;
+
+}
+
+
+    .notification-content h6 {
+        margin-left: 0; /* Remove left margin */
+        font-size: 14px; /* Adjust font size */
+    }
+
+    p.notification-time {
+        font-size: 12px;
+        margin-right: 200px; /* Remove margin for better alignment */
+    }
+
+    .notification-actions {
+        flex-direction: horizontal; /* Stack buttons vertically */
+        align-items: center;
+        margin-right: 190px; /* Remove excessive right margin */
+        gap: 8px; /* Reduce gap between buttons */
+    }
+
+    .action-link {
+        width: 30px; /* Adjust button size */
+        height: 30px;
+        font-size: 12px; /* Reduce icon size */
+    }
+
+    .close-notification {
+        top: -5px;
+        right: -15px;
+        width: 22px;
+        height: 22px;
+        font-size: 14px;
+    }
+
+    .close-notification:hover {
+    background-color: #e0e0e0;  /* Slightly darker grey on hover */
+    border-color: #bbb;         /* Darker border on hover */
+}
+
+    .modal-content {
+        width: 90%; /* Increase width for smaller screens */
+        padding: 15px; /* Adjust padding */
+    }
+
+    .profile p {
+        font-size: 14px; /* Adjust text size */
+    }
+
+    .toast {
+        top: 20px; /* Adjust position */
+        width: 80%; /* Reduce width for better fit */
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .notification-avatar img {
+        width: 40px;          /* Adjust size for mobile */
+        margin-left: -60px;   /* Maintain spacing */
+    }
+
+ /*   .action-link {
+        position: relative;
+        display: inline-block;
+    }
+*/
+    .action-link::before {
+        content: attr(data-tooltip);
+        position: absolute;
+        top: 130%; /* Position below the button */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(50, 50, 50, 0.9);
+        color: #fff;
+        padding: 5px 7px;
+        border-radius: 5px;
+        white-space: nowrap;
+        font-size: 12px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+        z-index: 10;
+        pointer-events: none; /* Prevents interference with button clicks */
+    }
+
+    .action-link::after {
+        content: '';
+        position: absolute;
+        top: 115%; /* Just below the button */
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 6px;
+        border-style: solid;
+        border-color: rgba(50, 50, 50, 0.9) transparent transparent transparent;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    }
+
+    /* Show tooltip when 'active' class is added */
+    .action-link.active::before,
+    .action-link.active::after {
+        opacity: 1;
+        visibility: visible;
+    }
+
+}
+
+/* Additional optimization for very small screens (phones) */
+@media (max-width: 480px) {
+    .notifications-container {
+        padding: 5px;
+    }
+
+    .notification-avatar {
+        width: 35px;
+        height: 35px;
+    }
+
+    .notification-content h6 {
+        font-size: 13px;
+    }
+
+    .action-link {
+        width: 25px;
+        height: 25px;
+        font-size: 10px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .toast {
+        font-size: 12px;
+        padding: 10px;
+    }
+}
+
+
+/*
+styling for the liker*/
+.notification-messages h6{
+    margin-right:160px;
+    margin-top: 15px;
+
+}
+
+.notification-contents{
+  margin-top:20px;
+  position: relative;
+  width:450px;
+}
+
+/*code for the liker user*/
+.close-notifications{
+     position: absolute;
+    top: 110px;
+    right: 100px;
+    border: none;
+    cursor: pointer;
+    background-color: #f0f0f0;       /* Light grey background */
+    color: #333;                     /* Dark grey text */
+    border: 1px solid #ccc;          /* Subtle border */
+    border-radius: 4px;              /* Slightly rounded corners */
+    padding: 8px 5px;               /* Adjust padding for a square look */
+    font-size: 16px;                 /* Adjust font size */
+    cursor: pointer;                 /* Pointer cursor on hover */
+    display: inline-block;           /* Prevent stretching */
+    text-align: center;              /* Center the 'x' */
+    width: 22px;                     /* Fixed width */
+    height: 22px;                    /* Fixed height for square */
+    line-height: 2px;               /* Vertically center the 'x' */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Optional shadow */
+
+
+}
+
+.close-notifications:hover {
+    background-color: #e0e0e0;  /* Slightly darker grey on hover */
+    border-color: #bbb;         /* Darker border on hover */
+}
+
+.likerNotes{
+  margin-bottom:-20px;
+  margin-right:60px;
+}
+
+.notification-messages h6 {
+    text-transform: none;  /* Ensure no global capitalization is applied */
+}
+
+.username1 {
+    text-transform: capitalize;  /* Capitalize only the first letter of the username */
+}
+
+.likerNotes .notification-time{
+      font-size: 12px;
+      margin-right: 275px; /* Remove margin for better alignment */
+
+}
+
+
+/* Adjustments for smaller screens (e.g., mobile phones) */
+@media (max-width: 768px) {
+    .notification-messages h6 {
+        margin-right: 20px;    /* Reduce margin on small screens */
+        margin-top: 10px;      /* Reduce margin on small screens */
+        font-size: 14px;       /* Make text smaller */
+    }
+
+    .notification-contents {
+        width: 100%;           /* Make the notification content full-width */
+        max-width: 100%;       /* Ensure it doesn't exceed the screen width */
+        margin: 0 10px;        /* Add a little padding on the sides */
+    }
+
+    .close-notifications {
+        top: 93px;              /* Adjust the position of the close button */
+        right: 50px;            /* Adjust the position of the close button */
+        width: 20px;           /* Make the close button smaller */
+        height: 20px;
+        padding: 2px 5px;      /* Adjust padding for the smaller button */
+        font-size: 15px;       /* Reduce the font size for the close button */
+        padding-top:-50px;
+    }
+
+    .likerNotes {
+        margin-bottom: -20px;   /* Increase bottom margin for better spacing */
+        margin-right: -90px;    /* Reduce right margin */
+    }
+
+    .likerNotes .notification-time{
+      font-size: 12px;
+      margin-right: 275px; /* Remove margin for better alignment */
+
+}
+
+}

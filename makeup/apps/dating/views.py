@@ -13,6 +13,8 @@ from datetime import datetime
 import random
 from django.core.exceptions import ValidationError
 import re
+from django.utils import timezone
+from django.template.defaultfilters import timesince
 
 def home(request):
     dating = Dating.objects.all()
@@ -232,33 +234,54 @@ def see_live(request):
     # Render the live users on the template
     return render(request, 'dating/live.html', context)
 
+
 from django.utils import timezone
+from django.shortcuts import render, redirect
+
+# Utility function to calculate and format timestamps with correct singular/plural form
+def format_time_difference(timestamp):
+    local_time = timezone.localtime(timestamp)
+    time_diff = timezone.now() - local_time
+    days = time_diff.days
+    hours = time_diff.seconds // 3600
+    minutes = (time_diff.seconds // 60) % 60
+    months = days // 30  # Approximate calculation for months
+    years = days // 365  # Approximate calculation for years
+
+    # Check if it's a year or month difference
+    if years > 0:
+        return f"{years} year{'s' if years > 1 else ''} ago"
+    elif months > 0:
+        return f"{months} month{'s' if months > 1 else ''} ago"
+    elif days > 0:
+        return f"{days} day{'s' if days > 1 else ''} ago"
+    elif hours > 0:
+        return f"{hours} hour{'s' if hours > 1 else ''} ago"
+    elif minutes > 0:
+        return f"{minutes} minute{'s' if minutes > 1 else ''} ago"
+    else:
+        return "Just now"
+
 def notifications(request):
     if request.user.is_authenticated:
-        # Fetch notifications where the user was liked but exclude those closed by the liked user
+        # Fetch liked notifications with related profile images
         liked_users = LikeNotification.objects.filter(
             liked_user=request.user,
             closed_by_liked_user=False  # Exclude notifications closed by the liked user
-        ).select_related('liker')
+        ).select_related('liker__profile')  # Ensure we fetch liker profiles and images efficiently
 
-        # Format timestamps for liked_users
-        for user in liked_users:
-            local_time = timezone.localtime(user.timestamp)  # Convert to local time
-            user.formatted_timestamp = local_time.strftime("%b %d, %Y, %I:%M %p").replace('.M', 'm').lower()
-            user.formatted_timestamp = user.formatted_timestamp.capitalize()  # Capitalize "Nov"
+        # Format timestamps for liked_users using the utility function
+        for notification in liked_users:
+            notification.formatted_timestamp = format_time_difference(notification.timestamp)
 
-        # Fetch notifications where the user is the liker, excluding pending and closed ones
+        # Fetch liker notifications with related profile images
         liker_notifications = LikeNotification.objects.filter(
             liker=request.user
-        ).exclude(status='pending').exclude(
-            closed_by_liker=True  # Exclude notifications closed by the liker
-        ).select_related('liked_user')
+        ).exclude(status='pending').exclude(closed_by_liker=True).select_related('liked_user__profile')
 
-        # Format timestamps for liker_notifications
+        # Format timestamps for liker_notifications using the utility function
         for notification in liker_notifications:
-            local_time = timezone.localtime(notification.timestamp)  # Convert to local time
-            notification.formatted_timestamp = local_time.strftime("%b %d, %Y, %I:%M %p").replace('.M', 'm').lower()
-            notification.formatted_timestamp = notification.formatted_timestamp.capitalize()  # Capitalize "Nov"
+            notification.formatted_timestamp = format_time_difference(notification.timestamp)
 
         # Count only pending notifications (don't mark them as read yet)
         notification_count = LikeNotification.objects.filter(
@@ -274,6 +297,7 @@ def notifications(request):
         return render(request, 'dating/notifications.html', context)
     else:
         return redirect('dating:login')
+
 
 
 def get_profile(request, profile_id):
@@ -336,6 +360,8 @@ def reject(request, reject_id):
 def undo_reject(request, undo_id):
     if request.method == 'POST':
         liker_id = request.POST.get('liker_id')
+        #print('---'*20)
+        #print(liker_id)
 
         # Get the LikeNotification object specific to the user and status
         like_notification = LikeNotification.objects.filter(

@@ -5,9 +5,14 @@
 
 
 {% block links %}
-<link href="{% static 'css/notifications.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'css/notifications1.css' %}" rel="stylesheet" type="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+
 {% endblock links %}
+
+
 
 {% block nav %}
 <!--<ul class="menu-links" style="display: none; max-height: 400px; overflow: auto;">-->
@@ -21,27 +26,78 @@
 {% block foot %}
 
 <div class="notifications-container">
-   <h3>New Likes</h3>
+   <h3 style="font-weight:bold">Notifications</h3>
 <ul class="notifications-list">
     {% for user in liked_users %}
         <li class="notification-item" data-notification-id="{{ user.id }}" data-status="{{ user.status }}">
-                <h6>{{ user.liker.username }} liked you</h6>
-                <button class="close-notification" id="closeBtn">x</button>
+            <img src="{{ user.liker.profile.image.url }}" alt="{{ user.liker.username }}" class="notification-avatar">
             <div class="notification-content">
-                <div class="notification-time">
-               <p>{{ user.formatted_timestamp }}</p>
-                </div>
-                <div class="notification-actions">
-                    {% if user.status == 'accepted' %}
-                        <span class="action-link accept">Accepted</span>
-                    {% elif user.status == 'rejected' %}
-                        <span class="action-link reject">Rejected</span>
-                    {% else %}
-                        <a class="action-link reject" data-liker-id="{{ user.liker.id }}" rejectUrl="{% url 'dating:reject' user.liker.id %}">Reject</a>
-                        <a class="action-link accept" href="#" data-liker-id="{{ user.liker.id }}" acceptUrl="{% url 'dating:accept' user.liker.id %}">Accept</a>
-                    {% endif %}
-                    <a class="action-link view-profile" href="#" data-user-id="{{ user.liker.profile.id }}" getProfileUrl="{% url 'dating:get_profile' user.liker.profile.id %}">View Profile</a>
-                </div>
+             <h6 class="notification-text">
+              !Good news! <span class="username">{{ user.liker.username|capfirst }}</span> wants to connect
+            </h6>
+
+
+               <p class="notification-time" data-timestamp="{{ user.timestamp|date:'c' }}"></p>
+
+<!--                <div class="notifications-actions">-->
+<!--                    {% if user.status == 'accepted' %}-->
+<!--                        <span class="action-link accept">Accepted</span>-->
+<!--                    {% elif user.status == 'rejected' %}-->
+<!--                        <span class="action-link reject">Rejected</span>-->
+<!--                    {% else %}-->
+<!--                        <a class="action-link accept" href="#" data-liker-id="{{ user.liker.id }}" acceptUrl="{% url 'dating:accept' user.liker.id %}">Accept</a>-->
+<!--                        <a class="action-link reject" href="#" data-liker-id="{{ user.liker.id }}" rejectUrl="{% url 'dating:reject' user.liker.id %}">Reject</a>-->
+<!--                    {% endif %}-->
+<!--                    <a class="action-link view-profile" href="#" data-user-id="{{ user.liker.profile.id }}" getProfileUrl="{% url 'dating:get_profile' user.liker.profile.id %}">View Profile</a>-->
+                  <div class="notification-actions">
+                        {% if user.status == 'accepted' %}
+                            <!-- Show 'Accept' button, hide 'Reject' but keep space -->
+                             <button class="action-link accept" data-tooltip="Accepted" disabled>
+                                    <i class="fas fa-check bold-checkmark"></i>
+                             </button>
+                             <button class="action-link reject hidden-button" disabled>
+                                <i class="fas fa-times"></i>
+                            </button>
+                        {% elif user.status == 'rejected' %}
+                            <!-- Show 'Reject' button, hide 'Accept' but keep space -->
+                               <button class="action-link reject" data-tooltip="Rejected" disabled>
+                                <i class="fas fa-times"></i>
+                            </button>
+
+                             <button class="action-link accept hidden-button" data-tooltip="Accepted" disabled>
+                                    <i class="fas fa-check bold-checkmark"></i>
+                             </button>
+
+
+
+                        {% else %}
+                            <!-- Show both buttons if no status -->
+                            <button class="action-link reject"
+                                data-tooltip="Reject"
+                                data-liker-id="{{ user.liker.id }}"
+                                rejectUrl="{% url 'dating:reject' user.liker.id %}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <button class="action-link accept"
+                                data-tooltip="Accept"
+                                data-liker-id="{{ user.liker.id }}"
+                                acceptUrl="{% url 'dating:accept' user.liker.id %}">
+                                <i class="fas fa-check"></i>
+                            </button>
+                        {% endif %}
+                        <!-- Always show 'View Profile' button -->
+                        <button class="action-link view-profile"
+                            data-user-id="{{ user.liker.profile.id }}"
+                            getProfileUrl="{% url 'dating:get_profile' user.liker.profile.id %}"
+                            data-tooltip="View Profile">
+                            <i class="fas fa-user"></i>
+                        </button>
+                    </div>
+
+
+<!--                </div>-->
+<!--            </div>-->
+            <button class="close-notification" id="closeBtn">x</button>
             </div>
         </li>
         <hr class="notification-separator">
@@ -56,30 +112,28 @@
     {% for notification in liker_notifications %}
     <li class="notification-item" data-notification-id="{{ notification.id }}" data-status="{{ notification.status }}">
         <button class="close-notifications" id="liker-notifications-{{ notification.id }}">x</button>
-
+        <img src="{{ notification.liked_user.profile.image.url }}" alt="{{ notification.liked_user.username }}" class="notification-avatar">
         <div class="notification-contents">
             <div class="notification-messages">
                 {% if notification.status == "accepted" %}
-                    <h6>{{ notification.liked_user.username }} accepted your like</h6>
+                    <h6><span class="username1">{{ notification.liked_user.username|capfirst }}</span> said yes to connecting</h6>
                 {% else %}
-                    <h6>{{ notification.liked_user.username }} declined your like</h6>
+                    <h6>{{ notification.liked_user.username|lower|capfirst }} declined your like</h6>
                 {% endif %}
             </div>
 
-            <div class="notification-time">
-                <p>{{ notification.formatted_timestamp }}</p>
-              <p style="color:black">
+            <div class="likerNotes">
+                 <p class="notification-time" data-timestamp="{{ notification.timestamp|date:'c' }}"></p>
+
+              <p style="color:black; margin-top:20px">
                     {% if notification.status == "accepted" %}
                         {% if notification.liked_user.profile and notification.liked_user.profile.contact %}
                 <a href="https://wa.me/{{ notification.liked_user.profile.contact }}"
                 target="_blank"
-                style="text-decoration: none; color: inherit;">
+                style="text-decoration: none; color: inherit; margin-right:185px; margin-top:20px">
                 {{ notification.liked_user.profile.contact|slice:"1:" }}+
                 <i class="fab fa-whatsapp" style="color: green; font-size: 20px;"></i>
                 </a>
-
-
-
                         {% else %}
                             Contact: Not available
                         {% endif %}
@@ -122,6 +176,7 @@
     const undoRejectUrlTemplate = "{% url 'dating:undo_reject' '0' %}"; // Use a placeholder
     const closeLikeNotification = "{% url 'dating:closeLikeNotification' %}";
 </script>
+
 
 
 
