@@ -427,7 +427,7 @@ p.notification-time {
 
 
     .notification-content h6 {
-        margin-left: 40px; /* Remove left margin */
+        margin-left: 20px; /* Remove left margin */
         font-size: 14px; /* Adjust font size */
     }
 
@@ -439,7 +439,7 @@ p.notification-time {
     .notification-actions {
         flex-direction: horizontal; /* Stack buttons vertically */
         align-items: center;
-        margin-right: 180px; /* Remove excessive right margin */
+        margin-right: 150px; /* Remove excessive right margin */
         gap: 8px; /* Reduce gap between buttons */
     }
 
@@ -451,7 +451,7 @@ p.notification-time {
 
     .close-notification {
         top: -5px;
-        right: -25px;
+        right: -50px;
         width: 22px;
         height: 22px;
         font-size: 14px;
