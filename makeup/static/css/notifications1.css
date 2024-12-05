@@ -407,7 +407,7 @@ p.notification-time {
     }
 
     .notification-item img{
-    margin-right: 140px;
+    margin-right: 130px;
 }
 
 
@@ -427,19 +427,19 @@ p.notification-time {
 
 
     .notification-content h6 {
-        margin-left: 0; /* Remove left margin */
+        margin-left: 40px; /* Remove left margin */
         font-size: 14px; /* Adjust font size */
     }
 
     p.notification-time {
         font-size: 12px;
-        margin-right: 200px; /* Remove margin for better alignment */
+        margin-right: 180px; /* Remove margin for better alignment */
     }
 
     .notification-actions {
         flex-direction: horizontal; /* Stack buttons vertically */
         align-items: center;
-        margin-right: 190px; /* Remove excessive right margin */
+        margin-right: 180px; /* Remove excessive right margin */
         gap: 8px; /* Reduce gap between buttons */
     }
 
@@ -451,7 +451,7 @@ p.notification-time {
 
     .close-notification {
         top: -5px;
-        right: -15px;
+        right: -25px;
         width: 22px;
         height: 22px;
         font-size: 14px;
@@ -530,38 +530,6 @@ p.notification-time {
 
 }
 
-/* Additional optimization for very small screens (phones) */
-@media (max-width: 480px) {
-    .notifications-container {
-        padding: 5px;
-    }
-
-    .notification-avatar {
-        width: 35px;
-        height: 35px;
-    }
-
-    .notification-content h6 {
-        font-size: 13px;
-    }
-
-    .action-link {
-        width: 25px;
-        height: 25px;
-        font-size: 10px;
-    }
-
-    .modal-content {
-        width: 95%;
-        padding: 10px;
-    }
-
-    .toast {
-        font-size: 12px;
-        padding: 10px;
-    }
-}
-
 
 /*
 styling for the liker*/
@@ -621,7 +589,7 @@ styling for the liker*/
 
 .likerNotes .notification-time{
       font-size: 12px;
-      margin-right: 275px; /* Remove margin for better alignment */
+      margin-right: 270px; /* Remove margin for better alignment */
 
 }
 
@@ -641,12 +609,12 @@ styling for the liker*/
     }
 
     .close-notifications {
-        top: 93px;              /* Adjust the position of the close button */
+        top: 90px;              /* Adjust the position of the close button */
         right: 50px;            /* Adjust the position of the close button */
         width: 20px;           /* Make the close button smaller */
         height: 20px;
         padding: 2px 5px;      /* Adjust padding for the smaller button */
-        font-size: 15px;       /* Reduce the font size for the close button */
+        font-size: 14px;       /* Reduce the font size for the close button */
         padding-top:-50px;
     }
 
@@ -655,10 +623,7 @@ styling for the liker*/
         margin-right: -90px;    /* Reduce right margin */
     }
 
-    .likerNotes .notification-time{
-      font-size: 12px;
-      margin-right: 275px; /* Remove margin for better alignment */
-
-}
-
+    .notification-times{
+        margin-left:10px;
+    }
 }
