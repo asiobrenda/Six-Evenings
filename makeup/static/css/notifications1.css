@@ -415,7 +415,7 @@ p.notification-time {
     width: 35px;
     height: 35px;
     object-fit: cover;
-    margin-right: 8px;  /* Positive margin to avoid shifting */
+    margin-right: 6px;  /* Positive margin to avoid shifting */
     z-index: 10;  /* Ensure visibility */
      border-radius: 50%;
 }
@@ -433,7 +433,7 @@ p.notification-time {
 
     p.notification-time {
         font-size: 12px;
-        margin-right: 180px; /* Remove margin for better alignment */
+        margin-right: 160px; /* Remove margin for better alignment */
     }
 
     .notification-actions {
