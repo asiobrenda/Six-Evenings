@@ -407,7 +407,7 @@ p.notification-time {
     }
 
     .notification-item img{
-    margin-right: 130px;
+    margin-right: 125px;
 }
 
 
@@ -433,7 +433,7 @@ p.notification-time {
 
     p.notification-time {
         font-size: 12px;
-        margin-right: 160px; /* Remove margin for better alignment */
+        margin-right: 120px; /* Remove margin for better alignment */
     }
 
     .notification-actions {
@@ -627,7 +627,4 @@ styling for the liker*/
         margin-right: -90px;    /* Reduce right margin */
     }
 
-    .notification-times{
-        margin-left:10px;
-    }
 }
