@@ -412,8 +412,8 @@ p.notification-time {
 
 
 .notification-avatar{
-    width: 50px;
-    height: 50px;
+    width: 38px;
+    height: 38px;
     object-fit: cover;
     margin-right: 10px;  /* Positive margin to avoid shifting */
     z-index: 10;  /* Ensure visibility */
@@ -529,6 +529,10 @@ p.notification-time {
     }
 
 }
+
+
+
+
 
 
 /*
