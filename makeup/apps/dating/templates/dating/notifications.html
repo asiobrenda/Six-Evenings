@@ -36,7 +36,7 @@
 <!--              !Good news! <span class="username">{{ user.liker.username|capfirst }}</span> wants to connect-->
 <!--            </h6>-->
              <h6 class="notification-text">
-             Connection request from <span class="username">{{ user.liker.username|capfirst }}</span>
+             Connection request from <span class="username">{{ user.liker.username|capfirst }}.</span>
             </h6>
 
 
@@ -133,8 +133,8 @@
                         {% if notification.liked_user.profile and notification.liked_user.profile.contact %}
                 <a href="https://wa.me/{{ notification.liked_user.profile.contact }}"
                 target="_blank"
-                style="text-decoration: none; color: inherit; margin-right:180px; margin-top:20px">
-                {{ notification.liked_user.profile.contact|slice:"1:" }}+
+                style="text-decoration: none; color: inherit; margin-right:170px; margin-top:20px">
+                {{ notification.liked_user.profile.contact}}
                 <i class="fab fa-whatsapp" style="color: #25D366; font-size: 20px"></i>
                 </a>
                         {% else %}
