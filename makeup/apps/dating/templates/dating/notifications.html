@@ -113,28 +113,29 @@
     <!-- Notifications for the liker -->
     {% for notification in liker_notifications %}
     <li class="notification-item" data-notification-id="{{ notification.id }}" data-status="{{ notification.status }}">
-        <button class="close-notifications" id="liker-notifications-{{ notification.id }}">x</button>
         <img src="{{ notification.liked_user.profile.image.url }}" alt="{{ notification.liked_user.username }}" class="notification-avatar">
         <div class="notification-contents">
             <div class="notification-messages">
                 {% if notification.status == "accepted" %}
-                    <h6><span class="username1">{{ notification.liked_user.username|capfirst }}</span> said yes to connecting</h6>
+                    <h6><span class="username1">.{{ notification.liked_user.username|capfirst }}</span> said yes to connecting</h6>
                 {% else %}
-                    <h6>{{ notification.liked_user.username|lower|capfirst }} declined your like</h6>
+                    <h6>.{{ notification.liked_user.username|lower|capfirst }} declined your like</h6>
                 {% endif %}
             </div>
 
-
+            <div class="likerNotes">
                  <p class="notification-time" data-timestamp="{{ notification.timestamp|date:'c' }}"></p>
+
+
 
               <p style="color:black; margin-top:20px">
                     {% if notification.status == "accepted" %}
                         {% if notification.liked_user.profile and notification.liked_user.profile.contact %}
                 <a href="https://wa.me/{{ notification.liked_user.profile.contact }}"
                 target="_blank"
-                style="text-decoration: none; color: inherit; margin-right:185px; margin-top:20px">
+                style="text-decoration: none; color: inherit; margin-right:180px; margin-top:20px">
                 {{ notification.liked_user.profile.contact|slice:"1:" }}+
-                <i class="fab fa-whatsapp" style="color: green; font-size: 20px;"></i>
+                <i class="fab fa-whatsapp" style="color: #25D366; font-size: 20px"></i>
                 </a>
                         {% else %}
                             Contact: Not available
@@ -143,7 +144,8 @@
                         Contact: Not available
                     {% endif %}
                 </p>
-
+              <button class="close-notification">x</button>
+             </div>
 
         </div>
     </li>
