@@ -600,7 +600,7 @@ styling for the liker*/
 /* Adjustments for smaller screens (e.g., mobile phones) */
 @media (max-width: 768px) {
     .notification-messages h6 {
-        margin-right: 8px;    /* Reduce margin on small screens */
+        margin-right: 4px;    /* Reduce margin on small screens */
         margin-top: 8px;      /* Reduce margin on small screens */
         font-size: 14px;       /* Make text smaller */
     }
