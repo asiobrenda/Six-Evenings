@@ -394,7 +394,8 @@ p.notification-time {
         padding: 8px;
         margin-top: 10px;
         border-bottom: 1px solid #ccc;
-        width:110%;
+        width:100%;
+         box-sizing: border-box; /*
     }
 
 
