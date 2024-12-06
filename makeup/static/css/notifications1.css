@@ -63,7 +63,7 @@
 
 .notification-content h6 {
     margin: 0;
-    margin-left: -30px;
+    margin-left: -50px;
     font-size: 16px;
     color: black;
     margin-top: -8px;
@@ -451,7 +451,7 @@ p.notification-time {
 
     .close-notification {
         top: -5px;
-        right: -50px;
+        right: -48px;
         width: 22px;
         height: 22px;
         font-size: 14px;
