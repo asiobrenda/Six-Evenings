@@ -380,7 +380,7 @@ p.notification-time {
 @media (max-width: 768px) {
     .notifications-container {
          width: 100%;
-        max-width: 620px;
+        max-width: 680px;
         margin: auto;
         height: 65vh;
         padding: 10px;
@@ -394,7 +394,7 @@ p.notification-time {
         padding: 8px;
         margin-top: 10px;
         border-bottom: 1px solid #ccc;
-        width:100%;
+        width:115%;
     }
 
 
