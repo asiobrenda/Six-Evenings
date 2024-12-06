@@ -412,10 +412,10 @@ p.notification-time {
 
 
 .notification-avatar{
-    width: 38px;
-    height: 38px;
+    width: 35px;
+    height: 35px;
     object-fit: cover;
-    margin-right: 10px;  /* Positive margin to avoid shifting */
+    margin-right: 8px;  /* Positive margin to avoid shifting */
     z-index: 10;  /* Ensure visibility */
      border-radius: 50%;
 }
@@ -439,13 +439,13 @@ p.notification-time {
     .notification-actions {
         flex-direction: horizontal; /* Stack buttons vertically */
         align-items: center;
-        margin-right: 150px; /* Remove excessive right margin */
+        margin-right: 140px; /* Remove excessive right margin */
         gap: 8px; /* Reduce gap between buttons */
     }
 
     .action-link {
-        width: 30px; /* Adjust button size */
-        height: 30px;
+        width: 25px; /* Adjust button size */
+        height: 25px;
         font-size: 12px; /* Reduce icon size */
     }
 
