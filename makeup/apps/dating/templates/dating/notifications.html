@@ -32,8 +32,11 @@
         <li class="notification-item" data-notification-id="{{ user.id }}" data-status="{{ user.status }}">
             <img src="{{ user.liker.profile.image.url }}" alt="{{ user.liker.username }}" class="notification-avatar">
             <div class="notification-content">
+<!--             <h6 class="notification-text">-->
+<!--              !Good news! <span class="username">{{ user.liker.username|capfirst }}</span> wants to connect-->
+<!--            </h6>-->
              <h6 class="notification-text">
-              !Good news! <span class="username">{{ user.liker.username|capfirst }}</span> wants to connect
+                 <span class="username">{{ user.liker.username|capfirst }}</span> wants to connect
             </h6>
 
 
