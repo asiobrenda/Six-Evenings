@@ -98,7 +98,7 @@ p.notification-time {
     display: flex;
     gap: 10px;  /* Space between buttons */
     margin-top: 22px;
-    margin-right: 320px;
+    margin-right: 310px;
     margin-left: auto;
 }
 
@@ -394,6 +394,7 @@ p.notification-time {
         padding: 8px;
         margin-top: 10px;
         border-bottom: 1px solid #ccc;
+        width:100%;
     }
 
 
