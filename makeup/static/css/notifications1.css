@@ -35,7 +35,7 @@
     padding: 10px;
     border-bottom: 1px solid #ccc;
     margin-top:15px;
-    width:600px;
+    width:450px;
 }
 
 
@@ -439,8 +439,8 @@ p.notification-time {
     }
 
     .action-link {
-        width: 20px; /* Adjust button size */
-        height: 20px;
+        width: 23px; /* Adjust button size */
+        height: 23px;
         font-size: 12px; /* Reduce icon size */
     }
 
