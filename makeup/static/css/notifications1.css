@@ -35,6 +35,7 @@
     padding: 10px;
     border-bottom: 1px solid #ccc;
     margin-top:15px;
+    width:600px;
 }
 
 
@@ -90,7 +91,7 @@ p.notification-time {
     margin:0;
     font-size: 13.8px;
     color: #666666;
-    margin-right: 280px;
+    margin-right: 268px;
     margin-top:9px;
 }
 
@@ -308,12 +309,6 @@ p.notification-time {
 }
 
 
-.notification-separator {
-    border: 1px solid #ccc; /* Thinner horizontal line, less faint */
-    opacity: 0.7; /* Slight transparency for a softer appearance */
-    position:fixed;
-}
-
 /* This class will make the checkmark bold */
 .bold {
     font-weight: bold;
@@ -433,19 +428,19 @@ p.notification-time {
 
     p.notification-time {
         font-size: 12px;
-        margin-right: 145px; /* Remove margin for better alignment */
+        margin-right: 150px; /* Remove margin for better alignment */
     }
 
     .notification-actions {
         flex-direction: horizontal; /* Stack buttons vertically */
         align-items: center;
-        margin-right: 138px; /* Remove excessive right margin */
+        margin-right: 135px; /* Remove excessive right margin */
         gap: 8px; /* Reduce gap between buttons */
     }
 
     .action-link {
-        width: 25px; /* Adjust button size */
-        height: 25px;
+        width: 20px; /* Adjust button size */
+        height: 20px;
         font-size: 12px; /* Reduce icon size */
     }
 
