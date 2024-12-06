@@ -600,8 +600,8 @@ styling for the liker*/
 /* Adjustments for smaller screens (e.g., mobile phones) */
 @media (max-width: 768px) {
     .notification-messages h6 {
-        margin-right: 10px;    /* Reduce margin on small screens */
-        margin-top: 10px;      /* Reduce margin on small screens */
+        margin-right: 8px;    /* Reduce margin on small screens */
+        margin-top: 8px;      /* Reduce margin on small screens */
         font-size: 14px;       /* Make text smaller */
     }
 
@@ -628,7 +628,7 @@ styling for the liker*/
 
    .likerNotes .notification-time{
       font-size: 12px;
-      padding-right: 110px; /* Remove margin for better alignment */
+      padding-right: 85px; /* Remove margin for better alignment */
 }
 
 
