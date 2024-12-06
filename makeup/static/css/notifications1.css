@@ -35,7 +35,6 @@
     padding: 10px;
     border-bottom: 1px solid #ccc;
     margin-top:15px;
-    width:450px;
 }
 
 
@@ -394,7 +393,10 @@ p.notification-time {
     .notification-item {
         padding: 8px;
         margin-top: 10px;
+        border-bottom: 1px solid #ccc;
     }
+
+
 
     .notification-header {
         flex-direction: column; /* Stack elements vertically */
