@@ -612,8 +612,8 @@ styling for the liker*/
     }
 
   .close-notifications {
-        margin-top: -112px;              /* Adjust the position of the close button */
-        right: -50px;            /* Adjust the position of the close button */
+        margin-top: 1px;              /* Adjust the position of the close button */
+        right: -52px;            /* Adjust the position of the close button */
         width: 20px;           /* Make the close button smaller */
         height: 20px;
         padding: 2px 5px;      /* Adjust padding for the smaller button */
