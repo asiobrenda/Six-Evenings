@@ -123,10 +123,11 @@
                 {% endif %}
             </div>
 
-
-           <p class="notification-time" data-timestamp="{{ notification.timestamp|date:'c' }}"></p>
-
             <div class="likerNotes">
+                 <p class="notification-time" data-timestamp="{{ notification.timestamp|date:'c' }}"></p>
+
+
+
               <p style="color:black; margin-top:20px">
                 {% if notification.status == "accepted" %}
                     {% if notification.liked_user.profile and notification.liked_user.profile.contact %}
