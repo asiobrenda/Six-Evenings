@@ -432,7 +432,7 @@ p.notification-time {
 
     p.notification-time {
         font-size: 12px;
-        margin-right: 155px; /* Remove margin for better alignment */
+        margin-right: 140px; /* Remove margin for better alignment */
     }
 
     .notification-actions {
