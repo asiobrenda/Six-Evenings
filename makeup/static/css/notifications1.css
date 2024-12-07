@@ -551,8 +551,8 @@ styling for the liker*/
 /*code for the liker user*/
 .close-notifications{
      position: absolute;
-    top: 110px;
-    right: 100px;
+    top: -5px;
+    right: 6px;
     border: none;
     cursor: pointer;
     background-color: #f0f0f0;       /* Light grey background */
@@ -611,9 +611,9 @@ styling for the liker*/
         margin: 0 10px;        /* Add a little padding on the sides */
     }
 
-    .close-notifications {
-        margin-top: -70px;              /* Adjust the position of the close button */
-        right: 50px;            /* Adjust the position of the close button */
+  .close-notifications {
+        margin-top: -112px;              /* Adjust the position of the close button */
+        right: -50px;            /* Adjust the position of the close button */
         width: 20px;           /* Make the close button smaller */
         height: 20px;
         padding: 2px 5px;      /* Adjust padding for the smaller button */
@@ -624,11 +624,13 @@ styling for the liker*/
     .likerNotes {
         margin-bottom: -20px;   /* Increase bottom margin for better spacing */
         margin-right: -90px;    /* Reduce right margin */
+
     }
 
    .likerNotes .notification-time{
       font-size: 12px;
       padding-right: 85px; /* Remove margin for better alignment */
+
 }
 
 
