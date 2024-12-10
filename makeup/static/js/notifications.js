@@ -399,8 +399,7 @@ setInterval(updateTimestamps, 60000);
 
 
 document.querySelectorAll('.action-link').forEach(button => {
-    let timeoutId; // To track tooltip timeout
-    let tooltipShownOnce = false; // To track if tooltip was already shown
+    let tooltipShownOnce = false; // To track if the tooltip was already shown
 
     button.addEventListener('click', function (e) {
         e.stopPropagation(); // Prevent bubbling
@@ -447,13 +446,6 @@ document.querySelectorAll('.action-link').forEach(button => {
             // First click: Show the tooltip
             button.classList.add('active');
             tooltipShownOnce = true; // Mark that the tooltip has been shown
-
-            // Automatically hide the tooltip after a timeout
-            clearTimeout(timeoutId); // Clear any previous timeout
-            timeoutId = setTimeout(() => {
-                button.classList.remove('active');
-                tooltipShownOnce = false; // Reset after timeout
-            }, 1500); // Adjust timeout as needed
         }
     });
 });
