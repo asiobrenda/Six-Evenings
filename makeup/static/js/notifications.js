@@ -399,17 +399,17 @@ setInterval(updateTimestamps, 60000);
 
 
 document.querySelectorAll('.action-link').forEach(button => {
-    let tooltipShownOnce = false; // Track if tooltip has been shown
+    let tooltipShownOnce = false; // Track if tooltip has been shown for this button
 
     button.addEventListener('click', function (e) {
-        e.stopPropagation(); // Prevent bubbling
+        e.stopPropagation(); // Prevent the click event from bubbling to parent elements
 
-        // If the tooltip is already active (second click), execute the action
+        // If the tooltip is already shown (second click), perform the action
         if (tooltipShownOnce) {
-            tooltipShownOnce = false; // Reset for future interactions
-            button.classList.remove('active'); // Hide tooltip
+            tooltipShownOnce = false; // Reset the tooltip state
+            button.classList.remove('active'); // Hide the tooltip
 
-            // Perform specific action based on button class
+            // Perform the specific action based on the button's class
             if (button.classList.contains('view-profile')) {
                 const userId = button.getAttribute('data-user-id');
                 const profileUrl = button.getAttribute('getProfileUrl');
@@ -425,7 +425,7 @@ document.querySelectorAll('.action-link').forEach(button => {
                         if (data.success) {
                             console.log('User accepted');
                             button.classList.add('hidden-button'); // Hide accept button
-                            button.nextElementSibling.classList.add('hidden-button'); // Update reject button UI
+                            button.nextElementSibling.classList.add('hidden-button'); // Hide reject button
                         }
                     });
             } else if (button.classList.contains('reject')) {
@@ -438,13 +438,16 @@ document.querySelectorAll('.action-link').forEach(button => {
                         if (data.success) {
                             console.log('User rejected');
                             button.classList.add('hidden-button'); // Hide reject button
-                            button.previousElementSibling.classList.add('hidden-button'); // Update accept button UI
+                            button.previousElementSibling.classList.add('hidden-button'); // Hide accept button
                         }
                     });
             }
         } else {
             // First click: Show the tooltip
-            button.classList.add('active');
+            document.querySelectorAll('.action-link.active').forEach(activeButton => {
+                activeButton.classList.remove('active'); // Hide other tooltips
+            });
+            button.classList.add('active'); // Show this tooltip
             tooltipShownOnce = true; // Mark tooltip as shown
         }
     });
@@ -454,11 +457,12 @@ document.querySelectorAll('.action-link').forEach(button => {
 document.addEventListener('click', function (e) {
     document.querySelectorAll('.action-link.active').forEach(button => {
         if (!button.contains(e.target)) {
-            button.classList.remove('active'); // Hide active tooltip
-            button.dataset.tooltipShownOnce = false; // Reset state
+            button.classList.remove('active'); // Hide tooltip
+            button.tooltipShownOnce = false; // Reset state
         }
     });
 });
+
 
 
 });
