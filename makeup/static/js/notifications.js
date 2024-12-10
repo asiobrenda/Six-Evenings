@@ -399,17 +399,17 @@ setInterval(updateTimestamps, 60000);
 
 
 document.querySelectorAll('.action-link').forEach(button => {
-    let tooltipShownOnce = false; // To track if the tooltip was already shown
+    let tooltipShownOnce = false; // Track if tooltip has been shown
 
     button.addEventListener('click', function (e) {
         e.stopPropagation(); // Prevent bubbling
 
-        // If the tooltip is active and this is the second click, execute the action
+        // If the tooltip is already active (second click), execute the action
         if (tooltipShownOnce) {
-            tooltipShownOnce = false; // Reset for future clicks
-            button.classList.remove('active'); // Hide the tooltip
+            tooltipShownOnce = false; // Reset for future interactions
+            button.classList.remove('active'); // Hide tooltip
 
-            // Perform the specific action based on the button's class
+            // Perform specific action based on button class
             if (button.classList.contains('view-profile')) {
                 const userId = button.getAttribute('data-user-id');
                 const profileUrl = button.getAttribute('getProfileUrl');
@@ -445,21 +445,20 @@ document.querySelectorAll('.action-link').forEach(button => {
         } else {
             // First click: Show the tooltip
             button.classList.add('active');
-            tooltipShownOnce = true; // Mark that the tooltip has been shown
+            tooltipShownOnce = true; // Mark tooltip as shown
         }
     });
 });
 
 // Close tooltips when clicking outside
 document.addEventListener('click', function (e) {
-    const tooltips = document.querySelectorAll('.action-link');
-    tooltips.forEach(button => {
+    document.querySelectorAll('.action-link.active').forEach(button => {
         if (!button.contains(e.target)) {
-            button.classList.remove('active'); // Hide tooltip
+            button.classList.remove('active'); // Hide active tooltip
+            button.dataset.tooltipShownOnce = false; // Reset state
         }
     });
 });
-
 
 
 });
