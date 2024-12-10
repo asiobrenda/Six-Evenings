@@ -398,23 +398,72 @@ updateTimestamps();
 setInterval(updateTimestamps, 60000);
 
 
-
 document.querySelectorAll('.action-link').forEach(button => {
-    button.addEventListener('click', function(e) {
-        // Prevent the click event from bubbling up and closing the tooltip immediately
-        e.stopPropagation();
+    let timeoutId; // To track tooltip timeout
+    let tooltipShownOnce = false; // To track if tooltip was already shown
 
-        // Toggle the 'active' class to show/hide the tooltip
-        button.classList.toggle('active');
+    button.addEventListener('click', function (e) {
+        e.stopPropagation(); // Prevent bubbling
+
+        // If the tooltip is active and this is the second click, execute the action
+        if (tooltipShownOnce) {
+            tooltipShownOnce = false; // Reset for future clicks
+            button.classList.remove('active'); // Hide the tooltip
+
+            // Perform the specific action based on the button's class
+            if (button.classList.contains('view-profile')) {
+                const userId = button.getAttribute('data-user-id');
+                const profileUrl = button.getAttribute('getProfileUrl');
+                console.log(`Opening profile for user ID: ${userId}`);
+                window.location.href = profileUrl; // Redirect to the profile
+            } else if (button.classList.contains('accept')) {
+                const likerId = button.getAttribute('data-liker-id');
+                const acceptUrl = button.getAttribute('acceptUrl');
+                console.log(`Accepting user ID: ${likerId}`);
+                fetch(acceptUrl, { method: 'POST' })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log('User accepted');
+                            button.classList.add('hidden-button'); // Hide accept button
+                            button.nextElementSibling.classList.add('hidden-button'); // Update reject button UI
+                        }
+                    });
+            } else if (button.classList.contains('reject')) {
+                const likerId = button.getAttribute('data-liker-id');
+                const rejectUrl = button.getAttribute('rejectUrl');
+                console.log(`Rejecting user ID: ${likerId}`);
+                fetch(rejectUrl, { method: 'POST' })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log('User rejected');
+                            button.classList.add('hidden-button'); // Hide reject button
+                            button.previousElementSibling.classList.add('hidden-button'); // Update accept button UI
+                        }
+                    });
+            }
+        } else {
+            // First click: Show the tooltip
+            button.classList.add('active');
+            tooltipShownOnce = true; // Mark that the tooltip has been shown
+
+            // Automatically hide the tooltip after a timeout
+            clearTimeout(timeoutId); // Clear any previous timeout
+            timeoutId = setTimeout(() => {
+                button.classList.remove('active');
+                tooltipShownOnce = false; // Reset after timeout
+            }, 1500); // Adjust timeout as needed
+        }
     });
 });
 
-// Close the tooltip if the user clicks anywhere else on the screen
-document.addEventListener('click', function(e) {
+// Close tooltips when clicking outside
+document.addEventListener('click', function (e) {
     const tooltips = document.querySelectorAll('.action-link');
     tooltips.forEach(button => {
         if (!button.contains(e.target)) {
-            button.classList.remove('active');  // Remove the 'active' class to hide the tooltip
+            button.classList.remove('active'); // Hide tooltip
         }
     });
 });
