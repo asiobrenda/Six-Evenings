@@ -399,47 +399,78 @@ setInterval(updateTimestamps, 60000);
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Iterate over all action-link buttons
+    let pressTimer; // Timer to detect long press
+
     document.querySelectorAll('.action-link').forEach(button => {
         button.dataset.tooltipVisible = "false"; // Initialize tooltip state for each button
 
+        // Long press detection
+        button.addEventListener('mousedown', function (e) {
+            pressTimer = setTimeout(() => {
+                console.log("Long press: Showing tooltip only");
+                button.dataset.tooltipVisible = "true";
+                button.classList.add('active'); // Ensure tooltip is shown
+                button.dataset.preventAction = "true"; // Mark as long press to prevent further action
+            }, 500); // Adjust time for long press (500ms here)
+        });
+
+        button.addEventListener('touchstart', function (e) {
+            pressTimer = setTimeout(() => {
+                console.log("Long press (touch): Showing tooltip only");
+                button.dataset.tooltipVisible = "true";
+                button.classList.add('active'); // Ensure tooltip is shown
+                button.dataset.preventAction = "true"; // Mark as long press to prevent further action
+            }, 500);
+        });
+
+        button.addEventListener('mouseup', handlePressEnd);
+        button.addEventListener('mouseleave', handlePressEnd);
+        button.addEventListener('touchend', handlePressEnd);
+
+        function handlePressEnd() {
+            clearTimeout(pressTimer); // Cancel long press timer
+        }
+
+        // Click behavior
         button.addEventListener('click', function (e) {
-            e.preventDefault(); // Prevent default button behavior
-            e.stopPropagation(); // Stop bubbling up to parent elements
+            e.preventDefault(); // Prevent default action
+            e.stopPropagation(); // Stop event bubbling
+
+            if (button.dataset.preventAction === "true") {
+                // Long press detected, reset state and do nothing
+                console.log("Ignoring action after long press");
+                button.dataset.preventAction = "false"; // Reset long press marker
+                return;
+            }
 
             const isTooltipVisible = button.dataset.tooltipVisible === "true";
 
             if (!isTooltipVisible) {
-                // First click: Show the tooltip
+                // First click: Show tooltip
                 console.log("First click: Showing tooltip");
-                button.dataset.tooltipVisible = "true"; // Mark tooltip as visible
+                button.dataset.tooltipVisible = "true";
+                button.classList.add('active');
+
+                // Hide other tooltips
                 document.querySelectorAll('.action-link.active').forEach(activeButton => {
-                    // Hide other tooltips
                     if (activeButton !== button) {
                         activeButton.classList.remove('active');
                         activeButton.dataset.tooltipVisible = "false";
                     }
                 });
-
-                button.classList.add('active'); // Show tooltip for this button
             } else {
-                // Second click: Perform the action
+                // Second click: Hide tooltip and perform action
                 console.log("Second click: Performing action");
-                button.dataset.tooltipVisible = "false"; // Reset tooltip state
-                button.classList.remove('active'); // Hide tooltip
+                button.dataset.tooltipVisible = "false";
+                button.classList.remove('active');
 
                 if (button.classList.contains('view-profile')) {
-                    // Open the profile modal
-                    const profileUrl = button.getAttribute('getProfileUrl');
-                    console.log(`Opening profile: ${profileUrl}`);
-                    openProfileModal(profileUrl);
+                    openProfileModal(button.getAttribute('getProfileUrl'));
                 } else if (button.classList.contains('accept')) {
-                    // Handle Accept logic
                     const acceptUrl = button.getAttribute('acceptUrl');
                     const likerId = button.getAttribute('data-liker-id');
                     acceptLike(likerId, acceptUrl, button);
                 } else if (button.classList.contains('reject')) {
-                    // Handle Reject logic
                     const rejectUrl = button.getAttribute('rejectUrl');
                     const likerId = button.getAttribute('data-liker-id');
                     rejectLike(likerId, rejectUrl, button);
@@ -454,7 +485,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!button.contains(e.target)) {
                 console.log("Click outside: Hiding tooltip");
                 button.classList.remove('active'); // Hide tooltip
-                button.dataset.tooltipVisible = "false"; // Reset state
+                button.dataset.tooltipVisible = "false"; // Reset tooltip state
             }
         });
     });
