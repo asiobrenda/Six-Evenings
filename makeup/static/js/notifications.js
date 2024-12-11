@@ -398,76 +398,81 @@ updateTimestamps();
 setInterval(updateTimestamps, 60000);
 
 
-document.querySelectorAll('.action-link').forEach(button => {
-    // Initialize a flag for tooltip state
-    button.tooltipShown = false;
+document.addEventListener('DOMContentLoaded', function () {
+    // Iterate over all action-link buttons
+    document.querySelectorAll('.action-link').forEach(button => {
+        button.dataset.tooltipVisible = "false"; // Initialize tooltip state for each button
 
-    button.addEventListener('click', function (e) {
-        e.stopPropagation(); // Prevent click from bubbling up
+        button.addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent default button behavior
+            e.stopPropagation(); // Stop bubbling up to parent elements
 
-        if (button.tooltipShown) {
-            console.log("Second click: Performing action"); // Debugging log
-            button.tooltipShown = false; // Reset tooltip state
-            button.classList.remove('active'); // Hide tooltip
+            const isTooltipVisible = button.dataset.tooltipVisible === "true";
 
-            // Perform specific action
-            if (button.classList.contains('view-profile')) {
-                const userId = button.getAttribute('data-user-id');
-                const profileUrl = button.getAttribute('getProfileUrl');
-                console.log(`Opening profile for user ID: ${userId}`);
-                window.location.href = profileUrl; // Redirect to the profile
-            } else if (button.classList.contains('accept')) {
-                const likerId = button.getAttribute('data-liker-id');
-                const acceptUrl = button.getAttribute('acceptUrl');
-                console.log(`Accepting user ID: ${likerId}`);
-                fetch(acceptUrl, { method: 'POST' })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            console.log('User accepted');
-                            button.classList.add('hidden-button'); // Hide accept button
-                            button.nextElementSibling.classList.add('hidden-button'); // Hide reject button
-                        }
-                    });
-            } else if (button.classList.contains('reject')) {
-                const likerId = button.getAttribute('data-liker-id');
-                const rejectUrl = button.getAttribute('rejectUrl');
-                console.log(`Rejecting user ID: ${likerId}`);
-                fetch(rejectUrl, { method: 'POST' })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            console.log('User rejected');
-                            button.classList.add('hidden-button'); // Hide reject button
-                            button.previousElementSibling.classList.add('hidden-button'); // Hide accept button
-                        }
-                    });
+            if (!isTooltipVisible) {
+                // First click: Show the tooltip
+                console.log("First click: Showing tooltip");
+                button.dataset.tooltipVisible = "true"; // Mark tooltip as visible
+                document.querySelectorAll('.action-link.active').forEach(activeButton => {
+                    // Hide other tooltips
+                    if (activeButton !== button) {
+                        activeButton.classList.remove('active');
+                        activeButton.dataset.tooltipVisible = "false";
+                    }
+                });
+
+                button.classList.add('active'); // Show tooltip for this button
+            } else {
+                // Second click: Perform the action
+                console.log("Second click: Performing action");
+                button.dataset.tooltipVisible = "false"; // Reset tooltip state
+                button.classList.remove('active'); // Hide tooltip
+
+                if (button.classList.contains('view-profile')) {
+                    // Open the profile modal
+                    const profileUrl = button.getAttribute('getProfileUrl');
+                    console.log(`Opening profile: ${profileUrl}`);
+                    openProfileModal(profileUrl);
+                } else if (button.classList.contains('accept')) {
+                    // Handle Accept logic
+                    const acceptUrl = button.getAttribute('acceptUrl');
+                    const likerId = button.getAttribute('data-liker-id');
+                    acceptLike(likerId, acceptUrl, button);
+                } else if (button.classList.contains('reject')) {
+                    // Handle Reject logic
+                    const rejectUrl = button.getAttribute('rejectUrl');
+                    const likerId = button.getAttribute('data-liker-id');
+                    rejectLike(likerId, rejectUrl, button);
+                }
             }
-        } else {
-            console.log("First click: Showing tooltip"); // Debugging log
-            // Hide any visible tooltips
-            document.querySelectorAll('.action-link.active').forEach(activeButton => {
-                activeButton.classList.remove('active');
-                activeButton.tooltipShown = false; // Reset tooltip state for other buttons
-            });
-
-            // Show the tooltip for this button
-            button.classList.add('active');
-            button.tooltipShown = true;
-        }
+        });
     });
-});
 
-// Hide tooltips when clicking outside
-document.addEventListener('click', function (e) {
-    document.querySelectorAll('.action-link.active').forEach(button => {
-        if (!button.contains(e.target)) {
-            console.log("Click outside: Hiding tooltip"); // Debugging log
-            button.classList.remove('active'); // Hide tooltip
-            button.tooltipShown = false; // Reset tooltip state
-        }
+    // Close tooltips when clicking outside
+    document.addEventListener('click', function (e) {
+        document.querySelectorAll('.action-link.active').forEach(button => {
+            if (!button.contains(e.target)) {
+                console.log("Click outside: Hiding tooltip");
+                button.classList.remove('active'); // Hide tooltip
+                button.dataset.tooltipVisible = "false"; // Reset state
+            }
+        });
     });
+
+    function openProfileModal(profileUrl) {
+        // AJAX request to fetch profile details
+        $.post(profileUrl, {}, function (data) {
+            document.getElementById('profileDetails').innerHTML = data;
+            document.getElementById('profileModal').style.display = 'block';
+            document.body.classList.add('modal-open');
+        }).fail(function () {
+            console.error("Failed to load profile.");
+            showToast("Unable to load profile. Please try again.");
+        });
+    }
 });
 
 
 });
+
+
