@@ -399,19 +399,18 @@ setInterval(updateTimestamps, 60000);
 
 
 document.querySelectorAll('.action-link').forEach(button => {
-    // Initialize state directly on the button element
-    button.dataset.tooltipShownOnce = "false"; // Tracks if the tooltip has been shown
+    // Store a flag on the button to track if the tooltip was shown
+    let tooltipShown = false;
 
     button.addEventListener('click', function (e) {
-        e.stopPropagation(); // Prevent the click from bubbling to parent elements
+        e.stopPropagation(); // Prevent click from bubbling to parent elements
 
-        // Check if the tooltip is already shown (i.e., second click)
-        if (button.dataset.tooltipShownOnce === "true") {
-            // Perform the action only on the second click
-            button.dataset.tooltipShownOnce = "false"; // Reset tooltip state
+        if (tooltipShown) {
+            // Perform the action on the second click
+            tooltipShown = false; // Reset the tooltip state
             button.classList.remove('active'); // Hide the tooltip
 
-            // Perform the specific action
+            // Perform specific action
             if (button.classList.contains('view-profile')) {
                 const userId = button.getAttribute('data-user-id');
                 const profileUrl = button.getAttribute('getProfileUrl');
@@ -448,11 +447,9 @@ document.querySelectorAll('.action-link').forEach(button => {
             // First click: Show the tooltip
             document.querySelectorAll('.action-link.active').forEach(activeButton => {
                 activeButton.classList.remove('active'); // Hide other tooltips
-                activeButton.dataset.tooltipShownOnce = "false"; // Reset state for other buttons
             });
-
             button.classList.add('active'); // Show this tooltip
-            button.dataset.tooltipShownOnce = "true"; // Mark tooltip as shown
+            tooltipShown = true; // Mark tooltip as shown
         }
     });
 });
@@ -461,8 +458,8 @@ document.querySelectorAll('.action-link').forEach(button => {
 document.addEventListener('click', function (e) {
     document.querySelectorAll('.action-link.active').forEach(button => {
         if (!button.contains(e.target)) {
-            button.classList.remove('active'); // Hide the tooltip
-            button.dataset.tooltipShownOnce = "false"; // Reset the tooltip state
+            button.classList.remove('active'); // Hide tooltip
+            button.tooltipShown = false; // Reset tooltip state
         }
     });
 });

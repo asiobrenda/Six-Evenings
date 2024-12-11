@@ -487,45 +487,45 @@ p.notification-time {
         display: inline-block;
     }
 */
-    .action-link::before {
-        content: attr(data-tooltip);
-        position: absolute;
-        top: 130%; /* Position below the button */
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: rgba(50, 50, 50, 0.9);
-        color: #fff;
-        padding: 5px 7px;
-        border-radius: 5px;
-        white-space: nowrap;
-        font-size: 12px;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-        z-index: 10;
-        pointer-events: none; /* Prevents interference with button clicks */
-    }
+   .action-link::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 130%; /* Tooltip below the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(50, 50, 50, 0.9); /* Dark background for tooltip */
+    color: #fff; /* White text */
+    padding: 5px 7px;
+    border-radius: 5px;
+    white-space: nowrap; /* Prevent text wrapping */
+    font-size: 12px;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    z-index: 10; /* Ensure tooltip appears above other elements */
+    pointer-events: none; /* Prevent tooltip from interfering with clicks */
+}
 
-    .action-link::after {
-        content: '';
-        position: absolute;
-        top: 115%; /* Just below the button */
-        left: 50%;
-        transform: translateX(-50%);
-        border-width: 6px;
-        border-style: solid;
-        border-color: rgba(50, 50, 50, 0.9) transparent transparent transparent;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-    }
+.action-link::after {
+    content: '';
+    position: absolute;
+    top: 115%; /* Adjust arrow position */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px; /* Size of arrow */
+    border-style: solid;
+    border-color: rgba(50, 50, 50, 0.9) transparent transparent transparent;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
 
-    /* Show tooltip when 'active' class is added */
-    .action-link.active::before,
-    .action-link.active::after {
-        opacity: 1;
-        visibility: visible;
-    }
+/* Show tooltip when 'active' class is added */
+.action-link.active::before,
+.action-link.active::after {
+    opacity: 1;
+    visibility: visible;
+}
 
 }
 
