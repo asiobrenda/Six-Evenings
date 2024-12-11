@@ -399,18 +399,18 @@ setInterval(updateTimestamps, 60000);
 
 
 document.querySelectorAll('.action-link').forEach(button => {
-    // Store a flag on the button to track if the tooltip was shown
-    let tooltipShown = false;
+    // Add a custom property to the button to track if the tooltip was shown
+    button.tooltipShown = false;
 
     button.addEventListener('click', function (e) {
-        e.stopPropagation(); // Prevent click from bubbling to parent elements
+        e.stopPropagation(); // Prevent the click from bubbling to parent elements
 
-        if (tooltipShown) {
+        if (button.tooltipShown) {
             // Perform the action on the second click
-            tooltipShown = false; // Reset the tooltip state
+            button.tooltipShown = false; // Reset the tooltip state
             button.classList.remove('active'); // Hide the tooltip
 
-            // Perform specific action
+            // Perform specific action based on button type
             if (button.classList.contains('view-profile')) {
                 const userId = button.getAttribute('data-user-id');
                 const profileUrl = button.getAttribute('getProfileUrl');
@@ -447,9 +447,10 @@ document.querySelectorAll('.action-link').forEach(button => {
             // First click: Show the tooltip
             document.querySelectorAll('.action-link.active').forEach(activeButton => {
                 activeButton.classList.remove('active'); // Hide other tooltips
+                activeButton.tooltipShown = false; // Reset tooltip state for other buttons
             });
             button.classList.add('active'); // Show this tooltip
-            tooltipShown = true; // Mark tooltip as shown
+            button.tooltipShown = true; // Mark tooltip as shown
         }
     });
 });
@@ -463,7 +464,6 @@ document.addEventListener('click', function (e) {
         }
     });
 });
-
 
 
 });
