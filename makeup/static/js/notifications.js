@@ -400,14 +400,18 @@ setInterval(updateTimestamps, 60000);
 
 document.querySelectorAll('.action-link').forEach(button => {
     // Initialize state directly on the button element
-    button.dataset.tooltipShownOnce = "false";  // This is to track if the tooltip has been shown
+    button.dataset.tooltipShownOnce = "false"; // Tracks if the tooltip has been shown
 
     button.addEventListener('click', function (e) {
         e.stopPropagation(); // Prevent the click from bubbling to parent elements
 
         // Check if the tooltip is already shown (i.e., second click)
         if (button.dataset.tooltipShownOnce === "true") {
-            // Perform the specific action based on the button's class
+            // Perform the action only on the second click
+            button.dataset.tooltipShownOnce = "false"; // Reset tooltip state
+            button.classList.remove('active'); // Hide the tooltip
+
+            // Perform the specific action
             if (button.classList.contains('view-profile')) {
                 const userId = button.getAttribute('data-user-id');
                 const profileUrl = button.getAttribute('getProfileUrl');
@@ -440,15 +444,11 @@ document.querySelectorAll('.action-link').forEach(button => {
                         }
                     });
             }
-
-            // Reset tooltip state after the action is performed
-            button.dataset.tooltipShownOnce = "false"; // Tooltip has been hidden and action performed
-            button.classList.remove('active'); // Hide tooltip
         } else {
             // First click: Show the tooltip
             document.querySelectorAll('.action-link.active').forEach(activeButton => {
                 activeButton.classList.remove('active'); // Hide other tooltips
-                activeButton.dataset.tooltipShownOnce = "false"; // Reset state
+                activeButton.dataset.tooltipShownOnce = "false"; // Reset state for other buttons
             });
 
             button.classList.add('active'); // Show this tooltip
@@ -461,12 +461,11 @@ document.querySelectorAll('.action-link').forEach(button => {
 document.addEventListener('click', function (e) {
     document.querySelectorAll('.action-link.active').forEach(button => {
         if (!button.contains(e.target)) {
-            button.classList.remove('active'); // Hide tooltip
-            button.dataset.tooltipShownOnce = "false"; // Reset state
+            button.classList.remove('active'); // Hide the tooltip
+            button.dataset.tooltipShownOnce = "false"; // Reset the tooltip state
         }
     });
 });
-
 
 
 
