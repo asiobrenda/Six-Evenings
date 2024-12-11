@@ -399,16 +399,14 @@ setInterval(updateTimestamps, 60000);
 
 
 document.querySelectorAll('.action-link').forEach(button => {
-    let tooltipShownOnce = false; // Track if tooltip has been shown for this button
+    // Initialize state directly on the button element
+    button.dataset.tooltipShownOnce = "false";  // This is to track if the tooltip has been shown
 
     button.addEventListener('click', function (e) {
-        e.stopPropagation(); // Prevent the click event from bubbling to parent elements
+        e.stopPropagation(); // Prevent the click from bubbling to parent elements
 
-        // If the tooltip is already shown (second click), perform the action
-        if (tooltipShownOnce) {
-            tooltipShownOnce = false; // Reset the tooltip state
-            button.classList.remove('active'); // Hide the tooltip
-
+        // Check if the tooltip is already shown (i.e., second click)
+        if (button.dataset.tooltipShownOnce === "true") {
             // Perform the specific action based on the button's class
             if (button.classList.contains('view-profile')) {
                 const userId = button.getAttribute('data-user-id');
@@ -442,13 +440,19 @@ document.querySelectorAll('.action-link').forEach(button => {
                         }
                     });
             }
+
+            // Reset tooltip state after the action is performed
+            button.dataset.tooltipShownOnce = "false"; // Tooltip has been hidden and action performed
+            button.classList.remove('active'); // Hide tooltip
         } else {
             // First click: Show the tooltip
             document.querySelectorAll('.action-link.active').forEach(activeButton => {
                 activeButton.classList.remove('active'); // Hide other tooltips
+                activeButton.dataset.tooltipShownOnce = "false"; // Reset state
             });
+
             button.classList.add('active'); // Show this tooltip
-            tooltipShownOnce = true; // Mark tooltip as shown
+            button.dataset.tooltipShownOnce = "true"; // Mark tooltip as shown
         }
     });
 });
@@ -458,10 +462,11 @@ document.addEventListener('click', function (e) {
     document.querySelectorAll('.action-link.active').forEach(button => {
         if (!button.contains(e.target)) {
             button.classList.remove('active'); // Hide tooltip
-            button.tooltipShownOnce = false; // Reset state
+            button.dataset.tooltipShownOnce = "false"; // Reset state
         }
     });
 });
+
 
 
 
