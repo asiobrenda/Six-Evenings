@@ -487,23 +487,27 @@ p.notification-time {
         display: inline-block;
     }
 */
-   .action-link::before {
+ .action-link::before {
     content: attr(data-tooltip);
     position: absolute;
-    top: 130%; /* Tooltip below the button */
+    top: 130%;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(50, 50, 50, 0.9); /* Dark background for tooltip */
-    color: #fff; /* White text */
+    background-color: rgba(50, 50, 50, 0.9);
+    color: #fff;
     padding: 5px 7px;
     border-radius: 5px;
-    white-space: nowrap; /* Prevent text wrapping */
+    white-space: nowrap;
     font-size: 12px;
-    opacity: 0; /* Initially hidden */
+    opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-    z-index: 10; /* Ensure tooltip appears above other elements */
-    pointer-events: none; /* Prevent tooltip from interfering with clicks */
+    z-index: 10;
+}
+
+.action-link.active::before {
+    opacity: 1;
+    visibility: visible;
 }
 
 .action-link::after {

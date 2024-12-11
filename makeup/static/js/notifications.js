@@ -399,18 +399,18 @@ setInterval(updateTimestamps, 60000);
 
 
 document.querySelectorAll('.action-link').forEach(button => {
-    // Add a custom property to the button to track if the tooltip was shown
+    // Initialize a flag for tooltip state
     button.tooltipShown = false;
 
     button.addEventListener('click', function (e) {
-        e.stopPropagation(); // Prevent the click from bubbling to parent elements
+        e.stopPropagation(); // Prevent click from bubbling up
 
         if (button.tooltipShown) {
-            // Perform the action on the second click
-            button.tooltipShown = false; // Reset the tooltip state
-            button.classList.remove('active'); // Hide the tooltip
+            console.log("Second click: Performing action"); // Debugging log
+            button.tooltipShown = false; // Reset tooltip state
+            button.classList.remove('active'); // Hide tooltip
 
-            // Perform specific action based on button type
+            // Perform specific action
             if (button.classList.contains('view-profile')) {
                 const userId = button.getAttribute('data-user-id');
                 const profileUrl = button.getAttribute('getProfileUrl');
@@ -444,21 +444,25 @@ document.querySelectorAll('.action-link').forEach(button => {
                     });
             }
         } else {
-            // First click: Show the tooltip
+            console.log("First click: Showing tooltip"); // Debugging log
+            // Hide any visible tooltips
             document.querySelectorAll('.action-link.active').forEach(activeButton => {
-                activeButton.classList.remove('active'); // Hide other tooltips
+                activeButton.classList.remove('active');
                 activeButton.tooltipShown = false; // Reset tooltip state for other buttons
             });
-            button.classList.add('active'); // Show this tooltip
-            button.tooltipShown = true; // Mark tooltip as shown
+
+            // Show the tooltip for this button
+            button.classList.add('active');
+            button.tooltipShown = true;
         }
     });
 });
 
-// Close tooltips when clicking outside
+// Hide tooltips when clicking outside
 document.addEventListener('click', function (e) {
     document.querySelectorAll('.action-link.active').forEach(button => {
         if (!button.contains(e.target)) {
+            console.log("Click outside: Hiding tooltip"); // Debugging log
             button.classList.remove('active'); // Hide tooltip
             button.tooltipShown = false; // Reset tooltip state
         }
