@@ -236,14 +236,6 @@ def see_live(request):
     # Render the live users on the template
     return render(request, 'dating/live.html', context)
 
-def format_contact(contact):
-    """
-    Utility function to format a contact number to ensure it starts with '+'.
-    """
-    if contact and not contact.startswith('+'):
-        return '+' + contact.strip()
-    return contact
-
 
 # Utility function to calculate and format timestamps with correct singular/plural form
 def format_time_difference(timestamp):
@@ -280,8 +272,7 @@ def notifications(request):
         # Format timestamps and contacts for liked_users
         for notification in liked_users:
             notification.formatted_timestamp = format_time_difference(notification.timestamp)
-            if notification.liker.profile and notification.liker.profile.contact:
-                notification.liker.profile.contact = format_contact(notification.liker.profile.contact)
+
 
         # Fetch liker notifications with related profile images
         liker_notifications = LikeNotification.objects.filter(
@@ -291,8 +282,7 @@ def notifications(request):
         # Format timestamps and contacts for liker_notifications
         for notification in liker_notifications:
             notification.formatted_timestamp = format_time_difference(notification.timestamp)
-            if notification.liked_user.profile and notification.liked_user.profile.contact:
-                notification.liked_user.profile.contact = format_contact(notification.liked_user.profile.contact)
+
 
         # Count only pending notifications (don't mark them as read yet)
         notification_count = LikeNotification.objects.filter(
