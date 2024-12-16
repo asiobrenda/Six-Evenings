@@ -134,8 +134,8 @@
                         {% if notification.liked_user.profile and notification.liked_user.profile.contact %}
                 <a href="https://wa.me/{{ notification.liked_user.profile.contact }}"
                     target="_blank"
-                    style="text-decoration: none; color: inherit; margin-right:230px; margin-top:20px; all: unset;">
-                    {{ notification.liked_user.profile.contact}}
+                    style="text-decoration: none; color: inherit; margin-right:170px; margin-top:20px">
+                    {{ notification.liked_user.profile.contact|slice:"1:" }}+
                     <i class="fab fa-whatsapp" style="color: #25D366; font-size: 20px"></i>
                 </a>
                         {% else %}
