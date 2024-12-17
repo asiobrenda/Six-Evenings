@@ -556,7 +556,7 @@ p.notification-time {
 /*
 styling for the liker*/
 .notification-messages h6{
-    margin-right:145px;
+    margin-right:140px;
     margin-top: 12px;
 
 }
@@ -611,7 +611,7 @@ styling for the liker*/
 
 .likerNotes.notification-time{
       font-size: 12px;
-      margin-right: 520px; /* Remove margin for better alignment */
+      margin-right: 525px; /* Remove margin for better alignment */
 
 }
 
@@ -648,7 +648,7 @@ styling for the liker*/
 
    .likerNotes .notification-time{
       font-size: 12px;
-      padding-right: 80px; /* Remove margin for better alignment */
+      padding-right: 90px; /* Remove margin for better alignment */
 
 }
 
