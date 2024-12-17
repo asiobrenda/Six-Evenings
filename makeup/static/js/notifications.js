@@ -334,11 +334,12 @@ function closeNotification(notificationId, userType, notificationItem) {
 
 
 // Define the formatTimeAgo function
-// Define the formatTimeAgo function
 function formatTimeAgo(timestamp) {
-    const now = new Date();
-    const then = new Date(timestamp);
-    const diffInSeconds = Math.floor((now - then) / 1000);
+    const now = new Date(); // Client's current time
+    const then = new Date(timestamp); // Convert ISO timestamp to Date object
+
+    // Calculate the absolute difference in seconds
+    const diffInSeconds = Math.abs(Math.floor((now - then) / 1000));
 
     if (diffInSeconds < 60) {
         return { number: diffInSeconds, unit: "second" };
@@ -373,6 +374,7 @@ function formatTimeAgo(timestamp) {
     return { number: diffInYears, unit: "year" };
 }
 
+
 // Function to update the notification timestamps on page load
 function updateTimestamps() {
     const notifications = document.querySelectorAll('.notification-time');
@@ -381,7 +383,7 @@ function updateTimestamps() {
         const { number, unit } = formatTimeAgo(timestamp); // Format the time ago
 
         // Construct the timestamp text with pluralization
-         let text = ` agos ${number} ${unit}${number > 1 ? 's' : ''} ago`;
+        let text = ` agos ${number} ${unit}${number > 1 ? 's' : ''} ago`;
 
         // Replace " ago" with a span to change the color to white
         text = text.replace(' agos', '<span style="color: white;"> agos</span>');
@@ -390,6 +392,7 @@ function updateTimestamps() {
         notification.innerHTML = text;
     });
 }
+
 
 // Initial call to update timestamps
 updateTimestamps();
