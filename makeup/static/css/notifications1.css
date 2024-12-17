@@ -442,13 +442,13 @@ p.notification-time {
 
     p.notification-time {
         font-size: 12px;
-        margin-right: 120px; /* Remove margin for better alignment */
+        margin-right: 125px; /* Remove margin for better alignment */
     }
 
     .notification-actions {
         flex-direction: horizontal; /* Stack buttons vertically */
         align-items: center;
-        margin-right: 135px; /* Remove excessive right margin */
+        margin-right: 140px; /* Remove excessive right margin */
         gap: 8px; /* Reduce gap between buttons */
     }
 
