@@ -426,9 +426,19 @@ p.notification-time {
 
 
     .notification-content h6 {
-        margin-left: 20px; /* Remove left margin */
+        margin-left: 13px; /* Remove left margin */
         font-size: 14px; /* Adjust font size */
     }
+
+    .notification-text {
+    text-transform: none;  /* Ensure no global capitalization is applied */
+}
+
+
+    .username {
+    text-transform: capitalize;  /* Capitalize only the first letter of the username */
+}
+
 
     p.notification-time {
         font-size: 12px;
