@@ -383,10 +383,10 @@ function updateTimestamps() {
         const { number, unit } = formatTimeAgo(timestamp); // Format the time ago
 
         // Construct the timestamp text with pluralization
-        let text = ` agos ${number} ${unit}${number > 1 ? 's' : ''} ago`;
+        let text = ` na ${number} ${unit}${number > 1 ? 's' : ''} ago`;
 
         // Replace " ago" with a span to change the color to white
-        text = text.replace(' agos', '<span style="color: white;"> agos</span>');
+        text = text.replace(' na', '<span style="color: white;"> na</span>');
 
         // Update the notification timestamp with the formatted text
         notification.innerHTML = text;
