@@ -426,7 +426,7 @@ p.notification-time {
 
 
     .notification-content h6 {
-        margin-left: 13px; /* Remove left margin */
+        margin-left: 10px; /* Remove left margin */
         font-size: 14px; /* Adjust font size */
     }
 
@@ -442,7 +442,7 @@ p.notification-time {
 
     p.notification-time {
         font-size: 12px;
-        margin-right: 140px; /* Remove margin for better alignment */
+        margin-right: 137px; /* Remove margin for better alignment */
     }
 
     .notification-actions {
