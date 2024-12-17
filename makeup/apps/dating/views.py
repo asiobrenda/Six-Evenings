@@ -239,27 +239,41 @@ def see_live(request):
 
 # Utility function to calculate and format timestamps with correct singular/plural form
 def format_time_difference(timestamp):
+    from datetime import timedelta
+    from django.utils import timezone
+
     local_time = timezone.localtime(timestamp)
     time_diff = timezone.now() - local_time
+
     days = time_diff.days
-    hours = time_diff.seconds // 3600
-    minutes = (time_diff.seconds // 60) % 60
+    seconds = time_diff.seconds
+    weeks = days // 7
     months = days // 30  # Approximate calculation for months
     years = days // 365  # Approximate calculation for years
 
-    # Check if it's a year or month difference
+    # Calculate finer granularities
+    hours = seconds // 3600
+    minutes = (seconds // 60) % 60
+    remaining_seconds = seconds % 60
+
+    # Format the time difference
     if years > 0:
         return f"{years} year{'s' if years > 1 else ''} ago"
     elif months > 0:
         return f"{months} month{'s' if months > 1 else ''} ago"
+    elif weeks > 0:
+        return f"{weeks} week{'s' if weeks > 1 else ''} ago"
     elif days > 0:
         return f"{days} day{'s' if days > 1 else ''} ago"
     elif hours > 0:
         return f"{hours} hour{'s' if hours > 1 else ''} ago"
     elif minutes > 0:
         return f"{minutes} minute{'s' if minutes > 1 else ''} ago"
+    elif remaining_seconds > 0:
+        return f"{remaining_seconds} second{'s' if remaining_seconds > 1 else ''} ago"
     else:
         return "Just now"
+
 
 def notifications(request):
     if request.user.is_authenticated:
