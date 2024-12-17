@@ -120,7 +120,7 @@
                 {% if notification.status == "accepted" %}
                     <h6><span class="username1">.{{ notification.liked_user.username|capfirst }}</span> said yes to connecting</h6>
                 {% else %}
-                    <h6><span class="username1">.{{ notification.liked_user.username|capfirst }}</span> declined your like</h6>
+                    <h6><span class="username2">.{{ notification.liked_user.username|capfirst }}</span> declined your like</h6>
                 {% endif %}
             </div>
 
@@ -139,10 +139,10 @@
                     <i class="fab fa-whatsapp" style="color: #25D366; font-size: 20px"></i>
                 </a>
                         {% else %}
-                            <p style="margin-right:115px; color:black">Contact: Not available</p>
+                            <p style="margin-right:122px; color:black">Contact: Not available</p>
                         {% endif %}
                     {% else %}
-                        <p  style="margin-right:115px; color:black">Contact: Not available</p>
+                        <p  style="margin-right:122px; color:black">Contact: Not available</p>
                     {% endif %}
                 </p>
              </div>

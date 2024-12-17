@@ -609,6 +609,7 @@ styling for the liker*/
     text-transform: capitalize;  /* Capitalize only the first letter of the username */
 }
 
+
 .likerNotes.notification-time{
       font-size: 12px;
       margin-right: 525px; /* Remove margin for better alignment */
@@ -652,5 +653,8 @@ styling for the liker*/
 
 }
 
+    .username2{
+        margin-right: 30px;
+    }
 
 }
