@@ -120,7 +120,7 @@
                 {% if notification.status == "accepted" %}
                     <h6><span class="username1">.{{ notification.liked_user.username|capfirst }}</span> said yes to connecting</h6>
                 {% else %}
-                    <h6>.{{ notification.liked_user.username|lower|capfirst }} declined your like</h6>
+                    <h6><span class="username1">.{{ notification.liked_user.username|capfirst }}</span> declined your like</h6>
                 {% endif %}
             </div>
 
