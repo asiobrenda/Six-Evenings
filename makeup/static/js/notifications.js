@@ -132,8 +132,8 @@ function acceptLike(likerId, acceptUrl, acceptButton) {
             // Hide the reject button but maintain its layout space
             var rejectButton = acceptButton.closest('.notification-actions').querySelector('.reject');
             if (rejectButton) {
-                rejectButton.style.visibility = 'hidden';
-                rejectButton.style.pointerEvents = 'none';  // Disable interaction
+                rejectButton.classList.add('hidden-button');
+                 rejectButton.style.pointerEvents = 'none';
             }
 
             // Update the notification item's status in the DOM
@@ -217,10 +217,11 @@ function rejectLike(likerId, rejectUrl, rejectButton) {
             rejectButton.setAttribute('data-original-count', currentCount);
 
             // Hide the accept button
-            const acceptButton = rejectButton.closest('.notification-actions').querySelector('.accept');
-            if (acceptButton) {
-                acceptButton.style.display = 'none';
-            }
+            var acceptButton = rejectButton.closest('.notification-actions').querySelector('.accept');
+                if (acceptButton) {
+                    acceptButton.classList.add('hidden-button');
+                    acceptButton.style.pointerEvents = 'none';
+                }
 
             // Automatically change to 'Rejected' state after timeout
             setTimeout(() => {
@@ -266,8 +267,12 @@ function undoReject(likerId, undoUrl, rejectButton) {
             // Show the accept button again
             var acceptButton = rejectButton.closest('.notification-actions').querySelector('.accept');
             if (acceptButton) {
-                acceptButton.style.display = 'inline-block';
+                acceptButton.classList.remove('hidden-button');
+                acceptButton.style.pointerEvents = 'auto';
             }
+
+            rejectButton.classList.remove('hidden-button');
+            rejectButton.style.pointerEvents = 'auto';
 
             // Update the status back to 'pending'
             const notificationItem = rejectButton.closest('.notification-item');

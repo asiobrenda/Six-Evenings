@@ -200,6 +200,11 @@ p.notification-time {
     visibility: visible;
 }
 
+.hidden-button {
+    visibility: hidden; /* Use visibility for hiding without changing layout */
+    pointer-events: none; /* Disable pointer events for hidden buttons */
+}
+
 /* Icon hover effect */
 .action-link:hover {
     background-color: #007bff;  /* Change background on hover */
