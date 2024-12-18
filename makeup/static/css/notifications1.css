@@ -453,14 +453,14 @@ p.notification-time {
     .notification-actions {
         flex-direction: horizontal; /* Stack buttons vertically */
         align-items: center;
-        margin-right: 140px; /* Remove excessive right margin */
-        gap: 14px; /* Reduce gap between buttons */
+        margin-right: 128px; /* Remove excessive right margin */
+        gap: 22px; /* Reduce gap between buttons */
     }
 
     .action-link {
-        width: 28px; /* Adjust button size */
-        height: 28px;
-        font-size: 15px; /* Reduce icon size */
+        width: 26px; /* Adjust button size */
+        height: 26px;
+        font-size: 14px; /* Reduce icon size */
     }
 
     .close-notification {
