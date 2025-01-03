@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const dob = new Date(dobInput);
             const today = new Date();
-            const age = today.getFullYear() - dob.getFullYear();
+            let age = today.getFullYear() - dob.getFullYear();
             const m = today.getMonth() - dob.getMonth();
 
             // If the user's birthday hasn't occurred yet this year, subtract 1 from the age

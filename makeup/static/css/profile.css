@@ -85,7 +85,7 @@
 .consent-container input {
     margin: 0; /* Remove margins to avoid unwanted spacing */
     position: static; /* Remove absolute positioning */
-     margin-left: -180px;
+     margin-left: -200px;
 }
 
 
@@ -157,7 +157,7 @@
 .consent-container input {
     margin: 0; /* Remove margins to avoid unwanted spacing */
     position: static; /* Remove absolute positioning */
-    margin-left: -70px;
+    margin-left: -75px;
     margin-top:-20px;
 }
 
