@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import login
 from .forms import SignUpCreationForm
-from .models import Dating, OnlineMembers, Contact
+from .models import Dating, OnlineMembers, Contact, SignUpUser
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
@@ -597,16 +597,19 @@ def analytics(request):
     gender_graph_html = gender_fig.to_html(full_html=False)
 
     # Prepare data for Live vs Offline Users (Donut Chart)
-    live_users = Profile.objects.filter(liveuser__isnull=False).count()
-    offline_users = Profile.objects.filter(liveuser__isnull=True).count()
+    live_users = LiveUser.objects.filter(is_live=True).count()
+    offline_users = LiveUser.objects.filter(is_live=False).count()
 
+    # Prepare the chart
     live_vs_offline_fig = go.Figure(data=[go.Pie(
         labels=['Live Users', 'Offline Users'],
         values=[live_users, offline_users],
         hole=0.3,
-        marker=dict(colors=['#4CAF50', '#F44336'])  # Green, Red
+        marker=dict(colors=['#4CAF50', '#E91E63'])  # Green, Red
     )])
     live_vs_offline_fig.update_layout(title='Live vs Offline Users')
+
+    # Convert the figure to HTML and pass to template
     live_vs_offline_graph_html = live_vs_offline_fig.to_html(full_html=False)
 
     # Prepare data for User Age Distribution (Histogram)
@@ -668,6 +671,9 @@ def analytics(request):
     )
     user_growth_graph_html = user_growth_fig.to_html(full_html=False)
 
+    # Get the total number of users (based on the Profile model or User model)
+    total_users = total_users = SignUpUser.objects.count()
+
     # Passing all graph data to the template
     context = {
         'likes_graph_html': likes_graph_html,
@@ -676,6 +682,7 @@ def analytics(request):
         'age_graph_html': age_graph_html,
         'likes_sent_received_graph_html': likes_sent_received_graph_html,
         'user_growth_graph_html': user_growth_graph_html,
+        'total_users': total_users,
     }
 
     return render(request, 'dating/analytics.html', context)
