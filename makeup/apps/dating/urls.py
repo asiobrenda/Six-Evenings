@@ -24,4 +24,5 @@ urlpatterns = [
     path('stopLive/',  views.stopLive, name='stopLive'),
     path('updateLocation/',  views.update_location, name='updateLocation'),
     path('likerHasProfile/',  views.liker_has_profile, name='likerHasProfile'),
+    path('analytics/',  views.analytics, name='analytics')
 ]

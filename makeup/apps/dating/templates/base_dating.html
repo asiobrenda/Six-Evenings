@@ -103,6 +103,9 @@ header -->
                 <li class="hoverTrigger"><a href="{% url 'dating:create_profile' %}">Create Profile</a></li>
                 <li class="hoverTrigger"><a href="#contact-us">Contact Us</a></li>
                 <li class="hoverTrigger"><a href="#about-us">About Us</a></li>
+                  {% if user.is_staff %}
+                     <li class="hoverTrigger"><a href="{% url 'dating:analytics' %}">Analytics</a></li>
+                 {% endif %}
                 <li><a href="{% url 'dating:logout' %}">logout</a></li>
                 {% else %}
               <li class="hoverTrigger"><a href="#contact-us">Contact Us</a></li>

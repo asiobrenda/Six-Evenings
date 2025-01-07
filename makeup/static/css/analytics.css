@@ -1,0 +1,124 @@
+/* General body styling */
+body {
+    background: linear-gradient(to right, #f8f9fa, #e9ecef); /* Light gradient background */
+    font-family: Arial, sans-serif; /* Font for the page */
+}
+
+
+.charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    height: 200vh; /* Height of the container */
+}
+
+.chart {
+    width: 45%;
+    max-width: 600px;
+    min-width: 300px;
+}
+
+.chart h4 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#refresh-button {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: inline-block; /* Ensures it stays inline */
+    border-radius:20%;
+     margin-left:310px;
+}
+
+#refresh-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+
+@media (max-width: 768px) {
+     .charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    height: 600vh; /* Height of the container */
+}
+
+.chart {
+    width: 45%;
+    max-width: 600px;
+    min-width: 300px;
+}
+
+.chart h4 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#refresh-button {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 6px 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: inline-block; /* Ensures it stays inline */
+    margin-left:40px;
+    border-radius:12%;
+}
+
+#refresh-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+}
+
+@media (max-width: 480px){
+
+    .charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    height: 600vh; /* Height of the container */
+}
+
+.chart {
+    width: 45%;
+    max-width: 600px;
+    min-width: 300px;
+}
+
+.chart h4 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#refresh-button {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 6px 8px;
+    border: none;
+    border-radius:14%;
+    cursor: pointer;
+     font-size: 14px;
+    margin-bottom: 10px;
+    display: inline-block; /* Ensures it stays inline */
+     margin-left:40px;
+}
+
+#refresh-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+}

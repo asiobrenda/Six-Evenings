@@ -17,6 +17,11 @@ from django.utils import timezone
 from django.template.defaultfilters import timesince
 from django.utils import timezone
 from django.shortcuts import render, redirect
+import plotly.graph_objs as go
+from django.db.models import Count, F
+from django.db.models.functions import TruncMonth
+
+
 
 def home(request):
     dating = Dating.objects.all()
@@ -547,3 +552,132 @@ def liker_has_profile(request):
             return JsonResponse({'error': str(e)}, status=500)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
+
+@login_required
+def analytics(request):
+    # Prepare data for the Like Status Bar Chart
+    pending_likes = LikeNotification.objects.filter(status='pending').count()
+    accepted_likes = LikeNotification.objects.filter(status='accepted').count()
+    rejected_likes = LikeNotification.objects.filter(status='rejected').count()
+
+    like_statuses = ['Pending', 'Accepted', 'Rejected']
+    like_counts = [pending_likes, accepted_likes, rejected_likes]
+
+    likes_fig = go.Figure(data=[go.Bar(
+        x=like_statuses,
+        y=like_counts,
+        marker=dict(color=['#FF9800', '#4CAF50', '#F44336'])  # Orange, Green, Red
+    )])
+    likes_fig.update_layout(
+        title='Like Status Distribution',
+        xaxis=dict(
+            title='Status',
+            title_standoff=40  # Adjust this value to set space between title and labels
+        ),
+        yaxis=dict(
+            title='Count',
+            title_standoff = 40
+        )
+    )
+    likes_graph_html = likes_fig.to_html(full_html=False)
+
+    # Prepare data for Gender Distribution Pie Chart
+    male_count = Profile.objects.filter(gender='male').count()
+    female_count = Profile.objects.filter(gender='female').count()
+    other_count = Profile.objects.filter(gender='other').count()
+
+    gender_fig = go.Figure(data=[go.Pie(
+        labels=['Male', 'Female', 'Other'],
+        values=[male_count, female_count, other_count],
+        marker=dict(colors=['#2196F3', '#E91E63', '#9C27B0'])  # Blue, Pink, Purple
+    )])
+    gender_fig.update_layout(title='Gender Distribution')
+    gender_graph_html = gender_fig.to_html(full_html=False)
+
+    # Prepare data for Live vs Offline Users (Donut Chart)
+    live_users = Profile.objects.filter(liveuser__isnull=False).count()
+    offline_users = Profile.objects.filter(liveuser__isnull=True).count()
+
+    live_vs_offline_fig = go.Figure(data=[go.Pie(
+        labels=['Live Users', 'Offline Users'],
+        values=[live_users, offline_users],
+        hole=0.3,
+        marker=dict(colors=['#4CAF50', '#F44336'])  # Green, Red
+    )])
+    live_vs_offline_fig.update_layout(title='Live vs Offline Users')
+    live_vs_offline_graph_html = live_vs_offline_fig.to_html(full_html=False)
+
+    # Prepare data for User Age Distribution (Histogram)
+    current_year = datetime.now().year  # Using the correct datetime class
+    age_counts = Profile.objects.annotate(age=current_year - F('dob__year')).values('age').annotate(age_count=Count('id')).order_by('age')
+
+    ages = [age['age'] for age in age_counts]
+    age_count_values = [age['age_count'] for age in age_counts]
+
+    age_fig = go.Figure(data=[go.Histogram(
+        x=ages,
+        y=age_count_values,
+        marker=dict(color='#673AB7')  # Purple
+    )])
+    age_fig.update_layout(
+        title='User Age Distribution',
+        xaxis_title='Age',
+        yaxis_title='Number of Users',
+        yaxis=dict(
+            title_standoff=40  # Adjust this value to move the y-axis title
+        )
+    )
+    age_graph_html = age_fig.to_html(full_html=False)
+
+    # Prepare data for Likes Sent vs Received (Stacked Bar Chart)
+    likes_sent = LikeNotification.objects.filter(liker__isnull=False).count()
+    likes_received = LikeNotification.objects.filter(liked_user__isnull=False).count()
+
+    likes_sent_received_fig = go.Figure(data=[
+        go.Bar(name='Likes Sent', x=['Sent'], y=[likes_sent], marker=dict(color='#03A9F4')),  # Light Blue
+        go.Bar(name='Likes Received', x=['Received'], y=[likes_received], marker=dict(color='#8BC34A'))  # Light Green
+    ])
+    likes_sent_received_fig.update_layout(title='Likes Sent vs Received', barmode='stack')
+    likes_sent_received_graph_html = likes_sent_received_fig.to_html(full_html=False)
+
+    # Prepare data for User Growth (Line Chart for New Users Over Time)
+    user_growth_data = Profile.objects.annotate(join_year=F('user__date_joined__year')).values('join_year').annotate(user_count=Count('id')).order_by('join_year')
+
+    years = [data['join_year'] for data in user_growth_data]
+    user_counts = [data['user_count'] for data in user_growth_data]
+
+    user_growth_fig = go.Figure(data=[go.Scatter(
+        x=years,
+        y=user_counts,
+        mode='lines+markers',
+        line=dict(color='#FFC107', width=3),  # Amber line
+        marker=dict(size=8, color='#FF5722')  # Orange markers
+    )])
+    user_growth_fig.update_layout(
+        title='User Growth Over Time',
+        xaxis=dict(
+            title='Year',
+            title_standoff=40  # Adjust the spacing as needed
+        ),
+        yaxis=dict(
+            title='New Users',
+            title_standoff = 40
+        )
+    )
+    user_growth_graph_html = user_growth_fig.to_html(full_html=False)
+
+    # Passing all graph data to the template
+    context = {
+        'likes_graph_html': likes_graph_html,
+        'gender_graph_html': gender_graph_html,
+        'live_vs_offline_graph_html': live_vs_offline_graph_html,
+        'age_graph_html': age_graph_html,
+        'likes_sent_received_graph_html': likes_sent_received_graph_html,
+        'user_growth_graph_html': user_growth_graph_html,
+    }
+
+    return render(request, 'dating/analytics.html', context)
+
+
