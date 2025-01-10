@@ -42,6 +42,11 @@ body {
     background-color: #45a049; /* Darker green on hover */
 }
 
+.analytics h4{
+     margin-left: 310px;
+
+}
+
 
 @media (max-width: 768px) {
      .charts-container {
@@ -80,6 +85,12 @@ body {
 #refresh-button:hover {
     background-color: #45a049; /* Darker green on hover */
 }
+
+.analytics h4{
+     margin-left: 40px;
+
+}
+
 }
 
 @media (max-width: 480px){
@@ -119,6 +130,11 @@ body {
 
 #refresh-button:hover {
     background-color: #45a049; /* Darker green on hover */
+}
+
+.analytics h4{
+     margin-left: 40px;
+
 }
 
 }

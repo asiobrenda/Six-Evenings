@@ -23,10 +23,89 @@ from django.db.models.functions import TruncMonth
 
 
 
+from django.core.exceptions import ObjectDoesNotExist
+from datetime import datetime
+
 def home(request):
     dating = Dating.objects.all()
     members = OnlineMembers.objects.all()
-    context = {'dating': dating, 'members':members}
+
+    # Initialize context with default values
+    live_users_data = []
+    profile = None
+    live_user_status = False  # Default for anonymous users
+
+    # Define default coordinates (center of the city, for example)
+    DEFAULT_LAT = 0.3349217  # Replace with a suitable default latitude
+    DEFAULT_LNG = 32.6033867  # Replace with a suitable default longitude
+
+    # Function to calculate age from dob
+    def calculate_age(dob):
+        today = datetime.today().date()
+        age = today.year - dob.year
+        if today.month < dob.month or (today.month == dob.month and today.day < dob.day):
+            age -= 1
+        return age
+
+    # Check if the user is authenticated
+    if request.user.is_authenticated:
+        # Get or create a LiveUser entry for the authenticated user
+        live_user, created = LiveUser.objects.get_or_create(user=request.user)
+
+        # If the current user is live, set `is_live` to False
+        if live_user.is_live:
+            live_user.is_live = False
+            live_user.save()
+
+        # Fetch all live users except the current user
+        live_users = LiveUser.objects.filter(is_live=True).exclude(user=request.user)
+
+        # Process each live user
+        for live in live_users:
+            profile = live.profile  # Directly access the profile associated with LiveUser
+            if profile:  # Ensure profile exists
+                # Calculate the age from the date of birth
+                age = calculate_age(profile.dob)
+
+                # Check if latitude and longitude are available
+                if live.latitude is not None and live.longitude is not None:
+                    latitude = live.latitude
+                    longitude = live.longitude
+                else:
+                    # If coordinates are missing, use default with an offset
+                    latitude, longitude = apply_offset(DEFAULT_LAT, DEFAULT_LNG)
+
+                # Append user data to live_users_data
+                live_users_data.append({
+                    'id': profile.id,
+                    'name': getattr(profile, 'name', 'Unknown'),
+                    'gender': profile.gender,
+                    'bio': profile.bio,
+                    'color': profile.color,
+                    'latitude': latitude,
+                    'longitude': longitude,
+                    'image': getattr(profile.image, 'url', ''),
+                    'age': age
+                })
+
+        # Try to get the authenticated user's profile
+        try:
+            profile = request.user.profile
+        except ObjectDoesNotExist:
+            profile = None  # Handle cases where the profile doesn't exist
+
+        live_user_status = live_user.is_live  # Update live user status for the authenticated user
+
+    # Pass the necessary data to the context
+    context = {
+        'live_users_data': live_users_data,
+        'current_user_live': live_user_status,
+        'current_user_id': request.user.id if request.user.is_authenticated else None,
+        'profile': profile,  # Pass the user's profile if it exists, or None
+        'dating': dating,
+        'members': members
+    }
+
     return render(request, 'dating/index.html', context)
 
 

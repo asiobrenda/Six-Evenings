@@ -45,7 +45,7 @@
 
 form input[type="text"],
 form input[type="email"],
-form input[type="message"],
+form input[type="messages"],
 form textarea {
     width: 100%;
     padding: 10px;

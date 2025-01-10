@@ -9,7 +9,10 @@ function send_message(event) {
     // Get values from form fields
     var name_ = document.getElementById('name').value.trim();
     var email_ = document.getElementById('email').value.trim();
-    var message_ = document.getElementById('message').value.trim();
+    var message_ = document.getElementById('messages').value.trim();
+
+    alert(22)
+    alert(message_)
 
     // Send AJAX request since all fields are valid
     $.post(contactUs,
