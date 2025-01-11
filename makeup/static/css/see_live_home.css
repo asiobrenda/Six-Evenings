@@ -1,8 +1,12 @@
+ #map {
+       height: 650px;
 
+        }
 .custom-marker {
     font-size: 24px;
     color: red;
 }
+
 
 .marker-style {
     border: 2px solid black;
@@ -46,32 +50,34 @@
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
     #map {
-        height: 50vh; /* Adjust height on smaller screens */
+        height: 570px;/* Adjust height on smaller screens */
         width: 100%; /* Ensure full width */
-        margin-top: 0; /* Remove negative margin */
     }
 
     #liveNotification {
         left: 50%; /* Center on smaller screens */
         transform: translateX(-50%); /* Adjust for true center */
     }
+
+    .about-us{
+        margin-top: 380px;
+    }
 }
 
 @media (max-width: 480px) {
-    .map-container {
-        height: 100vh; /* Make sure the container takes full height */
-        width: 100%; /* Ensure full width */
-        position: relative; /* Ensure proper stacking context */
-    }
 
     #map {
-        height: 100%; /* Full height of the container */
+       height: 570px;/* Full height of the container */
         width: 100%; /* Full width */
     }
 
     #liveNotification {
         font-size: 14px; /* Slightly smaller font for mobile */
         padding: 10px; /* Adjust padding */
+    }
+
+    .about-us{
+        margin-top: 380px;
     }
 }
 
