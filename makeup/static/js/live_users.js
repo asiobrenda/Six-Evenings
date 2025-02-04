@@ -5,7 +5,6 @@ var liveUsersMarkers = []; // Array to store markers for live users
 var isGeolocationAvailable = false; // Flag for geolocation availability
 
 
-
 // Check if the current environment is production
 var isProduction = window.location.hostname === "www.sixevenings.com";
 
@@ -23,6 +22,7 @@ var socket = new WebSocket(socketUrl);
 const defaultLat = 0.3476; // Latitude for Kampala
 const defaultLng = 32.5825; // Longitude for Kampala
 
+
 function initMap() {
     geocoder = new google.maps.Geocoder();
     infoWindow = new google.maps.InfoWindow(); // Initialize only once
@@ -38,13 +38,7 @@ function initMap() {
     };
     map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-    // If the current user goes live
-   // if (window.userData && window.userData.is_live) {
-     //   createUserMarker(lat, lng, window.userData.gender);
-  //  }
-
-    // Show markers for other live users
-       if (window.liveUsersData && window.liveUsersData.length > 0) {
+    if (window.liveUsersData && Array.isArray(window.liveUsersData) && window.liveUsersData.length > 0) {
         window.liveUsersData.forEach(user => {
             if (user.latitude && user.longitude) {
                 createLiveUserMarker(user);
@@ -55,7 +49,6 @@ function initMap() {
     } else {
         console.warn("No live users data available.");
     }
-
 }
 
 // Function to create content for InfoWindow
@@ -81,6 +74,7 @@ function getInfoWindowContent(user, formattedAddress) {
 }
 
 // Function to create markers for live users
+// Function to create markers for live users with offset for duplicate positions
 function createLiveUserMarker(user) {
     // Ensure gender data is available and in lowercase
     const userGender = user.gender ? user.gender.toLowerCase() : '';
@@ -99,8 +93,23 @@ function createLiveUserMarker(user) {
         labelOrigin: new google.maps.Point(12, 10),
     };
 
+    // Create a marker position object
+    let position = { lat: user.latitude, lng: user.longitude };
+
+    // If there are already other markers at the same position, adjust the position slightly
+    let offset = 0;
+    liveUsersMarkers.forEach(marker => {
+        const existingPosition = marker.getPosition();
+        const distance = google.maps.geometry.spherical.computeDistanceBetween(existingPosition, position);
+
+        if (distance < 10) { // Check if the markers are within 10 meters of each other
+            offset += 0.0013; // Increase this value for more spacing
+            position = { lat: user.latitude + offset, lng: user.longitude + offset };
+        }
+    });
+
     const liveMarker = new google.maps.Marker({
-        position: { lat: user.latitude, lng: user.longitude },
+        position: position,
         map: map,
         icon: svgMarker,
         label: {
@@ -111,7 +120,7 @@ function createLiveUserMarker(user) {
         },
     });
 
-    console.log(`Marker created for ${user.name} at [Lat: ${user.latitude}, Lng: ${user.longitude}], Gender: ${userGender}`);
+    console.log(`Marker created for ${user.name} at [Lat: ${position.lat}, Lng: ${position.lng}], Gender: ${userGender}`);
 
     // Geocode user's coordinates to get an address
     geocodeLatLng(user.latitude, user.longitude, (formattedAddress) => {
@@ -133,6 +142,7 @@ function createLiveUserMarker(user) {
     // Store marker for potential future updates
     liveUsersMarkers.push(liveMarker);
 }
+
 
 // Define geocodeLatLng function
 function geocodeLatLng(lat, lng, callback) {

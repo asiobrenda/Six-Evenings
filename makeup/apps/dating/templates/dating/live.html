@@ -33,16 +33,6 @@
 {% endblock links %}
 
 
- {% block nav %}
-<!-- <ul class="menu-links" style="display: none; max-height: 400px; overflow: auto;">-->
-
-<!--    <li class="hoverTrigger"><a href="{% url 'dating:home' %}"> Home</a> </li>-->
-<!-- </ul>-->
-
-
-{% endblock nav %}
-
-
 {% block body %}
  <p class="status"></p>
 <!-- Notification Popup (Toast Style) -->
@@ -69,78 +59,3 @@
 </div>
 {% endblock foot %}
 
-
-
-{% block scripts %}
-<script src="https://maps.googleapis.com/maps/api/js?address=8HRV+8P8&key=AIzaSyCqpezCVAMRqrF3jzjZB6mQWfuB1sfz-2I&callback=initMap" async defer></script>
-
-<!--<script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqpezCVAMRqrF3jzjZB6mQWfuB1sfz-2I&libraries=marker&callback=initMap"
-    defer
-></script>-->
-<!--<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>-->
-
-<script type="text/javascript" src="{% static 'js/liveweb1.js' %}"></script>
-<script type="text/javascript">
-    // Assuming 'profile' is available in the context and contains the current user's profile
-    window.userData = {
-        id: "{{ current_user_id }}",
-        image: "{{ profile.image.url|escapejs }}", // Ensure you escape the URL
-        name: "{{ profile.name|escapejs }}",
-        age: "{{ profile.age|escapejs }}",
-        gender: "{{ profile.gender|escapejs }}",
-        color: "{{ profile.color|escapejs }}",
-        bio: "{{ profile.bio|escapejs }}",
-        is_live: {{ current_user_live|yesno:"true,false" }},
-    };
-
-    // Create a liveUsersData array to hold all the live users
-    window.liveUsersData = [
-        {% for user in live_users_data %}
-        {
-            id: {{ user.id }},
-            name: "{{ user.name|escapejs }}",
-            gender: "{{ user.gender|escapejs }}",
-            bio: "{{ user.bio|escapejs }}",
-            age: "{{ user.age|escapejs }}",
-            color: "{{ user.color|escapejs }}",
-            latitude: {{ user.latitude }},
-            longitude: {{ user.longitude }},
-            image_url: "{{ user.image|escapejs }}",
-        }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ];
-
-</script>
-
-
-<script>
-    const likerHasProfile = "{% url 'dating:likerHasProfile' %}";
-</script>
-<script type="text/javascript" src="{% static 'js/js.cookie.min.js' %}"></script>
-<script type="text/javascript">
-
-     var csrftoken = Cookies.get('csrftoken');
-            function csrfSafeMethod(method) {
-              // these HTTP methods do not require CSRF protection
-              return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-            }
-            $.ajaxSetup({
-              beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-              }
-            });
-
-  $(document).ready(function () {
-
-
-     {% block domready %}
-     {% endblock %}
-  });
-    </script>
-
-
-<!--<script type="text/javascript" src="{% static 'js/live1.js' %}"></script>-->
-{% endblock scripts %}

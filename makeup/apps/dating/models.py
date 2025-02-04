@@ -78,16 +78,26 @@ class Profile(models.Model):
             age -= 1
         return age
 
+# class LiveUser(models.Model):
+#     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, null=True, blank=True)  # Reference to Profile
+#     is_live = models.BooleanField(default=False)  # Indicates if user is live
+#     latitude = models.FloatField(null=True, blank=True)  # Store latitude
+#     longitude = models.FloatField(null=True, blank=True)  # Store longitude
+#
+#     def __str__(self):
+#         return f"{self.user.username} (Live: {self.is_live})"
+
 class LiveUser(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, null=True, blank=True)  # Reference to Profile
-    is_live = models.BooleanField(default=False)  # Indicates if user is live
-    latitude = models.FloatField(null=True, blank=True)  # Store latitude
-    longitude = models.FloatField(null=True, blank=True)  # Store longitude
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+    last_active = models.DateTimeField(auto_now=True)  # Track when user was last online
+    is_live = models.BooleanField(default=True)  # Track if user is online
 
     def __str__(self):
-        return f"{self.user.username} (Live: {self.is_live})"
-
+        return f"{self.user.username} (Last Active: {self.last_active})"
 
 class LikeNotification(models.Model):
     liker = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sent_likes', on_delete=models.CASCADE)

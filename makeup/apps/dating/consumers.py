@@ -22,6 +22,8 @@ class LikeConsumer(AsyncWebsocketConsumer):
         try:
             data = json.loads(text_data)
             action = data.get('type')
+            print('---'*40)
+            print(data)
 
             if action == 'like':
                 liker_id = data['likerId']

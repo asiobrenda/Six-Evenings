@@ -28,8 +28,8 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(LiveUser)
 class LiveUserAdmin(admin.ModelAdmin):
-    list_display = ['user', 'profile', 'is_live', 'latitude', 'longitude']
-    list_filter = ['is_live']
+    list_display = ['user', 'profile', 'last_active', 'latitude', 'longitude', 'is_live']
+    list_filter = ['last_active', 'is_live']
 
 @admin.register(LikeNotification)
 class LikeNotificationAdmin(admin.ModelAdmin):

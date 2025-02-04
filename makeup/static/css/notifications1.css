@@ -96,9 +96,9 @@ p.notification-time {
 
 .notification-actions {
     display: flex;
-    gap:12px;  /* Space between buttons */
+    gap:23px;  /* Space between buttons */
     margin-top: 22px;
-    margin-right: 310px;
+    margin-right: 240px;
     margin-left: auto;
 }
 
@@ -123,7 +123,7 @@ p.notification-time {
     border: 1px solid #ccc;          /* Subtle border */
     border-radius: 4px;              /* Slightly rounded corners */
     padding: 8px 5px;               /* Adjust padding for a square look */
-    font-size: 16px;                 /* Adjust font size */
+    font-size: 17px;                 /* Adjust font size */
     cursor: pointer;                 /* Pointer cursor on hover */
     display: inline-block;           /* Prevent stretching */
     text-align: center;              /* Center the 'x' */
@@ -138,8 +138,8 @@ p.notification-time {
 /* Notification Container */
 /* Button container styling */
 .action-link {
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
     border: none;
     color: white;  /* Icon color */
     background-color: #444;  /* Default background color */
@@ -147,7 +147,7 @@ p.notification-time {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;  /* Icon size */
+    font-size: 15px;  /* Icon size */
     cursor: pointer;
     transition: background-color 0.3s ease;
     position: relative;  /* For tooltip positioning */
@@ -453,14 +453,14 @@ p.notification-time {
     .notification-actions {
         flex-direction: horizontal; /* Stack buttons vertically */
         align-items: center;
-        margin-right: 120px; /* Remove excessive right margin */
-        gap: 20px; /* Reduce gap between buttons */
+        margin-right: 80px; /* Remove excessive right margin */
+        gap: 22px; /* Reduce gap between buttons */
     }
 
     .action-link {
-        width: 25px; /* Adjust button size */
-        height: 25px;
-        font-size: 13px; /* Reduce icon size */
+        width: 30px; /* Adjust button size */
+        height: 30px;
+        font-size: 15px; /* Reduce icon size */
     }
 
     .close-notification {

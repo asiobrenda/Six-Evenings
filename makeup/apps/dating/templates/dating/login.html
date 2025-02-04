@@ -74,6 +74,9 @@
                     {% endif %}
                 </p>
             {% endfor %}
+            <input type="hidden" id="latitude" name="latitude">
+            <input type="hidden" id="longitude" name="longitude">
+
             <button type="submit">Login</button>
         </form>
     </div>
@@ -82,5 +85,26 @@
     </div>
 </div>
 {% endblock foot %}
+
+{% block scripts %}
+<script>
+   document.addEventListener("DOMContentLoaded", function() {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    document.getElementById("latitude").value = position.coords.latitude;
+                    document.getElementById("longitude").value = position.coords.longitude;
+                },
+                function(error) {
+                    alert("Please enable location services for better experience.");
+                }
+            );
+        } else {
+            alert("Geolocation is not supported by your browser.");
+        }
+    });
+</script>
+
+{% endblock scripts %}
 
 

@@ -1,13 +1,12 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import login
 from .forms import SignUpCreationForm
-from .models import Dating, OnlineMembers, Contact, SignUpUser
+from .models import Dating, OnlineMembers, Contact, SignUpUser, Profile,LikeNotification, LiveUser
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Profile, LiveUser,LikeNotification
 from django.utils import timezone
 from datetime import datetime
 import random
@@ -20,93 +19,119 @@ from django.shortcuts import render, redirect
 import plotly.graph_objs as go
 from django.db.models import Count, F
 from django.db.models.functions import TruncMonth
-
-
-
+from django.utils.timezone import now
+from datetime import timedelta
+from django.dispatch import receiver
+from django.contrib.auth.signals import user_logged_in
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+from django.core.serializers.json import DjangoJSONEncoder
+
+
+class CustomJSONEncoder(DjangoJSONEncoder):
+    """Custom encoder to handle datetime and other special cases."""
+    def default(self, obj):
+        if hasattr(obj, 'isoformat'):
+            return obj.isoformat()
+        return super().default(obj)
+
+def calculate_age(dob):
+    today = datetime.today().date()
+    age = today.year - dob.year
+    if today.month < dob.month or (today.month == dob.month and today.day < dob.day):
+        age -= 1
+    return age
+
 
 def home(request):
     dating = Dating.objects.all()
     members = OnlineMembers.objects.all()
 
-    # Initialize context with default values
+    user = request.user
+
+    # Ensure user is authenticated
+    if not user.is_authenticated:
+        messages.error(request, "You must be logged in to access this page.")
+        return redirect("dating:login")  # Redirect to login page if user is not authenticated
+
+    # Ensure user has a profile
+    profile = getattr(user, "profile", None)
+    if profile is None:
+        messages.warning(request, "Create a profile before going live.")
+        return redirect("dating:create_profile")
+
+    # Update or create LiveUser entry
+    live_user, created = LiveUser.objects.update_or_create(
+        user=user,
+        defaults={"is_live": True, "profile": profile}
+    )
+
+    live_user, created = LiveUser.objects.get_or_create(user=request.user)
+
+    # If the user is live, set their status (you might want to do this)
+    if not live_user.is_live:
+        live_user.is_live = True
+        live_user.save()
+
+    # Fetch all live users (including the current user)
+    live_users = LiveUser.objects.filter(is_live=True)
+
     live_users_data = []
-    profile = None
-    live_user_status = False  # Default for anonymous users
 
     # Define default coordinates (center of the city, for example)
     DEFAULT_LAT = 0.3349217  # Replace with a suitable default latitude
     DEFAULT_LNG = 32.6033867  # Replace with a suitable default longitude
 
-    # Function to calculate age from dob
-    def calculate_age(dob):
-        today = datetime.today().date()
-        age = today.year - dob.year
-        if today.month < dob.month or (today.month == dob.month and today.day < dob.day):
-            age -= 1
-        return age
+    # Process each live user
+    existing_coordinates = set()  # Track used coordinates
 
-    # Check if the user is authenticated
-    if request.user.is_authenticated:
-        # Get or create a LiveUser entry for the authenticated user
-        live_user, created = LiveUser.objects.get_or_create(user=request.user)
+    for live in live_users:
+        profile = live.profile
+        if profile:
+            age = calculate_age(profile.dob)
+            latitude = live.latitude if live.latitude is not None else DEFAULT_LAT
+            longitude = live.longitude if live.longitude is not None else DEFAULT_LNG
 
-        # If the current user is live, set `is_live` to False
-        if live_user.is_live:
-            live_user.is_live = False
-            live_user.save()
+            # If the coordinates are already used, adjust them slightly
+            while (latitude, longitude) in existing_coordinates:
+                latitude += 0.00001  # Tiny shift to separate markers
+                longitude += 0.00001
 
-        # Fetch all live users except the current user
-        live_users = LiveUser.objects.filter(is_live=True).exclude(user=request.user)
+            existing_coordinates.add((latitude, longitude))  # Store new coordinates
 
-        # Process each live user
-        for live in live_users:
-            profile = live.profile  # Directly access the profile associated with LiveUser
-            if profile:  # Ensure profile exists
-                # Calculate the age from the date of birth
-                age = calculate_age(profile.dob)
+            live_users_data.append({
+                'id': profile.id,
+                'name': getattr(profile, 'name', 'Unknown'),
+                'gender': profile.gender,
+                'bio': profile.bio,
+                'color': profile.color,
+                'latitude': latitude,
+                'longitude': longitude,
+                'image': getattr(profile.image, 'url', ''),
+                'age': age
+            })
 
-                # Check if latitude and longitude are available
-                if live.latitude is not None and live.longitude is not None:
-                    latitude = live.latitude
-                    longitude = live.longitude
-                else:
-                    # If coordinates are missing, use default with an offset
-                    latitude, longitude = apply_offset(DEFAULT_LAT, DEFAULT_LNG)
-
-                # Append user data to live_users_data
-                live_users_data.append({
-                    'id': profile.id,
-                    'name': getattr(profile, 'name', 'Unknown'),
-                    'gender': profile.gender,
-                    'bio': profile.bio,
-                    'color': profile.color,
-                    'latitude': latitude,
-                    'longitude': longitude,
-                    'image': getattr(profile.image, 'url', ''),
-                    'age': age
-                })
-
-        # Try to get the authenticated user's profile
-        try:
-            profile = request.user.profile
-        except ObjectDoesNotExist:
-            profile = None  # Handle cases where the profile doesn't exist
-
-        live_user_status = live_user.is_live  # Update live user status for the authenticated user
+    # Try to access the current user's profile
+    try:
+        profile = request.user.profile
+    except ObjectDoesNotExist:
+        profile = None  # Set profile to None if it doesn't exist
 
     # Pass the necessary data to the context
     context = {
         'live_users_data': live_users_data,
-        'current_user_live': live_user_status,
-        'current_user_id': request.user.id if request.user.is_authenticated else None,
-        'profile': profile,  # Pass the user's profile if it exists, or None
-        'dating': dating,
-        'members': members
+        'current_user_live': live_user.is_live,
+        'current_user_id': request.user.id,
+        'profile': profile  # Pass the user's profile if it exists, or None
     }
 
-    return render(request, 'dating/index.html', context)
+    print(live_users_data)
+
+    # Render template with live users' data
+    return render(request, "dating/index.html", context)
 
 
 def sign_up(request):
@@ -165,9 +190,9 @@ def create_profile(request):
             profile.save()
 
             # Update the LiveUser instance to link to the updated profile
-            live_user, created = LiveUser.objects.get_or_create(user=request.user)
-            live_user.profile = profile  # Set the profile
-            live_user.save()  # Save the changes to LiveUser
+            #live_user, created = LiveUser.objects.get_or_create(user=request.user)
+            #live_user.profile = profile  # Set the profile
+            #live_user.save()  # Save the changes to LiveUser
 
             return redirect('dating:home')  # Redirect after profile update
 
@@ -203,43 +228,43 @@ def create_profile(request):
             )
 
             # Update the LiveUser instance to link to the new profile
-            live_user, created = LiveUser.objects.get_or_create(user=request.user)
-            live_user.profile = profile  # Set the profile
-            live_user.save()  # Save the changes to LiveUser
+            #live_user, created = LiveUser.objects.get_or_create(user=request.user)
+            #live_user.profile = profile  # Set the profile
+            #live_user.save()  # Save the changes to LiveUser
 
             return redirect('dating:home')  # Redirect after profile creation
 
     return render(request, 'dating/create_profile.html')
 
 
-@login_required
-def go_live(request):
-    user = request.user
-
-    # Attempt to get the user's profile
-    try:
-        profile = user.profile
-    except Profile.DoesNotExist:
-        messages.warning(request, "Create a profile before going live")
-        return redirect('dating:create_profile')
-
-    # Create or update the LiveUser instance for the current user
-    live_user, created = LiveUser.objects.update_or_create(
-        user=user,
-        defaults={
-            'is_live': True,
-            'profile': profile  # Ensure profile is associated
-        }
-    )
-
-    context = {
-        'profile': profile,
-        'current_user_live': True,
-        'user_id': user.id,
-        'live_users_data': []  # No other live users needed for this context
-    }
-
-    return render(request, 'dating/go_live.html', context)
+# @login_required
+# def go_live(request):
+#     user = request.user
+#
+#     # Attempt to get the user's profile
+#     try:
+#         profile = user.profile
+#     except Profile.DoesNotExist:
+#         messages.warning(request, "Create a profile before going live")
+#         return redirect('dating:create_profile')
+#
+#     # Create or update the LiveUser instance for the current user
+#     live_user, created = LiveUser.objects.update_or_create(
+#         user=user,
+#         defaults={
+#             'is_live': True,
+#             'profile': profile  # Ensure profile is associated
+#         }
+#     )
+#
+#     context = {
+#         'profile': profile,
+#         'current_user_live': True,
+#         'user_id': user.id,
+#         'live_users_data': []  # No other live users needed for this context
+#     }
+#
+#     return render(request, 'dating/go_live.html', context)
 
 # Function to generate a slight random offset for each user without coordinates
 def apply_offset(lat, lng):
@@ -251,14 +276,100 @@ def apply_offset(lat, lng):
 @login_required
 def see_live(request):
     # Check if the current user is live; if yes, set to False
+    # live_user, created = LiveUser.objects.get_or_create(user=request.user)
+    #
+    # # if live_user.is_live:
+    # #     live_user.is_live = False
+    # #     live_user.save()
+    # #
+    # # # Fetch all live users except the current user
+    # # live_users = LiveUser.objects.filter(is_live=True).exclude(user=request.user)
+    #
+    # # live_users_data = []
+    #
+    # # Define default coordinates (center of the city, for example)
+    # DEFAULT_LAT = 0.3349217  # Replace with a suitable default latitude
+    # DEFAULT_LNG = 32.6033867  # Replace with a suitable default longitude
+    #
+    # # Calculate age from dob
+    # def calculate_age(dob):
+    #     today = datetime.today().date()
+    #     age = today.year - dob.year
+    #     if today.month < dob.month or (today.month == dob.month and today.day < dob.day):
+    #         age -= 1
+    #     return age
+    #
+    # # Process each live user
+    # for live in live_users:
+    #     profile = live.profile  # Directly access the profile associated with LiveUser
+    #     if profile:  # Ensure profile exists
+    #         # Calculate the age from the date of birth
+    #         age = calculate_age(profile.dob)
+    #
+    #         # Check if latitude and longitude are available
+    #         if live.latitude is not None and live.longitude is not None:
+    #             latitude = live.latitude
+    #             longitude = live.longitude
+    #         else:
+    #             # If coordinates are missing, apply an offset to the default coordinates
+    #             latitude, longitude = apply_offset(DEFAULT_LAT, DEFAULT_LNG)
+    #
+    #         # Append user data to live_users_data
+    #         live_users_data.append({
+    #             'id': profile.id,
+    #             'name': getattr(profile, 'name', 'Unknown'),
+    #             'gender': profile.gender,
+    #             'bio': profile.bio,
+    #             'color': profile.color,
+    #             'latitude': latitude,  # Use default with offset if missing
+    #             'longitude': longitude,  # Use default with offset if missing
+    #             'image': getattr(profile.image, 'url', ''),
+    #             'age': age  # Add age to the data dictionary
+    #         })
+    #
+    # # Try to access the current user's profile
+    # try:
+    #     profile = request.user.profile
+    # except ObjectDoesNotExist:
+    #     profile = None  # Set profile to None if it doesn't exist
+    #     # Optionally, redirect the user to the profile creation page or display a message
+    #
+    # # Pass the necessary data to the context
+    # context = {
+    #     'live_users_data': live_users_data,
+    #     'current_user_live': live_user.is_live,
+    #     'current_user_id': request.user.id,
+    #     'profile': profile  # Pass the user's profile if it exists, or None
+    # }
+
+    user = request.user
+
+    # Ensure user is authenticated
+    if not user.is_authenticated:
+        messages.error(request, "You must be logged in to access this page.")
+        return redirect("dating:login")  # Redirect to login page if user is not authenticated
+
+    # Ensure user has a profile
+    profile = getattr(user, "profile", None)
+    if profile is None:
+        messages.warning(request, "Create a profile before going live.")
+        return redirect("dating:create_profile")
+
+    # Update or create LiveUser entry
+    live_user, created = LiveUser.objects.update_or_create(
+        user=user,
+        defaults={"is_live": True, "profile": profile}
+    )
+
     live_user, created = LiveUser.objects.get_or_create(user=request.user)
 
-    if live_user.is_live:
-        live_user.is_live = False
+    # If the user is live, set their status (you might want to do this)
+    if not live_user.is_live:
+        live_user.is_live = True
         live_user.save()
 
-    # Fetch all live users except the current user
-    live_users = LiveUser.objects.filter(is_live=True).exclude(user=request.user)
+    # Fetch all live users (including the current user)
+    live_users = LiveUser.objects.filter(is_live=True)
 
     live_users_data = []
 
@@ -266,40 +377,33 @@ def see_live(request):
     DEFAULT_LAT = 0.3349217  # Replace with a suitable default latitude
     DEFAULT_LNG = 32.6033867  # Replace with a suitable default longitude
 
-    # Calculate age from dob
-    def calculate_age(dob):
-        today = datetime.today().date()
-        age = today.year - dob.year
-        if today.month < dob.month or (today.month == dob.month and today.day < dob.day):
-            age -= 1
-        return age
-
     # Process each live user
+    existing_coordinates = set()  # Track used coordinates
+
     for live in live_users:
-        profile = live.profile  # Directly access the profile associated with LiveUser
-        if profile:  # Ensure profile exists
-            # Calculate the age from the date of birth
+        profile = live.profile
+        if profile:
             age = calculate_age(profile.dob)
+            latitude = live.latitude if live.latitude is not None else DEFAULT_LAT
+            longitude = live.longitude if live.longitude is not None else DEFAULT_LNG
 
-            # Check if latitude and longitude are available
-            if live.latitude is not None and live.longitude is not None:
-                latitude = live.latitude
-                longitude = live.longitude
-            else:
-                # If coordinates are missing, apply an offset to the default coordinates
-                latitude, longitude = apply_offset(DEFAULT_LAT, DEFAULT_LNG)
+            # If the coordinates are already used, adjust them slightly
+            while (latitude, longitude) in existing_coordinates:
+                latitude += 0.00001  # Tiny shift to separate markers
+                longitude += 0.00001
 
-            # Append user data to live_users_data
+            existing_coordinates.add((latitude, longitude))  # Store new coordinates
+
             live_users_data.append({
                 'id': profile.id,
                 'name': getattr(profile, 'name', 'Unknown'),
                 'gender': profile.gender,
                 'bio': profile.bio,
                 'color': profile.color,
-                'latitude': latitude,  # Use default with offset if missing
-                'longitude': longitude,  # Use default with offset if missing
+                'latitude': latitude,
+                'longitude': longitude,
                 'image': getattr(profile.image, 'url', ''),
-                'age': age  # Add age to the data dictionary
+                'age': age
             })
 
     # Try to access the current user's profile
@@ -307,7 +411,6 @@ def see_live(request):
         profile = request.user.profile
     except ObjectDoesNotExist:
         profile = None  # Set profile to None if it doesn't exist
-        # Optionally, redirect the user to the profile creation page or display a message
 
     # Pass the necessary data to the context
     context = {
@@ -317,7 +420,9 @@ def see_live(request):
         'profile': profile  # Pass the user's profile if it exists, or None
     }
 
-    # Render the live users on the template
+
+    print(live_users_data)
+
     return render(request, 'dating/live.html', context)
 
 
@@ -589,31 +694,24 @@ def stopLive(request):
 
     return JsonResponse({'status': 'success', 'message': 'Live status updated'})
 
-@login_required
+
+@csrf_exempt
 def update_location(request):
-    if request.method == 'POST':
-        try:
-            # Get the latitude and longitude from the request
-            latitude = float(request.POST.get('latitude'))
-            longitude = float(request.POST.get('longitude'))
+    """ Update user's location and keep them active """
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user = request.user
 
-            # Get the live user associated with the logged-in user
-            live_user = LiveUser.objects.get(user=request.user)
-
-            # Update the user's latitude and longitude
-            live_user.latitude = latitude
-            live_user.longitude = longitude
+        if user.is_authenticated:
+            live_user, created = LiveUser.objects.get_or_create(user=user)
+            live_user.latitude = data.get("latitude")
+            live_user.longitude = data.get("longitude")
+            live_user.last_active = now()  # Keep them active
+            live_user.is_active = True
             live_user.save()
+            return JsonResponse({"status": "success"})
 
-            return JsonResponse({'status': 'success', 'message': 'Location updated successfully.'})
-
-        except LiveUser.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Live user profile not found.'}, status=404)
-
-        except ValueError:
-            return JsonResponse({'status': 'error', 'message': 'Invalid latitude or longitude.'}, status=400)
-
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
+    return JsonResponse({"status": "error"}, status=400)
 
 
 @login_required

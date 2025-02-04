@@ -43,6 +43,8 @@
 {% endblock body %}
 
 {% block foot %}
+<button class="edit_profile" onclick="editProfile(event)">Update profile</button>
+<br><br>
 <div class="form-container">
     <form id="multi-step-form" method="POST" enctype="multipart/form-data">
         {% csrf_token %}

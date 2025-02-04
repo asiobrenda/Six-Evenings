@@ -46,7 +46,7 @@
 <!-- Style customizer -->
 <link rel="stylesheet" type="text/css" href="{% static 'css/style-customizer.css' %}" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+<!--<link href="{% static 'css/live.css' %}" rel="stylesheet" type="text/css" />-->
 </head>
 
 <body>
@@ -104,8 +104,8 @@ header -->
 <!--                    <i class="fas fa-user-circle" style="margin-right: 5px; color: #ff4d4d;"></i>-->
 <!--                    <span id="activeCount" style="background-color: #ff4d4d; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px;">0</span>-->
 <!--                </li>-->
-                <li class="hoverTrigger"><a href="{% url 'dating:see_live' %}" id="live-now">See Live People</a></li>
-                <li class="hoverTrigger"><a href="{% url 'dating:live' %}" id="goLive">Go Live</a></li>
+                 <li class="hoverTrigger"><a href="{% url 'dating:see_live' %}" id="live-now">See Live People</a></li>
+
                 <li class="hoverTrigger"><a href="{% url 'dating:create_profile' %}">Create Profile</a></li>
                 <li class="hoverTrigger"><a href="#contact-us">Contact Us</a></li>
                 <li class="hoverTrigger"><a href="#about-us">About Us</a></li>
@@ -141,6 +141,21 @@ header -->
 <div id="notificationMessage" style="display:none; position: fixed; top: 200px; left:1000px; z-index: 1000; border-radius:5px;">
     <div id="message"></div>
 </div>
+
+
+ <p class="status"></p>
+<!-- Notification Popup (Toast Style) -->
+<div id="liveNotification">
+  You are live now
+</div>
+
+<!-- Modal Structure -->
+<div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000;">
+    <span style="position: absolute; top: 20px; right: 20px; color: #fff; font-size: 35px; cursor: pointer;" onclick="closeModal()">&times;</span>
+    <img id="modalImage" style="max-width: 40%; max-height: 50%; border-radius: 10px;">
+</div>
+
+
 
 
 <!--=================================
@@ -302,13 +317,14 @@ Color Customizer -->
     const contactUs = "{% url 'dating:contact_us' %}";
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?address=8HRV+8P8&key=AIzaSyCqpezCVAMRqrF3jzjZB6mQWfuB1sfz-2I&callback=initMap" async defer></script>
-<script type="text/javascript" src="{% static 'js/liveweb1.js' %}"></script>
-<script type="text/javascript">
+<script type="text/javascript" src="{% static 'js/live_users.js' %}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?address=8HRV+8P8&key=AIzaSyCqpezCVAMRqrF3jzjZB6mQWfuB1sfz-2I&libraries=geometry&callback=initMap" async defer></script>
+
+<script>
     // Assuming 'profile' is available in the context and contains the current user's profile
     window.userData = {
         id: "{{ current_user_id }}",
-        image: "{{ profile.image.url|escapejs }}", // Ensure you escape the URL
+        image: "{{ profile.image.url|escapejs }}",  // Ensure you escape the URL
         name: "{{ profile.name|escapejs }}",
         age: "{{ profile.age|escapejs }}",
         gender: "{{ profile.gender|escapejs }}",
@@ -330,16 +346,22 @@ Color Customizer -->
             latitude: {{ user.latitude }},
             longitude: {{ user.longitude }},
             image_url: "{{ user.image|escapejs }}",
-        }{% if not forloop.last %},{% endif %}
+        }
+        {% if not forloop.last %},{% endif %}
         {% endfor %}
     ];
 
 </script>
 
 
+
 <script>
     const likerHasProfile = "{% url 'dating:likerHasProfile' %}";
+    const updateLocation = "{% url 'dating:updateLocation' %}";
+
+
 </script>
+
 <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 
 <!-- bootstrap -->
@@ -368,10 +390,10 @@ Color Customizer -->
 <script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
 
 
+
 <script type="text/javascript" src="{% static 'js/contact.js' %}"></script>
 
 <script type="text/javascript" src="{% static 'js/liker_notifications.js' %}"></script>
-
 <!-- Bootstrap JS (optional, for dismissible alerts) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="{% static 'js/js.cookie.min.js' %}"></script>

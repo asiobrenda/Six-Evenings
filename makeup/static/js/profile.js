@@ -69,4 +69,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         document.getElementById('step-' + step).style.display = 'block';
     };
+
+
 });
+
+ function editProfile(e){
+        e.preventDefault();
+
+        alert(111)
+
+}

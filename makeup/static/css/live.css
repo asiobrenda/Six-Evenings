@@ -7,9 +7,9 @@
 }
 
 #map {
-    height: 75vh; /* Use viewport height for responsive design */
+    height: 90vh; /* Use viewport height for responsive design */
     width: 100%; /* Full width to fill the container */
-    max-width: 1200px; /* Set a maximum width for larger screens */
+    max-width: 1900px; /* Set a maximum width for larger screens */
     margin: 0 auto; /* Center the map in the container */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
@@ -24,6 +24,12 @@
     border-radius: 50%;
     padding: 5px;
     background-color: red;
+}
+
+#likeButton{
+   margin-left:50px;
+   margin-right:60px;
+
 }
 
 .info-window-text {
@@ -54,10 +60,16 @@
 
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
-    #map {
-        height: 50vh; /* Adjust height on smaller screens */
+  .map-container {
+        height: 115vh; /* Make sure the container takes full height */
         width: 100%; /* Ensure full width */
-        margin-top: 0; /* Remove negative margin */
+        position: relative; /* Ensure proper stacking context */
+    }
+
+    #map {
+        height: 115vh; /* Adjust height on smaller screens */
+        width: 100%; /* Ensure full width */
+
     }
 
     #liveNotification {
@@ -68,13 +80,13 @@
 
 @media (max-width: 480px) {
     .map-container {
-        height: 100vh; /* Make sure the container takes full height */
+        height: 115vh; /* Make sure the container takes full height */
         width: 100%; /* Ensure full width */
         position: relative; /* Ensure proper stacking context */
     }
 
     #map {
-        height: 100%; /* Full height of the container */
+        height: 115%; /* Full height of the container */
         width: 100%; /* Full width */
     }
 
