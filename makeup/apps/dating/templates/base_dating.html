@@ -112,7 +112,7 @@ header -->
                   {% if user.is_staff %}
                      <li class="hoverTrigger"><a href="{% url 'dating:analytics' %}">Analytics</a></li>
                  {% endif %}
-                <li><a href="{% url 'dating:logout' %}">logout</a></li>
+<!--                <li><a href="{% url 'dating:logout' %}">logout</a></li>-->
                 {% else %}
               <li class="hoverTrigger"><a href="#contact-us">Contact Us</a></li>
               <li class="hoverTrigger"><a href="#about-us">About Us</a></li>
@@ -201,10 +201,10 @@ Step to find your Soul Mate -->
             Get notified of approvals, connect, and start your journey with shared contact
         </p>
         <p class="note2">
-          Click "Go Live," check notifications for interested users, explore profiles, and click "Accept" to find your companion
+          .Click "Go Live," check notifications for interested users, explore profiles, and click "Accept" to find your companion
         </p>
         <p class="note3">
-           Click "Accept" to instantly share your contact or "Reject" to decline the request.
+           .Click "Accept" to instantly share your contact or "Reject" to decline the request
         </p>
     </div>
 
@@ -215,7 +215,7 @@ Step to find your Soul Mate -->
 
 <!--=================================
 Counter -->
-<section class="page-section-ptb bg bg-overlay-black-30 text-white bg text-center" style="background: url(static/image/medium.jpg) no-repeat 0 0; background-size: cover;">
+<section class="page-section-ptb bg bg-overlay-black-30 text-white bg text-center" style="background: url(static/image/medium.jpg) no-repeat 0 0; background-size: cover">
   <div class="container">
     <div class="row justify-content-center">
       {% for m in members %}
@@ -234,7 +234,7 @@ Post Style -->
 {% endblock body %}
 
 
-<footer class="page-section-pt text-white text-center" style="background: url() no-repeat 0 0; background-size: cover;">
+<footer class="page-section-pt text-white text-center" style="background: url() no-repeat 0 0; background-size: cover; height: 100px;">
   {% if messages %}
     <div class="container mt-3">
         {% for message in messages %}

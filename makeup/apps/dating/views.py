@@ -60,7 +60,7 @@ def home(request):
     # Ensure user has a profile
     profile = getattr(user, "profile", None)
     if profile is None:
-        messages.warning(request, "Create a profile before going live.")
+        messages.warning(request, ".Set up your profile to continue")
         return redirect("dating:create_profile")
 
     # Update or create LiveUser entry
