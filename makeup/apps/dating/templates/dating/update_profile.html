@@ -43,76 +43,74 @@
 {% endblock body %}
 
 {% block foot %}
-<a href="{% url 'dating:update_profile' %}">
-    <button class="edit_profile">Update Profile</button>
-</a>
-
+<h3>Update Profile</h3>
 <br><br>
 <div class="form-container">
     <form id="multi-step-form" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-         <input type="hidden" name="step" id="step-input" value="{{ step }}">
+        <input type="hidden" name="step" id="step-input" value="{{ step }}">
+
         <!-- Step 1: Personal Information -->
         <div class="form-step" id="step-1">
             <h3>Step 1: Personal Information</h3>
             <label for="name">Name</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name" value="{{ profile.name }}" required>
+
             <label for="contact">Contact</label>
-             <input type="text" id="contact" name="contact" required
-               placeholder="+256712345678"
-               pattern="^\+\d{10,15}$">
+            <input type="text" id="contact" name="contact" value="{{ profile.contact }}" required
+                   placeholder="+256712345678"
+                   pattern="^\+\d{10,15}$">
+
             <label for="gender">Gender</label>
             <select id="gender" name="gender" required>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="male" {% if profile.gender == "male" %}selected{% endif %}>Male</option>
+                <option value="female" {% if profile.gender == "female" %}selected{% endif %}>Female</option>
+                <option value="other" {% if profile.gender == "other" %}selected{% endif %}>Other</option>
             </select>
 
             <button type="button" class="next-btn" onclick="nextStep(2)">Next</button>
         </div>
 
-      <!-- Step 2: Appearance -->
+        <!-- Step 2: Appearance -->
         <div class="form-step" id="step-2" style="display:none;">
             <h3>Step 2: Appearance</h3>
             <label for="dob">Date of Birth: dd/mm/yy</label>
-            <input type="date" id="dob" name="dob" required >
-            <!-- Consent Checkbox and Label -->
-              <div class="consent-container">
+            <input type="date" id="dob" name="dob" value="{{ profile.dob|date:'Y-m-d' }}" required>
+
+            <div class="consent-container">
                 <p>Check to confirm you are 20+ years old to proceed</p>
-                <input type="checkbox" id="consent" name="consent">
+                <input type="checkbox" id="consent" name="consent" {% if profile.consent %}checked{% endif %}>
             </div>
 
-
-
-<!--            <input type="number" id="weight" name="weight"  required>-->
             <br><br>
             <label for="color">Skin Tone</label>
             <select id="color" name="color" required>
-                <option value="light">Light</option>
-                <option value="medium">Medium</option>
-                <option value="dark">Dark</option>
+                <option value="light" {% if profile.color == "light" %}selected{% endif %}>Light</option>
+                <option value="medium" {% if profile.color == "medium" %}selected{% endif %}>Medium</option>
+                <option value="dark" {% if profile.color == "dark" %}selected{% endif %}>Dark</option>
             </select>
+
             <button type="button" class="next-btn" onclick="nextStep(3)">Next</button>
             <button type="button" class="prev-btn" onclick="prevStep(1)">Previous</button>
         </div>
-
 
         <!-- Step 3: Description/Bio -->
         <div class="form-step" id="step-3" style="display:none;">
             <h3>Step 3: About You</h3>
             <label for="bio">About yourself and interest</label>
-            <textarea id="bio" name="bio" rows="10" cols="25" required></textarea>
+            <textarea id="bio" name="bio" rows="10" cols="25" required>{{ profile.bio }}</textarea>
+
             <!-- Image upload -->
             <label for="imageUpload">Upload Image</label>
-            <input type="file" id="imageUpload" name="photo" accept="image/*" onchange="previewImage(event)" required>
+            <input type="file" id="imageUpload" name="photo" accept="image/*" onchange="previewImage(event)">
+            {% if profile.image %}
+                <img src="{{ profile.image.url }}" alt="Profile Picture" width="100">
+            {% endif %}
 
-
-            <!-- Wrap buttons in a container to align them side by side -->
             <div class="button-container">
-                <button type="submit" class="submit-info">Save profile</button>
+                <button type="submit" class="submit-info">Update profile</button>
                 <button type="button" class="prev-btn" onclick="prevStep(2)">Previous</button>
             </div>
-
         </div>
     </form>
 </div>
@@ -124,4 +122,5 @@
 
 {% block scripts %}
 <script type="text/javascript" src="{% static 'js/profile.js' %}"></script>
+
 {% endblock scripts %}

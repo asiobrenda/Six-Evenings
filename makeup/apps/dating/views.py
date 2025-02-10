@@ -234,7 +234,47 @@ def create_profile(request):
 
             return redirect('dating:home')  # Redirect after profile creation
 
+
     return render(request, 'dating/create_profile.html')
+
+@login_required
+def update_profile(request):
+    profile = Profile.objects.get(user=request.user)  # Get the logged-in user's profile
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        gender = request.POST.get('gender')
+        dob = request.POST.get('dob')
+        color = request.POST.get('color')
+        bio = request.POST.get('bio')
+        contact = request.POST.get('contact')
+        consent = request.POST.get('consent') == 'on'
+
+        image = request.FILES.get('photo')  # Get uploaded image
+
+        # Convert DOB to date format
+        if dob:
+            dob = datetime.strptime(dob, '%Y-%m-%d').date()
+
+        # Update profile fields
+        profile.name = name
+        profile.gender = gender
+        profile.dob = dob
+        profile.color = color
+        profile.bio = bio
+        profile.contact = contact
+        profile.consent = consent
+
+        # Only update the image if a new one was uploaded
+        if image:
+            profile.image = image
+
+        profile.save()
+
+        return redirect('dating:home')  # Redirect after successful update
+
+    return render(request, 'dating/update_profile.html', {"profile": profile})
+
 
 
 # @login_required

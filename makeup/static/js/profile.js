@@ -72,9 +72,3 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 });
-
- function editProfile(e){
-        e.preventDefault();
-
-
-}

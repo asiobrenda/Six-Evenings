@@ -11,6 +11,7 @@ urlpatterns = [
     #path("after-login/", views.after_login_redirect, name="after_login_redirect"),
     path('logout/', LogoutView.as_view(template_name='dating/logout.html'), name='logout'),
     path('CreateProfile/', views.create_profile, name='create_profile'),
+    path('updateProfile/', views.update_profile, name='update_profile'),
     #path('live/', views.go_live, name='live'),
     path('peopleLive/', views.see_live, name='see_live'),
     path('notifications/', views.notifications, name='notifications'),
