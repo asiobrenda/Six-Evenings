@@ -104,7 +104,9 @@ header -->
 <!--                    <i class="fas fa-user-circle" style="margin-right: 5px; color: #ff4d4d;"></i>-->
 <!--                    <span id="activeCount" style="background-color: #ff4d4d; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px;">0</span>-->
 <!--                </li>-->
-                 <li class="hoverTrigger"><a href="{% url 'dating:see_live' %}" id="live-now">See Live People</a></li>
+                 <li class="hoverTrigger"><a href="{% url 'dating:see_live' %}" id="live-now">Active Users</a></li>
+
+                <li class="hoverTrigger"><a href="{% url 'dating:update_profile' %}">Update Profile</a></li>
 
                 <li class="hoverTrigger"><a href="{% url 'dating:create_profile' %}">Create Profile</a></li>
                 <li class="hoverTrigger"><a href="#contact-us">Contact Us</a></li>
