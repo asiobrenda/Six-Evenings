@@ -131,7 +131,7 @@ function createLiveUserMarker(user) {
                 map: map,
                 icon: {
                     url: dataUrl, // Use the data URL generated from the canvas
-                    scaledSize: new google.maps.Size(50, 50), // Increase image size here
+                    scaledSize: new google.maps.Size(55, 55), // Increase image size here
                     anchor: new google.maps.Point(25, 25), // Adjust center point for larger size
                 },
             });
