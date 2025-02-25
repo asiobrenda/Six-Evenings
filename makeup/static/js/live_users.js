@@ -74,74 +74,161 @@ function getInfoWindowContent(user, formattedAddress) {
 }
 
 // Function to create markers for live users
-// Function to create markers for live users with offset for duplicate positions
 function createLiveUserMarker(user) {
-    // Ensure gender data is available and in lowercase
-    const userGender = user.gender ? user.gender.toLowerCase() : '';
+    const profilePicture = user.image_url && user.image_url.trim() !== "" ? user.image_url : "https://via.placeholder.com/70";
 
-    // Set marker color based on gender
-    const markerColor = userGender === 'female' ? '#DB4437' : '#1717A7'; // Red for females, blue for males
+    // Create a circular image using Canvas
+    const canvas = document.createElement("canvas");
+    const size = 100; // Increase the marker size
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext("2d");
 
-    // Define an SVG marker
-    const svgMarker = {
-        path: "M12 2C6.48 2 2 6.48 2 12c0 5.25 10 16 10 16s10-10.75 10-16c0-5.52-4.48-10-10-10z",
-        fillColor: markerColor,
-        fillOpacity: 1,
-        strokeWeight: 0,
-        scale: 1.8,
-        anchor: new google.maps.Point(12, 24),
-        labelOrigin: new google.maps.Point(12, 10),
-    };
+    // Create a Promise to load the image and draw it on the canvas
+    const loadImage = new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = profilePicture;
+        img.crossOrigin = "anonymous"; // Prevent CORS issues
 
-    // Create a marker position object
-    let position = { lat: user.latitude, lng: user.longitude };
+        img.onload = () => {
+            // Draw a circular shape
+            ctx.beginPath();
+            ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.clip();
 
-    // If there are already other markers at the same position, adjust the position slightly
-    let offset = 0;
-    liveUsersMarkers.forEach(marker => {
-        const existingPosition = marker.getPosition();
-        const distance = google.maps.geometry.spherical.computeDistanceBetween(existingPosition, position);
+            // Draw the image on the canvas
+            ctx.drawImage(img, 0, 0, size, size);
 
-        if (distance < 10) { // Check if the markers are within 10 meters of each other
-            offset += 0.0013; // Increase this value for more spacing
-            position = { lat: user.latitude + offset, lng: user.longitude + offset };
-        }
+            // Resolve the Promise with the canvas data URL
+            resolve(canvas.toDataURL());
+        };
+
+        img.onerror = (error) => {
+            reject(error); // Reject if image fails to load
+        };
     });
 
-    const liveMarker = new google.maps.Marker({
-        position: position,
-        map: map,
-        icon: svgMarker,
-        label: {
-            text: userGender === 'female' ? 'F' : 'M',
-            color: 'white',
-            fontSize: '14px',
-            fontWeight: 'bold',
-        },
-    });
+    // Once the image is loaded, create the marker
+    loadImage
+        .then((dataUrl) => {
+            // Adjust marker position if multiple markers are at the same location
+            let position = { lat: user.latitude, lng: user.longitude };
+            let offset = 0;
+            liveUsersMarkers.forEach(marker => {
+                const existingPosition = marker.getPosition();
+                const distance = google.maps.geometry.spherical.computeDistanceBetween(existingPosition, position);
 
-    console.log(`Marker created for ${user.name} at [Lat: ${position.lat}, Lng: ${position.lng}], Gender: ${userGender}`);
+                if (distance < 10) { // If markers are too close, offset them
+                    offset += 0.0013; // Small offset for each marker
+                    position = { lat: user.latitude + offset, lng: user.longitude + offset };
+                }
+            });
 
-    // Geocode user's coordinates to get an address
-    geocodeLatLng(user.latitude, user.longitude, (formattedAddress) => {
-        const infoWindowContent = getInfoWindowContent(user, formattedAddress);
+            // Set the marker
+            const liveMarker = new google.maps.Marker({
+                position: position,  // Use adjusted position if necessary
+                map: map,
+                icon: {
+                    url: dataUrl, // Use the data URL generated from the canvas
+                    scaledSize: new google.maps.Size(60, 60), // Increase image size here
+                    anchor: new google.maps.Point(25, 25), // Adjust center point for larger size
+                },
+            });
 
-        // Show info window on hover
-        liveMarker.addListener("mouseover", () => {
-            infoWindow.setContent(infoWindowContent);
-            infoWindow.open(map, liveMarker);
+            console.log(`Marker created for ${user.name} with rounded image.`);
+
+            // Show info window when marker is hovered or clicked
+            geocodeLatLng(user.latitude, user.longitude, (formattedAddress) => {
+                const infoWindowContent = getInfoWindowContent(user, formattedAddress);
+
+                liveMarker.addListener("mouseover", () => {
+                    infoWindow.setContent(infoWindowContent);
+                    infoWindow.open(map, liveMarker);
+                });
+
+                liveMarker.addListener("click", () => {
+                    infoWindow.setContent(infoWindowContent);
+                    infoWindow.open(map, liveMarker);
+                });
+            });
+
+            // Store marker
+            liveUsersMarkers.push(liveMarker);
+        })
+        .catch((error) => {
+            console.error("Error loading image:", error);
         });
-
-        // Show info window on click
-        liveMarker.addListener("click", () => {
-            infoWindow.setContent(infoWindowContent);
-            infoWindow.open(map, liveMarker);
-        });
-    });
-
-    // Store marker for potential future updates
-    liveUsersMarkers.push(liveMarker);
 }
+
+
+//function createLiveUserMarker(user) {
+//    // Ensure gender data is available and in lowercase
+//    const userGender = user.gender ? user.gender.toLowerCase() : '';
+//
+//    // Set marker color based on gender
+//    const markerColor = userGender === 'female' ? '#DB4437' : '#1717A7'; // Red for females, blue for males
+//
+//    // Define an SVG marker
+//    const svgMarker = {
+//        path: "M12 2C6.48 2 2 6.48 2 12c0 5.25 10 16 10 16s10-10.75 10-16c0-5.52-4.48-10-10-10z",
+//        fillColor: markerColor,
+//        fillOpacity: 1,
+//        strokeWeight: 0,
+//        scale: 1.8,
+//        anchor: new google.maps.Point(12, 24),
+//        labelOrigin: new google.maps.Point(12, 10),
+//    };
+//
+//    // Create a marker position object
+//    let position = { lat: user.latitude, lng: user.longitude };
+//
+//    // If there are already other markers at the same position, adjust the position slightly
+//    let offset = 0;
+//    liveUsersMarkers.forEach(marker => {
+//        const existingPosition = marker.getPosition();
+//        const distance = google.maps.geometry.spherical.computeDistanceBetween(existingPosition, position);
+//
+//        if (distance < 10) { // Check if the markers are within 10 meters of each other
+//            offset += 0.0013; // Increase this value for more spacing
+//            position = { lat: user.latitude + offset, lng: user.longitude + offset };
+//        }
+//    });
+//
+//    const liveMarker = new google.maps.Marker({
+//        position: position,
+//        map: map,
+//        icon: svgMarker,
+//        label: {
+//            text: userGender === 'female' ? 'F' : 'M',
+//            color: 'white',
+//            fontSize: '14px',
+//            fontWeight: 'bold',
+//        },
+//    });
+//
+//    console.log(`Marker created for ${user.name} at [Lat: ${position.lat}, Lng: ${position.lng}], Gender: ${userGender}`);
+//
+//    // Geocode user's coordinates to get an address
+//    geocodeLatLng(user.latitude, user.longitude, (formattedAddress) => {
+//        const infoWindowContent = getInfoWindowContent(user, formattedAddress);
+//
+//        // Show info window on hover
+//        liveMarker.addListener("mouseover", () => {
+//            infoWindow.setContent(infoWindowContent);
+//            infoWindow.open(map, liveMarker);
+//        });
+//
+//        // Show info window on click
+//        liveMarker.addListener("click", () => {
+//            infoWindow.setContent(infoWindowContent);
+//            infoWindow.open(map, liveMarker);
+//        });
+//    });
+//
+//    // Store marker for potential future updates
+//    liveUsersMarkers.push(liveMarker);
+//}
 
 
 // Define geocodeLatLng function
